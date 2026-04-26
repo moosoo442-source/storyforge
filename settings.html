@@ -8,28 +8,21 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="topbar">
-  <h1>⚙️ 설정 / 백업</h1>
-</div>
+<div class="topbar"><h1>⚙️ 설정 / 백업</h1></div>
 
 <div class="row">
   <div>
     <div class="card">
       <h3>테마</h3>
-      <div class="field">
-        <label>모드</label>
+      <div class="field"><label>모드</label>
         <select id="themeSel">
           <option value="dark">다크</option>
           <option value="light">라이트</option>
           <option value="sepia">세피아</option>
         </select>
       </div>
-      <div class="field">
-        <label>강조 색상</label>
-        <input id="accent" type="color">
-      </div>
-      <div class="field">
-        <label>폰트 (저작권 프리 / Google Fonts)</label>
+      <div class="field"><label>강조 색상</label><input id="accent" type="color"></div>
+      <div class="field"><label>폰트 (모두 무료 / Google Fonts)</label>
         <select id="fontSel">
           <option>Noto Sans KR</option>
           <option>Noto Serif KR</option>
@@ -40,13 +33,14 @@
           <option>Black Han Sans</option>
         </select>
       </div>
-      <button class="btn" id="saveTheme">적용</button>
+      <button class="btn" id="saveTheme" type="button">적용</button>
     </div>
 
     <div class="card">
       <h3>계정 정보</h3>
+      <div class="field"><label>아이디</label><input id="userName" disabled></div>
       <div class="field"><label>표시 이름</label><input id="dispName"></div>
-      <button class="btn" id="saveName">변경</button>
+      <button class="btn" id="saveName" type="button">변경</button>
     </div>
   </div>
 
@@ -54,17 +48,17 @@
     <div class="card">
       <h3>백업 (내보내기)</h3>
       <p class="muted">현재 계정의 모든 데이터를 JSON 파일로 저장합니다.</p>
-      <button class="btn" id="exportBtn">JSON 다운로드</button>
+      <button class="btn" id="exportBtn" type="button">JSON 다운로드</button>
     </div>
     <div class="card">
       <h3>복원 (가져오기)</h3>
       <p class="muted">기존 데이터를 덮어씁니다. 주의하세요.</p>
-      <input id="importFile" type="file" accept="application/json">
-      <button class="btn danger" id="importBtn" style="margin-top:10px">가져오기</button>
+      <input id="importFile" type="file" accept="application/json,.json">
+      <button class="btn danger" id="importBtn" type="button" style="margin-top:10px">가져오기</button>
     </div>
     <div class="card">
       <h3>위험 구역</h3>
-      <button class="btn danger" id="wipeBtn">이 계정의 모든 데이터 삭제</button>
+      <button class="btn danger" id="wipeBtn" type="button">이 계정의 모든 데이터 삭제</button>
     </div>
   </div>
 </div>
@@ -72,68 +66,62 @@
 <script src="js/storage.js"></script>
 <script src="js/sidebar.js"></script>
 <script>
-  mountApp('settings');
+(function () {
+  if (!mountApp('settings')) return;
   const u = SF.currentUser();
   const s = SF.getSettings();
 
   $('#themeSel').value = s.theme || 'dark';
   $('#accent').value = s.accent || '#7c5cff';
   $('#fontSel').value = s.font || 'Noto Sans KR';
+  $('#userName').value = u.username;
   $('#dispName').value = u.displayName;
 
-  $('#saveTheme').onclick = () => {
+  $('#saveTheme').addEventListener('click', () => {
     SF.saveSettings({
       theme: $('#themeSel').value,
       accent: $('#accent').value,
       font: $('#fontSel').value
     });
     applyTheme();
-    toast('적용되었습니다.', 'success');
-  };
-
-  $('#saveName').onclick = () => {
+    toast('테마가 적용되었습니다.', 'success');
+  });
+  $('#saveName').addEventListener('click', () => {
     const v = $('#dispName').value.trim();
     if (!v) return;
-    const users = SF.getUsers();
-    const i = users.findIndex(x => x.id === u.id);
-    users[i].displayName = v;
-    SF.saveUsers(users);
+    SF.updateUser({ displayName: v });
     toast('저장됨.', 'success');
-  };
+    setTimeout(() => location.reload(), 400);
+  });
 
-  $('#exportBtn').onclick = () => {
+  $('#exportBtn').addEventListener('click', () => {
     const data = SF.exportJSON();
     const blob = new Blob([data], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `storyforge_${u.username}_${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `storyforge_${u.username}_${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
-  };
+  });
 
-  $('#importBtn').onclick = () => {
-    const f = $('#importFile').files?.[0];
-    if (!f) return toast('파일을 선택하세요.', 'error');
+  $('#importBtn').addEventListener('click', () => {
+    const f = $('#importFile').files && $('#importFile').files[0];
+    if (!f) { toast('파일을 선택하세요.', 'error'); return; }
     if (!confirm('현재 데이터를 덮어씁니다. 계속할까요?')) return;
     const r = new FileReader();
     r.onload = () => {
-      try {
-        SF.importJSON(r.result);
-        toast('복원 완료. 새로고침합니다.', 'success');
-        setTimeout(()=>location.reload(), 600);
-      } catch (e) { toast(e.message, 'error'); }
+      try { SF.importJSON(r.result); toast('복원 완료. 새로고침합니다.', 'success'); setTimeout(() => location.reload(), 600); }
+      catch (e) { toast(e.message, 'error'); }
     };
     r.readAsText(f);
-  };
+  });
 
-  $('#wipeBtn').onclick = () => {
+  $('#wipeBtn').addEventListener('click', () => {
     if (!confirm('정말로 모든 프로젝트와 인물 데이터를 삭제할까요?')) return;
-    const all = SF._allData();
-    delete all[u.id];
-    SF._saveAll(all);
-    SF._initData(u.id);
+    SF.wipeMyData();
     toast('초기화되었습니다.', 'success');
-    setTimeout(()=>location.reload(), 600);
-  };
+    setTimeout(() => location.reload(), 600);
+  });
+})();
 </script>
 </body>
 </html>

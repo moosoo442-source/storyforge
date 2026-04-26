@@ -4,50 +4,45 @@
 <meta charset="utf-8">
 <title>대시보드 · StoryForge</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&family=Nanum+Pen+Script&family=Nanum+Myeongjo&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="topbar">
   <h1>내 프로젝트</h1>
   <div class="actions">
-    <button class="btn" id="newProjBtn">+ 새 프로젝트</button>
+    <button class="btn" id="newProjBtn" type="button">+ 새 프로젝트</button>
   </div>
 </div>
 
 <div id="projList" class="grid"></div>
 
 <!-- 새 프로젝트 모달 -->
-<div class="modal-bg" id="newProjModal">
+<div class="modal-bg" id="newProjModal" role="dialog" aria-modal="true">
   <div class="modal">
-    <header><h3>새 프로젝트 만들기</h3><button class="close" data-close>×</button></header>
-    <div class="field">
-      <label>제목 *</label>
-      <input id="npTitle" placeholder="예: 별빛의 헌터">
-    </div>
-    <div class="field">
-      <label>장르 (자유 입력)</label>
-      <input id="npGenre" placeholder="예: 헌터물 / 능력물 / 로맨스 판타지 ...">
-    </div>
-    <div class="field">
-      <label>한줄 소개</label>
-      <textarea id="npSummary" placeholder="프로젝트에 대한 간단한 설명"></textarea>
-    </div>
-    <div class="field">
-      <label>커버 이미지 URL (선택)</label>
-      <input id="npCover" placeholder="https://...">
-    </div>
-    <div class="flex" style="justify-content:flex-end; gap:8px;">
-      <button class="btn ghost" data-close>취소</button>
-      <button class="btn" id="npCreate">만들기</button>
-    </div>
+    <header><h3>새 프로젝트 만들기</h3><button class="close" data-close type="button">×</button></header>
+    <form id="newProjForm">
+      <div class="field"><label>제목 *</label>
+        <input id="npTitle" placeholder="예: 별빛의 헌터" required></div>
+      <div class="field"><label>장르 (자유 입력)</label>
+        <input id="npGenre" placeholder="예: 헌터물 / 능력물 / 로맨스 판타지 ..."></div>
+      <div class="field"><label>한줄 소개</label>
+        <textarea id="npSummary" placeholder="프로젝트에 대한 간단한 설명"></textarea></div>
+      <div class="field"><label>커버 이미지 URL (선택)</label>
+        <input id="npCover" placeholder="https://..."></div>
+      <div class="flex" style="justify-content:flex-end; gap:8px;">
+        <button class="btn ghost" type="button" data-close>취소</button>
+        <button class="btn" type="submit">만들기</button>
+      </div>
+    </form>
   </div>
 </div>
 
 <script src="js/storage.js"></script>
 <script src="js/sidebar.js"></script>
 <script>
-  mountApp('dashboard');
+(function () {
+  if (!mountApp('dashboard')) return;
 
   function render() {
     const list = SF.getProjects();
@@ -56,50 +51,53 @@
       wrap.innerHTML = `<div class="empty" style="grid-column:1/-1">
         <div style="font-size:48px">📖</div>
         <h3>아직 프로젝트가 없어요</h3>
-        <p>오른쪽 위 [+ 새 프로젝트] 로 첫 작품을 만들어 보세요.</p>
+        <p>오른쪽 위 <b>+ 새 프로젝트</b> 로 첫 작품을 만들어 보세요.</p>
       </div>`;
       return;
     }
     wrap.innerHTML = list.map(p => `
-      <div class="char-card" data-id="${p.id}">
-        <div class="avatar" style="${p.cover?`background-image:url('${escapeHtml(p.cover)}')`:''}">
-          ${p.cover?'':'📖'}
+      <div class="thumb-card" data-id="${p.id}">
+        <div class="avatar" style="${p.cover ? `background-image:url('${escapeAttr(p.cover)}')` : ''}">
+          ${p.cover ? '' : '📖'}
         </div>
         <div class="info">
           <h4>${escapeHtml(p.title)}</h4>
           <div class="role">${escapeHtml(p.genre || '미지정')}</div>
           <div class="muted" style="font-size:12px; margin-top:4px;">
-            인물 ${p.characters?.length||0} · 문서 ${p.docs?.length||0}
+            인물 ${(p.characters || []).length} · 문서 ${(p.docs || []).length}
           </div>
         </div>
       </div>
     `).join('');
-    $$('.char-card').forEach(el => el.addEventListener('click', () => {
-      location.href = `project.html?p=${el.dataset.id}`;
+    $$('.thumb-card').forEach(el => el.addEventListener('click', () => {
+      location.href = 'project.html?p=' + encodeURIComponent(el.dataset.id);
     }));
   }
   render();
 
   // 모달
   const modal = $('#newProjModal');
-  const open  = () => modal.classList.add('open');
   const close = () => modal.classList.remove('open');
-  $('#newProjBtn').onclick = open;
-  $$('[data-close]').forEach(b => b.onclick = close);
+  $('#newProjBtn').addEventListener('click', () => {
+    $('#newProjForm').reset(); modal.classList.add('open');
+    setTimeout(() => $('#npTitle').focus(), 30);
+  });
+  $$('[data-close]').forEach(b => b.addEventListener('click', close));
   modal.addEventListener('click', e => { if (e.target === modal) close(); });
 
-  $('#npCreate').onclick = () => {
+  $('#newProjForm').addEventListener('submit', e => {
+    e.preventDefault();
     const title = $('#npTitle').value.trim();
-    if (!title) return toast('제목을 입력하세요.', 'error');
+    if (!title) { toast('제목을 입력하세요.', 'error'); return; }
     const p = SF.addProject({
       title,
       genre: $('#npGenre').value.trim(),
       summary: $('#npSummary').value.trim(),
       cover: $('#npCover').value.trim()
     });
-    close();
-    location.href = `project.html?p=${p.id}`;
-  };
+    location.href = 'project.html?p=' + encodeURIComponent(p.id);
+  });
+})();
 </script>
 </body>
 </html>

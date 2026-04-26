@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>문서 / 에디터 · StoryForge</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&family=Nanum+Pen+Script&family=Nanum+Myeongjo&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,24 +12,27 @@
   <h1>📝 문서 / 에디터</h1>
   <div class="actions">
     <select id="docSel" style="min-width:220px"></select>
-    <button class="btn ghost" id="newDoc">+ 새 문서</button>
-    <button class="btn ghost" id="renDoc">이름변경</button>
-    <button class="btn danger" id="delDoc">삭제</button>
+    <button class="btn ghost" id="newDoc" type="button">+ 새 문서</button>
+    <button class="btn ghost" id="renDoc" type="button">이름변경</button>
+    <button class="btn ghost" id="dlDoc"  type="button">⤓ 다운로드</button>
+    <button class="btn danger" id="delDoc" type="button">삭제</button>
   </div>
 </div>
 
-<div class="flex" style="margin-bottom:10px; gap:6px;">
-  <button class="btn sm ghost" data-ins="**굵게**">B</button>
-  <button class="btn sm ghost" data-ins="*기울임*"><i>I</i></button>
-  <button class="btn sm ghost" data-ins="~~취소선~~">S</button>
-  <button class="btn sm ghost" data-ins="# 제목">H1</button>
-  <button class="btn sm ghost" data-ins="## 제목">H2</button>
-  <button class="btn sm ghost" data-ins="- 항목">• List</button>
-  <button class="btn sm ghost" data-ins="| 헤더1 | 헤더2 |\n|---|---|\n| 셀 | 셀 |">표</button>
-  <button class="btn sm ghost" data-ins="> 인용">인용</button>
-  <button class="btn sm ghost" data-ins="[링크](https://)">링크</button>
-  <button class="btn sm ghost" data-ins="![이미지](https://)">이미지</button>
-  <button class="btn sm ghost" data-ins='<iframe src="https://" width="100%" height="400"></iframe>'>임베드</button>
+<div class="flex" style="margin-bottom:10px; gap:6px; flex-wrap:wrap;">
+  <button class="btn sm ghost" data-ins="**굵게**" type="button"><b>B</b></button>
+  <button class="btn sm ghost" data-ins="*기울임*" type="button"><i>I</i></button>
+  <button class="btn sm ghost" data-ins="~~취소선~~" type="button">S</button>
+  <button class="btn sm ghost" data-ins="# 제목" type="button">H1</button>
+  <button class="btn sm ghost" data-ins="## 제목" type="button">H2</button>
+  <button class="btn sm ghost" data-ins="- 항목" type="button">• List</button>
+  <button class="btn sm ghost" data-ins="1. 항목" type="button">1. List</button>
+  <button class="btn sm ghost" data-ins="| 헤더1 | 헤더2 |\n|---|---|\n| 셀 | 셀 |" type="button">표</button>
+  <button class="btn sm ghost" data-ins="> 인용" type="button">인용</button>
+  <button class="btn sm ghost" data-ins="`코드`" type="button">코드</button>
+  <button class="btn sm ghost" data-ins="[링크 텍스트](https://)" type="button">링크</button>
+  <button class="btn sm ghost" data-ins="![설명](https://)" type="button">이미지</button>
+  <button class="btn sm ghost" data-ins='<iframe src="https://" width="100%" height="400" frameborder="0"></iframe>' type="button">임베드</button>
   <span class="spacer"></span>
   <select id="modeSel">
     <option value="md">마크다운 (HTML 혼합)</option>
@@ -46,35 +49,38 @@
 <script src="js/sidebar.js"></script>
 <script src="js/markdown.js"></script>
 <script>
-  mountApp('editor');
+(function () {
+  if (!mountApp('editor')) return;
   const pid = getQuery('p');
   const proj = SF.getProject(pid);
-  if (!proj) location.href = 'dashboard.html';
+  if (!proj) { location.href = 'dashboard.html'; return; }
   proj.docs = proj.docs || [];
 
   function save() { SF.updateProject(pid, { docs: proj.docs }); }
 
   function refreshList(selectId) {
     const sel = $('#docSel');
-    sel.innerHTML = proj.docs.map(d => `<option value="${d.id}">${escapeHtml(d.title)} (${d.type})</option>`).join('')
-      || '<option value="">문서 없음</option>';
+    sel.innerHTML = proj.docs.length
+      ? proj.docs.map(d => `<option value="${d.id}">${escapeHtml(d.title)} (${d.type})</option>`).join('')
+      : '<option value="">문서 없음</option>';
     if (selectId) sel.value = selectId;
     loadCurrent();
   }
-
   function current() {
     const id = $('#docSel').value;
     return proj.docs.find(d => d.id === id);
   }
-
   function loadCurrent() {
     const d = current();
-    if (!d) { $('#src').value=''; $('#preview').innerHTML='<div class="muted">문서를 만들어 주세요.</div>'; return; }
+    if (!d) {
+      $('#src').value = '';
+      $('#preview').innerHTML = '<div class="muted">문서를 만들어 주세요.</div>';
+      return;
+    }
     $('#src').value = d.content || '';
     $('#modeSel').value = d.type || 'md';
     renderPreview();
   }
-
   function renderPreview() {
     const d = current(); if (!d) return;
     const mode = $('#modeSel').value;
@@ -82,51 +88,61 @@
     else $('#preview').innerHTML = renderMD($('#src').value);
   }
 
-  $('#docSel').onchange = loadCurrent;
-  $('#src').oninput = () => {
+  $('#docSel').addEventListener('change', loadCurrent);
+  $('#src').addEventListener('input', () => {
     const d = current(); if (!d) return;
     d.content = $('#src').value; save(); renderPreview();
-  };
-  $('#modeSel').onchange = () => {
+  });
+  $('#modeSel').addEventListener('change', () => {
     const d = current(); if (!d) return;
     d.type = $('#modeSel').value; save(); renderPreview();
-  };
+  });
 
-  $('#newDoc').onclick = () => {
+  $('#newDoc').addEventListener('click', () => {
     const t = prompt('문서 제목', '새 문서');
     if (!t) return;
-    const d = { id: 'd_'+uid(), title: t, type: 'md', content: '' };
+    const d = { id: SF._uid('d_'), title: t, type: 'md', content: '' };
     proj.docs.push(d); save(); refreshList(d.id);
-  };
-  $('#renDoc').onclick = () => {
+  });
+  $('#renDoc').addEventListener('click', () => {
     const d = current(); if (!d) return;
-    const t = prompt('새 제목', d.title);
-    if (!t) return;
+    const t = prompt('새 제목', d.title); if (!t) return;
     d.title = t; save(); refreshList(d.id);
-  };
-  $('#delDoc').onclick = () => {
+  });
+  $('#delDoc').addEventListener('click', () => {
     const d = current(); if (!d) return;
-    if (!confirm('삭제?')) return;
+    if (!confirm('삭제할까요?')) return;
     proj.docs = proj.docs.filter(x => x.id !== d.id);
     save(); refreshList();
-  };
+  });
+  $('#dlDoc').addEventListener('click', () => {
+    const d = current(); if (!d) return;
+    const blob = new Blob([d.content || ''], { type: d.type === 'html' ? 'text/html' : 'text/markdown' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = d.title.replace(/[^\w가-힣\- _.]/g, '_') + (d.type === 'html' ? '.html' : '.md');
+    a.click();
+  });
 
-  $$('[data-ins]').forEach(b => b.onclick = () => {
-    const ins = b.dataset.ins.replace(/\\n/g,'\n');
+  $$('[data-ins]').forEach(b => b.addEventListener('click', () => {
+    const ins = b.dataset.ins.replace(/\\n/g, '\n');
     const ta = $('#src');
     const s = ta.selectionStart, e = ta.selectionEnd;
-    ta.value = ta.value.slice(0,s) + ins + ta.value.slice(e);
+    ta.value = ta.value.slice(0, s) + ins + ta.value.slice(e);
     ta.focus();
     ta.selectionStart = ta.selectionEnd = s + ins.length;
     ta.dispatchEvent(new Event('input'));
-  });
+  }));
 
-  // 초기 문서 없으면 하나 생성
   if (!proj.docs.length) {
-    proj.docs.push({ id: 'd_'+uid(), title: '메모', type: 'md', content: '# 환영합니다\n\n여기에 자유롭게 적어 보세요.' });
+    proj.docs.push({
+      id: SF._uid('d_'), title: '메모', type: 'md',
+      content: '# 환영합니다\n\n여기에 자유롭게 적어 보세요.\n\n- 마크다운 사용 가능\n- 표, 이미지, 동영상 임베드 모두 지원\n\n| 항목 | 값 |\n|---|---|\n| 예시 | 굿 |\n'
+    });
     save();
   }
-  refreshList(proj.docs[0]?.id);
+  refreshList(proj.docs[0] && proj.docs[0].id);
+})();
 </script>
 </body>
 </html>

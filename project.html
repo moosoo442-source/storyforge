@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>프로젝트 · StoryForge</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&family=Nanum+Pen+Script&family=Nanum+Myeongjo&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -21,18 +21,18 @@
       </div>
       <div class="field"><label>한줄 소개</label><textarea id="pfSummary"></textarea></div>
       <div class="flex" style="justify-content:flex-end; gap:8px;">
-        <button class="btn danger" id="delProj">프로젝트 삭제</button>
-        <button class="btn" id="saveProj">저장</button>
+        <button class="btn danger" id="delProj" type="button">프로젝트 삭제</button>
+        <button class="btn" id="saveProj" type="button">저장</button>
       </div>
     </div>
 
     <div class="card">
       <h3>커스텀 장르 / 태그</h3>
       <p class="muted">자신만의 장르를 만들어 두면 인물·문서에 태그로 사용할 수 있어요.</p>
-      <div class="flex">
+      <form id="genreForm" class="flex">
         <input id="newGenre" placeholder="예: 흑마법 학원물">
-        <button class="btn" id="addGenre">추가</button>
-      </div>
+        <button class="btn" type="submit">추가</button>
+      </form>
       <div id="genreTags" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:6px;"></div>
     </div>
   </div>
@@ -44,11 +44,14 @@
     </div>
     <div class="card">
       <h3>빠른 이동</h3>
-      <div class="flex" style="flex-direction:column; align-items:stretch; gap:8px;">
+      <div class="flex col" style="gap:8px;">
         <a class="btn ghost" id="lkChar">👥 등장인물</a>
-        <a class="btn ghost" id="lkTree">🌳 관계도/조직도</a>
+        <a class="btn ghost" id="lkRel">💞 관계 그래프</a>
+        <a class="btn ghost" id="lkTree">🌳 가계도/조직도</a>
         <a class="btn ghost" id="lkWorld">🌍 세계관</a>
         <a class="btn ghost" id="lkTl">⏳ 타임라인</a>
+        <a class="btn ghost" id="lkItems">⚔️ 아이템</a>
+        <a class="btn ghost" id="lkGal">🖼️ 영감 보드</a>
         <a class="btn ghost" id="lkEd">📝 문서</a>
       </div>
     </div>
@@ -58,71 +61,77 @@
 <script src="js/storage.js"></script>
 <script src="js/sidebar.js"></script>
 <script>
-  mountApp('project');
+(function () {
+  if (!mountApp('project')) return;
   const pid = getQuery('p');
   const proj = SF.getProject(pid);
-  if (!proj) { location.href = 'dashboard.html'; }
+  if (!proj) { location.href = 'dashboard.html'; return; }
 
-  $('#head').innerHTML = `<div class="topbar"><h1>${escapeHtml(proj.title)}</h1>
-    <div class="muted">${escapeHtml(proj.genre || '미지정')}</div></div>`;
+  $('#head').innerHTML = `
+    <div class="topbar"><h1>${escapeHtml(proj.title)}</h1>
+      <div class="muted">${escapeHtml(proj.genre || '미지정')}</div></div>`;
 
   $('#pfTitle').value = proj.title;
   $('#pfGenre').value = proj.genre;
   $('#pfCover').value = proj.cover || '';
   $('#pfSummary').value = proj.summary || '';
 
-  $('#saveProj').onclick = () => {
+  $('#saveProj').addEventListener('click', () => {
     SF.updateProject(pid, {
       title: $('#pfTitle').value.trim() || proj.title,
       genre: $('#pfGenre').value.trim(),
       cover: $('#pfCover').value.trim(),
-      summary: $('#pfSummary').value.trim(),
+      summary: $('#pfSummary').value.trim()
     });
     toast('저장되었습니다.', 'success');
-    setTimeout(()=>location.reload(), 400);
-  };
-  $('#delProj').onclick = () => {
+    setTimeout(() => location.reload(), 350);
+  });
+
+  $('#delProj').addEventListener('click', () => {
     if (!confirm('정말 삭제할까요? 모든 인물·문서가 함께 사라집니다.')) return;
     SF.deleteProject(pid);
     location.href = 'dashboard.html';
-  };
+  });
 
   function renderGenres() {
+    const tags = (SF.getProject(pid).genres) || [];
     const wrap = $('#genreTags');
-    const tags = proj.genres || [];
     wrap.innerHTML = tags.length
-      ? tags.map(t => `<span class="tag primary" data-t="${escapeHtml(t)}" style="cursor:pointer">${escapeHtml(t)} ✕</span>`).join('')
+      ? tags.map(t => `<span class="tag primary">${escapeHtml(t)} <span class="x" data-t="${escapeAttr(t)}">✕</span></span>`).join('')
       : '<span class="muted">아직 없음</span>';
-    $$('#genreTags .tag').forEach(el => el.onclick = () => {
+    $$('.tag .x', wrap).forEach(el => el.addEventListener('click', () => {
       const t = el.dataset.t;
       const cur = SF.getProject(pid);
-      cur.genres = (cur.genres||[]).filter(x => x !== t);
+      cur.genres = (cur.genres || []).filter(x => x !== t);
       SF.updateProject(pid, { genres: cur.genres });
-      proj.genres = cur.genres; renderGenres();
-    });
+      renderGenres();
+    }));
   }
   renderGenres();
-  $('#addGenre').onclick = () => {
-    const v = $('#newGenre').value.trim();
-    if (!v) return;
+  $('#genreForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('#newGenre').value.trim(); if (!v) return;
     const cur = SF.getProject(pid);
-    cur.genres = [...new Set([...(cur.genres||[]), v])];
+    cur.genres = Array.from(new Set([...(cur.genres || []), v]));
     SF.updateProject(pid, { genres: cur.genres });
-    proj.genres = cur.genres;
-    $('#newGenre').value = '';
-    renderGenres();
-  };
+    $('#newGenre').value = ''; renderGenres();
+  });
 
   $('#counters').innerHTML = `
-    <div>등장인물 <b>${proj.characters?.length||0}</b></div>
-    <div>관계 노드 <b>${proj.tree?.nodes?.length||0}</b></div>
-    <div>세계관 항목 <b>${proj.world?.sections?.length||0}</b></div>
-    <div>타임라인 <b>${proj.timeline?.length||0}</b></div>
-    <div>문서 <b>${proj.docs?.length||0}</b></div>
-  `;
-  ['lkChar:character','lkTree:family-tree','lkWorld:world','lkTl:timeline','lkEd:editor'].forEach(s=>{
-    const [a,b]=s.split(':'); $('#'+a).href = `${b}.html?p=${pid}`;
-  });
+    <div>등장인물 <b>${(proj.characters || []).length}</b></div>
+    <div>관계 <b>${(proj.relations || []).length}</b></div>
+    <div>가계도 노드 <b>${(proj.tree && proj.tree.nodes || []).length}</b></div>
+    <div>세계관 항목 <b>${(proj.world && proj.world.sections || []).length}</b></div>
+    <div>타임라인 <b>${(proj.timeline || []).length}</b></div>
+    <div>아이템 <b>${(proj.items || []).length}</b></div>
+    <div>영감 이미지 <b>${(proj.gallery || []).length}</b></div>
+    <div>문서 <b>${(proj.docs || []).length}</b></div>`;
+
+  const map = { lkChar:'character', lkRel:'relations', lkTree:'family-tree',
+                lkWorld:'world', lkTl:'timeline', lkItems:'items',
+                lkGal:'gallery', lkEd:'editor' };
+  Object.entries(map).forEach(([id, page]) => $('#' + id).href = page + '.html?p=' + encodeURIComponent(pid));
+})();
 </script>
 </body>
 </html>

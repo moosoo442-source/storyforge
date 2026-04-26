@@ -2,90 +2,111 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>StoryForge — 창작자를 위한 설정집 플랫폼</title>
+<title>StoryForge — 창작자를 위한 설정집</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&family=Nanum+Pen+Script&family=Nanum+Myeongjo&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="auth-wrap">
   <div class="auth-card">
     <h1>StoryForge</h1>
-    <p class="sub">소설가, 웹소설 작가, OC 제작자를 위한 올인원 설정집</p>
+    <p class="sub">소설가, 웹소설 작가, OC 제작자를 위한 올인원 설정집 ✨</p>
 
-    <div id="loginPane">
+    <div class="tabs" role="tablist">
+      <button id="tabSignup" class="active" type="button">회원가입</button>
+      <button id="tabLogin"  type="button">로그인</button>
+    </div>
+
+    <!-- 회원가입 패널 (기본) -->
+    <form id="signupForm" autocomplete="off" novalidate>
+      <div class="field">
+        <label>표시 이름 (작가명)</label>
+        <input id="suName" placeholder="예: 글쓰는토끼" autocomplete="nickname">
+      </div>
+      <div class="field">
+        <label>아이디 *</label>
+        <input id="suUser" placeholder="2자 이상" autocomplete="username">
+      </div>
+      <div class="field">
+        <label>비밀번호 *</label>
+        <input id="suPass" type="password" placeholder="4자 이상" autocomplete="new-password">
+      </div>
+      <button class="btn block" type="submit">계정 만들고 시작하기</button>
+    </form>
+
+    <!-- 로그인 패널 -->
+    <form id="loginForm" autocomplete="off" novalidate style="display:none">
       <div class="field">
         <label>아이디</label>
-        <input id="loginUser" autocomplete="username" placeholder="username">
+        <input id="loginUser" autocomplete="username" placeholder="아이디">
       </div>
       <div class="field">
         <label>비밀번호</label>
-        <input id="loginPass" type="password" autocomplete="current-password" placeholder="password">
+        <input id="loginPass" type="password" autocomplete="current-password" placeholder="비밀번호">
       </div>
-      <button class="btn" style="width:100%" id="loginBtn">로그인</button>
-      <div class="switch-link">
-        계정이 없으신가요? <a href="#" id="toSignup">회원가입</a>
-      </div>
-    </div>
-
-    <div id="signupPane" style="display:none">
-      <div class="field">
-        <label>표시 이름 (작가명)</label>
-        <input id="suName" placeholder="예: 글쓰는토끼">
-      </div>
-      <div class="field">
-        <label>아이디</label>
-        <input id="suUser" placeholder="username">
-      </div>
-      <div class="field">
-        <label>비밀번호 (4자 이상)</label>
-        <input id="suPass" type="password" placeholder="password">
-      </div>
-      <button class="btn" style="width:100%" id="signupBtn">계정 만들기</button>
-      <div class="switch-link">
-        이미 계정이 있나요? <a href="#" id="toLogin">로그인</a>
-      </div>
-    </div>
+      <button class="btn block" type="submit">로그인</button>
+    </form>
 
     <div class="divider"></div>
     <p class="muted" style="font-size:12px; text-align:center; margin:0;">
       모든 데이터는 이 브라우저에만 저장됩니다.<br>
-      다른 기기로 옮기려면 [설정 → 백업]을 사용하세요.
+      다른 기기로 옮기려면 [설정 → 백업] 을 사용하세요.
     </p>
   </div>
 </div>
 
 <script src="js/storage.js"></script>
 <script>
+(function () {
   // 이미 로그인되어 있으면 대시보드로
-  if (SF.currentUser()) location.href = 'dashboard.html';
+  if (SF.currentUser()) { location.replace('dashboard.html'); return; }
 
-  $('#toSignup').onclick = e => { e.preventDefault(); $('#loginPane').style.display='none'; $('#signupPane').style.display='block'; };
-  $('#toLogin').onclick  = e => { e.preventDefault(); $('#signupPane').style.display='none'; $('#loginPane').style.display='block'; };
+  // 사용자가 한 명도 없으면 회원가입 탭이 기본 (이미 그렇게 되어있음).
+  // 사용자가 한 명이라도 있으면 로그인 탭을 기본으로 노출.
+  if (SF.hasAnyUser()) showTab('login');
 
-  $('#loginBtn').onclick = () => {
+  function showTab(name) {
+    const isLogin = name === 'login';
+    $('#tabLogin').classList.toggle('active', isLogin);
+    $('#tabSignup').classList.toggle('active', !isLogin);
+    $('#loginForm').style.display  = isLogin ? '' : 'none';
+    $('#signupForm').style.display = isLogin ? 'none' : '';
+    setTimeout(() => (isLogin ? $('#loginUser') : $('#suName')).focus(), 30);
+  }
+  $('#tabLogin').addEventListener('click',  () => showTab('login'));
+  $('#tabSignup').addEventListener('click', () => showTab('signup'));
+
+  // SUBMIT — signup
+  $('#signupForm').addEventListener('submit', e => {
+    e.preventDefault();
     try {
-      SF.login($('#loginUser').value.trim(), $('#loginPass').value);
-      location.href = 'dashboard.html';
-    } catch (e) { toast(e.message, 'error'); }
-  };
+      SF.signup({
+        username: $('#suUser').value,
+        password: $('#suPass').value,
+        displayName: $('#suName').value
+      });
+      toast('환영합니다! 대시보드로 이동합니다.', 'success');
+      setTimeout(() => location.replace('dashboard.html'), 350);
+    } catch (err) {
+      toast(err.message, 'error');
+      console.error(err);
+    }
+  });
 
-  $('#signupBtn').onclick = () => {
-    const u = $('#suUser').value.trim();
-    const p = $('#suPass').value;
-    const n = $('#suName').value.trim();
-    if (!u || !p) return toast('아이디와 비밀번호를 입력하세요.', 'error');
-    if (p.length < 4) return toast('비밀번호는 4자 이상이어야 합니다.', 'error');
+  // SUBMIT — login
+  $('#loginForm').addEventListener('submit', e => {
+    e.preventDefault();
     try {
-      SF.signup({ username: u, password: p, displayName: n || u });
-      location.href = 'dashboard.html';
-    } catch (e) { toast(e.message, 'error'); }
-  };
-
-  // Enter key
-  ['loginUser','loginPass'].forEach(id => $('#'+id).addEventListener('keydown', e => { if (e.key==='Enter') $('#loginBtn').click(); }));
-  ['suName','suUser','suPass'].forEach(id => $('#'+id).addEventListener('keydown', e => { if (e.key==='Enter') $('#signupBtn').click(); }));
+      SF.login($('#loginUser').value, $('#loginPass').value);
+      location.replace('dashboard.html');
+    } catch (err) {
+      toast(err.message, 'error');
+    }
+  });
+})();
 </script>
 </body>
 </html>
