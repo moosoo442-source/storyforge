@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>등장인물 · StoryForge</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>👥 등장인물</h1>
+  <div class="actions">
+    <input id="search" placeholder="검색..." style="width:200px">
+    <button class="btn" id="newBtn">+ 새 인물</button>
+  </div>
+</div>
+
+<div id="charList" class="grid"></div>
+
+<!-- 편집 모달 -->
+<div class="modal-bg" id="charModal">
+  <div class="modal" style="max-width: 760px;">
+    <header><h3 id="modalTitle">인물 편집</h3><button class="close" data-close>×</button></header>
+
+    <div class="row">
+      <div>
+        <div class="field">
+          <label>이미지 (선택)</label>
+          <input id="cAvatarFile" type="file" accept="image/*">
+          <input id="cAvatar" placeholder="또는 이미지 URL" style="margin-top:6px">
+        </div>
+        <div id="avatarPreview" class="avatar" style="border-radius:8px; height:200px; background-size:cover; background-position:center; background-color: var(--bg-soft);"></div>
+      </div>
+      <div>
+        <div class="field"><label>이름 *</label><input id="cName"></div>
+        <div class="row">
+          <div class="field"><label>역할</label><input id="cRole" placeholder="주인공/조연/적대..."></div>
+          <div class="field"><label>나이</label><input id="cAge"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>성별</label><input id="cGender"></div>
+          <div class="field"><label>직업/소속</label><input id="cJob"></div>
+        </div>
+        <div class="field"><label>한줄 소개</label><input id="cTagline"></div>
+      </div>
+    </div>
+
+    <div class="field"><label>외모</label><textarea id="cAppearance"></textarea></div>
+    <div class="field"><label>성격</label><textarea id="cPersonality"></textarea></div>
+    <div class="field"><label>능력 / 스킬 / 특기</label><textarea id="cAbility"></textarea></div>
+    <div class="field"><label>배경 / 과거사</label><textarea id="cBackground"></textarea></div>
+    <div class="field">
+      <label>태그 (쉼표로 구분)</label>
+      <input id="cTags" placeholder="예: 헌터, A급, 빙결계열">
+    </div>
+    <div class="field">
+      <label>자유 메모 (마크다운/HTML 가능)</label>
+      <textarea id="cNote" rows="4"></textarea>
+    </div>
+
+    <div class="flex" style="justify-content:space-between;">
+      <button class="btn danger" id="cDelete">삭제</button>
+      <div class="flex" style="gap:8px;">
+        <button class="btn ghost" data-close>취소</button>
+        <button class="btn" id="cSave">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/sidebar.js"></script>
+<script>
+  mountApp('character');
+  const pid = getQuery('p');
+  const proj = SF.getProject(pid);
+  if (!proj) location.href = 'dashboard.html';
+
+  let editingId = null;
+
+  function render() {
+    const q = $('#search').value.trim().toLowerCase();
+    const list = (SF.getProject(pid).characters || []).filter(c => {
+      if (!q) return true;
+      return [c.name, c.role, c.tagline, ...(c.tags||[])].join(' ').toLowerCase().includes(q);
+    });
+    const wrap = $('#charList');
+    if (!list.length) {
+      wrap.innerHTML = `<div class="empty" style="grid-column:1/-1">
+        <div style="font-size:48px">👥</div>
+        <h3>등장인물이 없어요</h3>
+        <p>[+ 새 인물] 로 첫 캐릭터를 추가하세요.</p>
+      </div>`;
+      return;
+    }
+    wrap.innerHTML = list.map(c => `
+      <div class="char-card" data-id="${c.id}">
+        <div class="avatar" style="${c.avatar?`background-image:url('${escapeHtml(c.avatar)}')`:''}">
+          ${c.avatar?'':'👤'}
+        </div>
+        <div class="info">
+          <h4>${escapeHtml(c.name)}</h4>
+          <div class="role">${escapeHtml(c.role||'')} ${c.age?'· '+escapeHtml(c.age):''}</div>
+          ${c.tagline?`<div class="muted" style="margin-top:4px">${escapeHtml(c.tagline)}</div>`:''}
+          <div class="tags">${(c.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+        </div>
+      </div>
+    `).join('');
+    $$('.char-card').forEach(el => el.addEventListener('click', () => openModal(el.dataset.id)));
+  }
+
+  $('#search').oninput = render;
+  render();
+
+  // ---------- Modal ----------
+  const modal = $('#charModal');
+  const closeM = () => modal.classList.remove('open');
+  $$('[data-close]').forEach(b => b.onclick = closeM);
+
+  function openModal(id) {
+    editingId = id;
+    const c = id ? SF.getProject(pid).characters.find(x => x.id === id) : {};
+    $('#modalTitle').textContent = id ? '인물 편집' : '새 인물';
+    $('#cName').value = c.name || '';
+    $('#cRole').value = c.role || '';
+    $('#cAge').value = c.age || '';
+    $('#cGender').value = c.gender || '';
+    $('#cJob').value = c.job || '';
+    $('#cTagline').value = c.tagline || '';
+    $('#cAppearance').value = c.appearance || '';
+    $('#cPersonality').value = c.personality || '';
+    $('#cAbility').value = c.ability || '';
+    $('#cBackground').value = c.background || '';
+    $('#cTags').value = (c.tags||[]).join(', ');
+    $('#cNote').value = c.note || '';
+    $('#cAvatar').value = c.avatar || '';
+    $('#cAvatarFile').value = '';
+    setAvatar(c.avatar);
+    $('#cDelete').style.display = id ? '' : 'none';
+    modal.classList.add('open');
+  }
+
+  $('#newBtn').onclick = () => openModal(null);
+
+  function setAvatar(url) {
+    $('#avatarPreview').style.backgroundImage = url ? `url('${url}')` : '';
+  }
+  $('#cAvatar').oninput = e => setAvatar(e.target.value);
+  $('#cAvatarFile').onchange = e => {
+    const f = e.target.files?.[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => { $('#cAvatar').value = r.result; setAvatar(r.result); };
+    r.readAsDataURL(f);
+  };
+
+  $('#cSave').onclick = () => {
+    const data = {
+      name: $('#cName').value.trim(),
+      role: $('#cRole').value.trim(),
+      age: $('#cAge').value.trim(),
+      gender: $('#cGender').value.trim(),
+      job: $('#cJob').value.trim(),
+      tagline: $('#cTagline').value.trim(),
+      appearance: $('#cAppearance').value,
+      personality: $('#cPersonality').value,
+      ability: $('#cAbility').value,
+      background: $('#cBackground').value,
+      tags: $('#cTags').value.split(',').map(s=>s.trim()).filter(Boolean),
+      note: $('#cNote').value,
+      avatar: $('#cAvatar').value.trim()
+    };
+    if (!data.name) return toast('이름은 필수입니다.', 'error');
+    if (editingId) SF.updateCharacter(pid, editingId, data);
+    else SF.addCharacter(pid, data);
+    closeM(); render();
+    toast('저장되었습니다.', 'success');
+  };
+
+  $('#cDelete').onclick = () => {
+    if (!editingId) return;
+    if (!confirm('이 인물을 삭제할까요?')) return;
+    SF.deleteCharacter(pid, editingId);
+    closeM(); render();
+  };
+
+  modal.addEventListener('click', e => { if (e.target === modal) closeM(); });
+</script>
+</body>
+</html>

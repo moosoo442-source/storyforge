@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>StoryForge — 창작자를 위한 설정집 플랫폼</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>StoryForge</h1>
+    <p class="sub">소설가, 웹소설 작가, OC 제작자를 위한 올인원 설정집</p>
+
+    <div id="loginPane">
+      <div class="field">
+        <label>아이디</label>
+        <input id="loginUser" autocomplete="username" placeholder="username">
+      </div>
+      <div class="field">
+        <label>비밀번호</label>
+        <input id="loginPass" type="password" autocomplete="current-password" placeholder="password">
+      </div>
+      <button class="btn" style="width:100%" id="loginBtn">로그인</button>
+      <div class="switch-link">
+        계정이 없으신가요? <a href="#" id="toSignup">회원가입</a>
+      </div>
+    </div>
+
+    <div id="signupPane" style="display:none">
+      <div class="field">
+        <label>표시 이름 (작가명)</label>
+        <input id="suName" placeholder="예: 글쓰는토끼">
+      </div>
+      <div class="field">
+        <label>아이디</label>
+        <input id="suUser" placeholder="username">
+      </div>
+      <div class="field">
+        <label>비밀번호 (4자 이상)</label>
+        <input id="suPass" type="password" placeholder="password">
+      </div>
+      <button class="btn" style="width:100%" id="signupBtn">계정 만들기</button>
+      <div class="switch-link">
+        이미 계정이 있나요? <a href="#" id="toLogin">로그인</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="muted" style="font-size:12px; text-align:center; margin:0;">
+      모든 데이터는 이 브라우저에만 저장됩니다.<br>
+      다른 기기로 옮기려면 [설정 → 백업]을 사용하세요.
+    </p>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script>
+  // 이미 로그인되어 있으면 대시보드로
+  if (SF.currentUser()) location.href = 'dashboard.html';
+
+  $('#toSignup').onclick = e => { e.preventDefault(); $('#loginPane').style.display='none'; $('#signupPane').style.display='block'; };
+  $('#toLogin').onclick  = e => { e.preventDefault(); $('#signupPane').style.display='none'; $('#loginPane').style.display='block'; };
+
+  $('#loginBtn').onclick = () => {
+    try {
+      SF.login($('#loginUser').value.trim(), $('#loginPass').value);
+      location.href = 'dashboard.html';
+    } catch (e) { toast(e.message, 'error'); }
+  };
+
+  $('#signupBtn').onclick = () => {
+    const u = $('#suUser').value.trim();
+    const p = $('#suPass').value;
+    const n = $('#suName').value.trim();
+    if (!u || !p) return toast('아이디와 비밀번호를 입력하세요.', 'error');
+    if (p.length < 4) return toast('비밀번호는 4자 이상이어야 합니다.', 'error');
+    try {
+      SF.signup({ username: u, password: p, displayName: n || u });
+      location.href = 'dashboard.html';
+    } catch (e) { toast(e.message, 'error'); }
+  };
+
+  // Enter key
+  ['loginUser','loginPass'].forEach(id => $('#'+id).addEventListener('keydown', e => { if (e.key==='Enter') $('#loginBtn').click(); }));
+  ['suName','suUser','suPass'].forEach(id => $('#'+id).addEventListener('keydown', e => { if (e.key==='Enter') $('#signupBtn').click(); }));
+</script>
+</body>
+</html>

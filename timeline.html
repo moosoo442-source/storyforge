@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>타임라인 · StoryForge</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>⏳ 타임라인</h1>
+  <div class="actions">
+    <button class="btn" id="addEvent">+ 사건 추가</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="timeline" id="tl"></div>
+</div>
+
+<!-- 모달 -->
+<div class="modal-bg" id="evModal">
+  <div class="modal">
+    <header><h3 id="evTitle">사건</h3><button class="close" data-close>×</button></header>
+    <div class="row">
+      <div class="field"><label>시점/날짜 (자유 형식)</label><input id="evWhen" placeholder="예: 1024년 봄, 또는 1화"></div>
+      <div class="field"><label>정렬 키 (숫자, 작을수록 먼저)</label><input id="evOrder" type="number" value="0"></div>
+    </div>
+    <div class="field"><label>제목 *</label><input id="evName"></div>
+    <div class="field"><label>내용 (마크다운/HTML 가능)</label><textarea id="evBody" rows="6"></textarea></div>
+    <div class="flex" style="justify-content:space-between;">
+      <button class="btn danger" id="evDelete">삭제</button>
+      <div class="flex" style="gap:8px;">
+        <button class="btn ghost" data-close>취소</button>
+        <button class="btn" id="evSave">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/markdown.js"></script>
+<script>
+  mountApp('timeline');
+  const pid = getQuery('p');
+  const proj = SF.getProject(pid);
+  if (!proj) location.href = 'dashboard.html';
+
+  const tl = proj.timeline || [];
+  let editId = null;
+  function save() { SF.updateProject(pid, { timeline: tl }); }
+
+  function render() {
+    const sorted = [...tl].sort((a,b) => (a.order||0)-(b.order||0));
+    const wrap = $('#tl');
+    if (!sorted.length) {
+      wrap.innerHTML = `<div class="empty"><div style="font-size:48px">⏳</div>
+        <h3>등록된 사건이 없어요</h3></div>`;
+      return;
+    }
+    wrap.innerHTML = sorted.map(e => `
+      <div class="tl-item" data-id="${e.id}" style="cursor:pointer">
+        <div class="when">${escapeHtml(e.when||'')}</div>
+        <h4>${escapeHtml(e.name)}</h4>
+        <div>${renderMD(e.body||'')}</div>
+      </div>
+    `).join('');
+    $$('.tl-item').forEach(el => el.onclick = () => open(el.dataset.id));
+  }
+
+  const modal = $('#evModal');
+  const close = () => modal.classList.remove('open');
+  $$('[data-close]').forEach(b => b.onclick = close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+
+  function open(id) {
+    editId = id;
+    const e = id ? tl.find(x => x.id === id) : { order: tl.length };
+    $('#evWhen').value = e.when || '';
+    $('#evOrder').value = e.order || 0;
+    $('#evName').value = e.name || '';
+    $('#evBody').value = e.body || '';
+    $('#evDelete').style.display = id ? '' : 'none';
+    modal.classList.add('open');
+  }
+  $('#addEvent').onclick = () => open(null);
+  $('#evSave').onclick = () => {
+    const name = $('#evName').value.trim();
+    if (!name) return toast('제목 필수', 'error');
+    const data = { name, when: $('#evWhen').value.trim(), order: +$('#evOrder').value || 0, body: $('#evBody').value };
+    if (editId) {
+      const i = tl.findIndex(x => x.id === editId);
+      tl[i] = { ...tl[i], ...data };
+    } else {
+      tl.push({ id: 'e_'+uid(), ...data });
+    }
+    save(); close(); render();
+  };
+  $('#evDelete').onclick = () => {
+    if (!confirm('삭제?')) return;
+    const i = tl.findIndex(x => x.id === editId);
+    tl.splice(i,1); save(); close(); render();
+  };
+
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>세계관 · StoryForge</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>🌍 세계관 설정</h1>
+  <div class="actions">
+    <button class="btn" id="addSection">+ 항목 추가</button>
+  </div>
+</div>
+
+<p class="muted">지역, 종족, 마법체계, 길드, 헌터협회, 집단, 유물 등 자유롭게 항목을 만들 수 있어요.</p>
+
+<div id="sections"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/sidebar.js"></script>
+<script>
+  mountApp('world');
+  const pid = getQuery('p');
+  const proj = SF.getProject(pid);
+  if (!proj) location.href = 'dashboard.html';
+  const world = proj.world || { sections: [] };
+
+  function save() { SF.updateProject(pid, { world }); }
+
+  function render() {
+    const wrap = $('#sections');
+    if (!world.sections.length) {
+      wrap.innerHTML = `<div class="empty"><div style="font-size:48px">🌍</div>
+        <h3>세계관 항목이 없어요</h3><p>[+ 항목 추가] 로 시작하세요.</p></div>`;
+      return;
+    }
+    wrap.innerHTML = world.sections.map((s, i) => `
+      <div class="card" data-i="${i}">
+        <div class="flex between" style="margin-bottom:8px">
+          <input class="t" value="${escapeHtml(s.title)}" style="flex:1; font-size:16px; font-weight:600; background:transparent; border:none;">
+          <div class="flex" style="gap:6px;">
+            <button class="btn sm ghost" data-up>▲</button>
+            <button class="btn sm ghost" data-down>▼</button>
+            <button class="btn sm danger" data-del>삭제</button>
+          </div>
+        </div>
+        <textarea class="b" rows="6" placeholder="자유 서술 (마크다운/HTML 가능)">${escapeHtml(s.body||'')}</textarea>
+      </div>
+    `).join('');
+    $$('.card').forEach(card => {
+      const i = +card.dataset.i;
+      card.querySelector('.t').oninput = e => { world.sections[i].title = e.target.value; save(); };
+      card.querySelector('.b').oninput = e => { world.sections[i].body = e.target.value; save(); };
+      card.querySelector('[data-del]').onclick = () => {
+        if (!confirm('삭제할까요?')) return;
+        world.sections.splice(i,1); save(); render();
+      };
+      card.querySelector('[data-up]').onclick = () => {
+        if (i===0) return;
+        [world.sections[i-1], world.sections[i]] = [world.sections[i], world.sections[i-1]];
+        save(); render();
+      };
+      card.querySelector('[data-down]').onclick = () => {
+        if (i===world.sections.length-1) return;
+        [world.sections[i+1], world.sections[i]] = [world.sections[i], world.sections[i+1]];
+        save(); render();
+      };
+    });
+  }
+
+  $('#addSection').onclick = () => {
+    const t = prompt('항목 제목 (예: 헌터 등급, 마탑, 길드, 종족...)', '');
+    if (!t) return;
+    world.sections.push({ title: t, body: '' });
+    save(); render();
+  };
+
+  render();
+</script>
+</body>
+</html>

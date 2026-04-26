@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>문서 / 에디터 · StoryForge</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>📝 문서 / 에디터</h1>
+  <div class="actions">
+    <select id="docSel" style="min-width:220px"></select>
+    <button class="btn ghost" id="newDoc">+ 새 문서</button>
+    <button class="btn ghost" id="renDoc">이름변경</button>
+    <button class="btn danger" id="delDoc">삭제</button>
+  </div>
+</div>
+
+<div class="flex" style="margin-bottom:10px; gap:6px;">
+  <button class="btn sm ghost" data-ins="**굵게**">B</button>
+  <button class="btn sm ghost" data-ins="*기울임*"><i>I</i></button>
+  <button class="btn sm ghost" data-ins="~~취소선~~">S</button>
+  <button class="btn sm ghost" data-ins="# 제목">H1</button>
+  <button class="btn sm ghost" data-ins="## 제목">H2</button>
+  <button class="btn sm ghost" data-ins="- 항목">• List</button>
+  <button class="btn sm ghost" data-ins="| 헤더1 | 헤더2 |\n|---|---|\n| 셀 | 셀 |">표</button>
+  <button class="btn sm ghost" data-ins="> 인용">인용</button>
+  <button class="btn sm ghost" data-ins="[링크](https://)">링크</button>
+  <button class="btn sm ghost" data-ins="![이미지](https://)">이미지</button>
+  <button class="btn sm ghost" data-ins='<iframe src="https://" width="100%" height="400"></iframe>'>임베드</button>
+  <span class="spacer"></span>
+  <select id="modeSel">
+    <option value="md">마크다운 (HTML 혼합)</option>
+    <option value="html">순수 HTML</option>
+  </select>
+</div>
+
+<div class="editor-grid">
+  <textarea id="src" placeholder="여기에 작성하세요..."></textarea>
+  <div class="preview" id="preview"></div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/markdown.js"></script>
+<script>
+  mountApp('editor');
+  const pid = getQuery('p');
+  const proj = SF.getProject(pid);
+  if (!proj) location.href = 'dashboard.html';
+  proj.docs = proj.docs || [];
+
+  function save() { SF.updateProject(pid, { docs: proj.docs }); }
+
+  function refreshList(selectId) {
+    const sel = $('#docSel');
+    sel.innerHTML = proj.docs.map(d => `<option value="${d.id}">${escapeHtml(d.title)} (${d.type})</option>`).join('')
+      || '<option value="">문서 없음</option>';
+    if (selectId) sel.value = selectId;
+    loadCurrent();
+  }
+
+  function current() {
+    const id = $('#docSel').value;
+    return proj.docs.find(d => d.id === id);
+  }
+
+  function loadCurrent() {
+    const d = current();
+    if (!d) { $('#src').value=''; $('#preview').innerHTML='<div class="muted">문서를 만들어 주세요.</div>'; return; }
+    $('#src').value = d.content || '';
+    $('#modeSel').value = d.type || 'md';
+    renderPreview();
+  }
+
+  function renderPreview() {
+    const d = current(); if (!d) return;
+    const mode = $('#modeSel').value;
+    if (mode === 'html') $('#preview').innerHTML = $('#src').value;
+    else $('#preview').innerHTML = renderMD($('#src').value);
+  }
+
+  $('#docSel').onchange = loadCurrent;
+  $('#src').oninput = () => {
+    const d = current(); if (!d) return;
+    d.content = $('#src').value; save(); renderPreview();
+  };
+  $('#modeSel').onchange = () => {
+    const d = current(); if (!d) return;
+    d.type = $('#modeSel').value; save(); renderPreview();
+  };
+
+  $('#newDoc').onclick = () => {
+    const t = prompt('문서 제목', '새 문서');
+    if (!t) return;
+    const d = { id: 'd_'+uid(), title: t, type: 'md', content: '' };
+    proj.docs.push(d); save(); refreshList(d.id);
+  };
+  $('#renDoc').onclick = () => {
+    const d = current(); if (!d) return;
+    const t = prompt('새 제목', d.title);
+    if (!t) return;
+    d.title = t; save(); refreshList(d.id);
+  };
+  $('#delDoc').onclick = () => {
+    const d = current(); if (!d) return;
+    if (!confirm('삭제?')) return;
+    proj.docs = proj.docs.filter(x => x.id !== d.id);
+    save(); refreshList();
+  };
+
+  $$('[data-ins]').forEach(b => b.onclick = () => {
+    const ins = b.dataset.ins.replace(/\\n/g,'\n');
+    const ta = $('#src');
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    ta.value = ta.value.slice(0,s) + ins + ta.value.slice(e);
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = s + ins.length;
+    ta.dispatchEvent(new Event('input'));
+  });
+
+  // 초기 문서 없으면 하나 생성
+  if (!proj.docs.length) {
+    proj.docs.push({ id: 'd_'+uid(), title: '메모', type: 'md', content: '# 환영합니다\n\n여기에 자유롭게 적어 보세요.' });
+    save();
+  }
+  refreshList(proj.docs[0]?.id);
+</script>
+</body>
+</html>

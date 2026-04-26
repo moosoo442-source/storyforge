@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>관계도 · StoryForge</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>🌳 관계도 / 조직도</h1>
+  <div class="actions">
+    <select id="typeSel">
+      <option value="가족">가족 관계</option>
+      <option value="조직">조직/직급</option>
+      <option value="능력">능력 트리</option>
+      <option value="기타">기타</option>
+    </select>
+    <button class="btn ghost" id="addNode">+ 노드 추가</button>
+    <button class="btn ghost" id="linkMode">🔗 연결 모드: OFF</button>
+    <button class="btn danger" id="clearAll">전체 삭제</button>
+  </div>
+</div>
+
+<p class="muted">노드를 드래그해 위치를 옮기고, [연결 모드] 를 켠 뒤 두 노드를 차례로 클릭하면 선이 그려집니다. 노드를 더블클릭하면 편집할 수 있어요.</p>
+
+<div class="tree-canvas" id="canvas">
+  <svg class="tree-svg" id="svg"></svg>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/sidebar.js"></script>
+<script>
+  mountApp('tree');
+  const pid = getQuery('p');
+  const proj = SF.getProject(pid);
+  if (!proj) location.href = 'dashboard.html';
+
+  const tree = proj.tree || { nodes: [], edges: [] };
+  let linkMode = false;
+  let pendingLink = null;
+
+  const canvas = $('#canvas');
+  const svg = $('#svg');
+
+  function save() {
+    SF.updateProject(pid, { tree });
+  }
+
+  function render() {
+    // remove old node DOMs
+    $$('.node', canvas).forEach(n => n.remove());
+    tree.nodes.forEach(n => {
+      const el = document.createElement('div');
+      el.className = 'node';
+      el.style.left = n.x + 'px';
+      el.style.top = n.y + 'px';
+      el.dataset.id = n.id;
+      el.innerHTML = `<div>${escapeHtml(n.label)}</div>${n.sub?`<small>${escapeHtml(n.sub)}</small>`:''}`;
+      canvas.appendChild(el);
+      makeDraggable(el, n);
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        if (!linkMode) return;
+        if (!pendingLink) { pendingLink = n.id; el.classList.add('selected'); return; }
+        if (pendingLink === n.id) { pendingLink = null; el.classList.remove('selected'); return; }
+        const label = prompt('관계 라벨 (예: 부모, 부하, 멘토)', '');
+        tree.edges.push({ id: 'e_'+uid(), from: pendingLink, to: n.id, label: label||'' });
+        $$('.node.selected').forEach(s=>s.classList.remove('selected'));
+        pendingLink = null;
+        save(); drawEdges();
+      });
+      el.addEventListener('dblclick', e => {
+        e.stopPropagation();
+        const label = prompt('이름', n.label);
+        if (label === null) return;
+        const sub = prompt('부가설명 (역할/관계 등)', n.sub || '') || '';
+        n.label = label || n.label; n.sub = sub;
+        save(); render();
+      });
+      el.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        if (!confirm('이 노드를 삭제할까요?')) return;
+        tree.nodes = tree.nodes.filter(x => x.id !== n.id);
+        tree.edges = tree.edges.filter(x => x.from !== n.id && x.to !== n.id);
+        save(); render();
+      });
+    });
+    drawEdges();
+  }
+
+  function drawEdges() {
+    svg.innerHTML = '';
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.setAttribute('width', w); svg.setAttribute('height', h);
+
+    tree.edges.forEach(e => {
+      const a = tree.nodes.find(n => n.id === e.from);
+      const b = tree.nodes.find(n => n.id === e.to);
+      if (!a || !b) return;
+      const ax = a.x + 60, ay = a.y + 18;
+      const bx = b.x + 60, by = b.y + 18;
+      const ns = 'http://www.w3.org/2000/svg';
+      const line = document.createElementNS(ns, 'line');
+      line.setAttribute('x1', ax); line.setAttribute('y1', ay);
+      line.setAttribute('x2', bx); line.setAttribute('y2', by);
+      line.setAttribute('stroke', 'currentColor');
+      line.setAttribute('stroke-width', '2');
+      line.setAttribute('opacity', '.6');
+      svg.appendChild(line);
+      if (e.label) {
+        const t = document.createElementNS(ns, 'text');
+        t.setAttribute('x', (ax+bx)/2);
+        t.setAttribute('y', (ay+by)/2 - 4);
+        t.setAttribute('fill', 'currentColor');
+        t.setAttribute('font-size', '11');
+        t.setAttribute('text-anchor', 'middle');
+        t.textContent = e.label;
+        svg.appendChild(t);
+      }
+    });
+  }
+
+  function makeDraggable(el, n) {
+    let sx, sy, ox, oy;
+    el.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      sx = e.clientX; sy = e.clientY; ox = n.x; oy = n.y;
+      el.classList.add('dragging');
+      const move = ev => {
+        n.x = ox + (ev.clientX - sx);
+        n.y = oy + (ev.clientY - sy);
+        n.x = Math.max(0, Math.min(canvas.clientWidth-130, n.x));
+        n.y = Math.max(0, Math.min(canvas.clientHeight-50, n.y));
+        el.style.left = n.x+'px'; el.style.top = n.y+'px';
+        drawEdges();
+      };
+      const up = () => {
+        el.classList.remove('dragging');
+        document.removeEventListener('mousemove', move);
+        document.removeEventListener('mouseup', up);
+        save();
+      };
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+    });
+  }
+
+  $('#addNode').onclick = () => {
+    const type = $('#typeSel').value;
+    const label = prompt(`${type} 노드 이름`, '');
+    if (!label) return;
+    const sub = prompt('부가설명 (선택)', '') || '';
+    tree.nodes.push({ id: 'n_'+uid(), label, sub, type, x: 40+Math.random()*200, y: 40+Math.random()*200 });
+    save(); render();
+  };
+  $('#linkMode').onclick = () => {
+    linkMode = !linkMode;
+    $('#linkMode').textContent = '🔗 연결 모드: ' + (linkMode?'ON':'OFF');
+    pendingLink = null;
+    $$('.node.selected').forEach(s=>s.classList.remove('selected'));
+  };
+  $('#clearAll').onclick = () => {
+    if (!confirm('모든 노드와 연결을 삭제할까요?')) return;
+    tree.nodes = []; tree.edges = []; save(); render();
+  };
+
+  window.addEventListener('resize', drawEdges);
+  render();
+</script>
+</body>
+</html>
