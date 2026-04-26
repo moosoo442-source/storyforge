@@ -7,68 +7,461 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gaegu&family=Nanum+Pen+Script&family=Nanum+Myeongjo&family=Black+Han+Sans&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<style>
+:root{
+  --bg:#0f1115;--bg-elev:#161a22;--bg-soft:#1d222c;--border:#2a2f3a;
+  --text:#e6e8ee;--text-dim:#9aa3b2;
+  --primary:#7c5cff;--primary-hover:#6a48f5;--accent:#ff7ab8;
+  --success:#3ddc97;--warn:#ffb454;--danger:#ff5c7a;
+  --radius:12px;--radius-sm:8px;--shadow:0 8px 24px rgba(0,0,0,.3);
+  --font-base:'Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+[data-theme="light"]{--bg:#f7f8fb;--bg-elev:#fff;--bg-soft:#eef0f5;--border:#dfe3eb;--text:#1a1d24;--text-dim:#5b6373;--shadow:0 8px 24px rgba(20,20,40,.08);}
+[data-theme="sepia"]{--bg:#f3ecd8;--bg-elev:#fbf6e6;--bg-soft:#ebe2c6;--border:#d6c89c;--text:#3a2e1f;--text-dim:#715a3c;--primary:#a05a2c;--primary-hover:#844214;}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-base);font-size:15px;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+img{max-width:100%}
+hr{border:none;border-top:1px solid var(--border);margin:20px 0}
+
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.sidebar{background:var(--bg-elev);border-right:1px solid var(--border);padding:20px 16px;position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto}
+.sidebar h2{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:8px}
+.sidebar .who{font-size:12px;color:var(--text-dim);margin:0 4px 14px}
+.sidebar nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;margin-bottom:4px;font-size:14px;cursor:pointer}
+.sidebar nav a:hover{background:var(--bg-soft);text-decoration:none}
+.sidebar nav a.active{background:var(--primary);color:#fff}
+.sidebar .sb-section{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin:18px 12px 6px}
+.main{padding:28px 32px;min-width:0}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.topbar h1{margin:0;font-size:24px}
+.topbar .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.menu-btn{display:none;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 10px;cursor:pointer;color:var(--text);margin-bottom:14px}
+
+.btn{background:var(--primary);color:#fff;border:none;padding:9px 16px;border-radius:var(--radius-sm);cursor:pointer;font-weight:500;font-size:14px;font-family:inherit;transition:background .15s,transform .05s,opacity .15s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{background:var(--primary-hover);text-decoration:none}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn.ghost:hover{background:var(--bg-soft)}
+.btn.danger{background:var(--danger)}
+.btn.success{background:var(--success);color:#04241a}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn.block{width:100%}
+
+input,textarea,select{width:100%;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-family:inherit;font-size:14px}
+input[type="color"]{padding:4px;height:40px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(124,92,255,.18)}
+textarea{resize:vertical;min-height:90px}
+label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:4px}
+.field{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media (max-width:700px){.row,.row3{grid-template-columns:1fr}}
+
+.card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.card h3{margin:0 0 12px;font-size:16px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.grid.compact{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+
+.thumb-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
+.thumb-card:hover{transform:translateY(-2px);border-color:var(--primary);box-shadow:var(--shadow)}
+.thumb-card .avatar{width:100%;aspect-ratio:1/1;background:var(--bg-soft) center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--text-dim)}
+.thumb-card .info{padding:12px 14px}
+.thumb-card .info h4{margin:0 0 4px;font-size:15px}
+.thumb-card .info .role{font-size:12px;color:var(--text-dim)}
+.thumb-card .info .tags{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
+
+.tag{background:var(--bg-soft);color:var(--text);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:11px;display:inline-flex;align-items:center;gap:4px}
+.tag.primary{background:var(--primary);color:#fff;border-color:transparent}
+.tag.accent{background:var(--accent);color:#fff;border-color:transparent}
+.tag .x{cursor:pointer;opacity:.7}
+.tag .x:hover{opacity:1}
+
+.auth-wrap{min-height:100vh;display:grid;place-items:center;background:radial-gradient(1000px 600px at -10% -10%,rgba(124,92,255,.18),transparent 60%),radial-gradient(800px 500px at 110% 110%,rgba(255,122,184,.18),transparent 60%),var(--bg);padding:24px}
+.auth-card{width:100%;max-width:430px;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+.auth-card h1{margin:0 0 6px;font-size:30px;line-height:1.2;background:linear-gradient(90deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.auth-card .sub{color:var(--text-dim);margin:0 0 20px;font-size:14px}
+.tabs{display:flex;background:var(--bg-soft);padding:4px;border-radius:var(--radius-sm);margin-bottom:18px}
+.tabs button{flex:1;background:transparent;border:none;padding:8px;color:var(--text-dim);cursor:pointer;border-radius:6px;font-family:inherit;font-size:14px;font-weight:500}
+.tabs button.active{background:var(--bg-elev);color:var(--text);box-shadow:var(--shadow)}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow)}
+.modal.lg{max-width:800px}
+.modal header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.modal header h3{margin:0}
+.modal .close{background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1}
+
+.toast-wrap{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:2000}
+.toast{background:var(--bg-elev);border:1px solid var(--border);padding:10px 16px;border-radius:var(--radius-sm);box-shadow:var(--shadow);animation:slideIn .25s;min-width:200px}
+.toast.success{border-left:4px solid var(--success)}
+.toast.error{border-left:4px solid var(--danger)}
+.toast.warn{border-left:4px solid var(--warn)}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+
+.empty{text-align:center;color:var(--text-dim);padding:60px 20px}
+.empty h3{color:var(--text);margin:12px 0 6px}
+.divider{height:1px;background:var(--border);margin:16px 0}
+.flex{display:flex;gap:8px;align-items:center}
+.flex.between{justify-content:space-between}
+.flex.col{flex-direction:column;align-items:stretch}
+.spacer{flex:1}
+.muted{color:var(--text-dim);font-size:13px}
+.right{text-align:right}
+
+.tree-canvas{position:relative;background:radial-gradient(circle,var(--border) 1px,transparent 1px) 0 0/24px 24px,var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);width:100%;height:600px;overflow:hidden;user-select:none}
+.tree-svg{position:absolute;inset:0;pointer-events:none}
+.node{position:absolute;background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;cursor:grab;user-select:none;min-width:120px;text-align:center;font-size:13px;font-weight:500;color:var(--text);box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.node.dragging{cursor:grabbing;opacity:.85}
+.node.selected{border-color:var(--primary);box-shadow:0 0 0 3px rgba(124,92,255,.25)}
+.node small{display:block;color:var(--text-dim);font-weight:400;font-size:11px}
+.node[data-type="가족"]{border-color:#7c5cff}
+.node[data-type="조직"]{border-color:#3ddc97}
+.node[data-type="능력"]{border-color:#ffb454}
+
+.preview{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:18px;overflow-y:auto;word-wrap:break-word}
+.preview h1,.preview h2,.preview h3{margin-top:0}
+.preview table{border-collapse:collapse;width:100%;margin:10px 0}
+.preview th,.preview td{border:1px solid var(--border);padding:6px 10px;text-align:left}
+.preview th{background:var(--bg-soft)}
+.preview blockquote{border-left:4px solid var(--primary);margin:8px 0;padding:4px 12px;background:var(--bg-soft)}
+.preview pre{background:var(--bg-soft);padding:12px;border-radius:var(--radius-sm);overflow-x:auto}
+.preview code{font-family:var(--font-mono);font-size:13px}
+.preview iframe{width:100%;max-width:100%;min-height:280px;border:1px solid var(--border);border-radius:var(--radius-sm)}
+.preview img{border-radius:var(--radius-sm)}
+
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;height:70vh}
+@media (max-width:900px){.editor-grid{grid-template-columns:1fr;height:auto}.editor-grid textarea{min-height:320px}}
+.editor-grid textarea{height:100%;font-family:var(--font-mono);font-size:13px}
+
+.timeline{position:relative;padding-left:30px}
+.timeline::before{content:'';position:absolute;left:9px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:18px;cursor:pointer}
+.tl-item::before{content:'';position:absolute;left:-25px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--primary);border:3px solid var(--bg)}
+.tl-item .when{font-size:12px;color:var(--text-dim)}
+.tl-item h4{margin:2px 0 4px}
+
+@media (max-width:800px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed;top:0;left:0;height:100vh;width:240px;transform:translateX(-100%);transition:transform .2s;z-index:999;box-shadow:var(--shadow)}
+  .sidebar.open{transform:none}
+  .main{padding:20px}
+  .menu-btn{display:inline-flex !important}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:998}
+  .scrim.open{display:block}
+}
+@media print{.sidebar,.actions,.menu-btn,.toast-wrap{display:none !important}.app{display:block}.main{padding:0}body{background:#fff;color:#000}}
+</style>
 </head>
 <body>
-<div class="auth-wrap">
-  <div class="auth-card">
-    <h1>StoryForge</h1>
-    <p class="sub">소설가, 웹소설 작가, OC 제작자를 위한 올인원 설정집 ✨</p>
+<div id="app">로딩 중...</div>
+<div class="scrim" id="scrim"></div>
+<div class="toast-wrap" id="toasts"></div>
 
-    <div class="tabs" role="tablist">
-      <button id="tabSignup" class="active" type="button">회원가입</button>
-      <button id="tabLogin"  type="button">로그인</button>
-    </div>
-
-    <!-- 회원가입 패널 (기본) -->
-    <form id="signupForm" autocomplete="off" novalidate>
-      <div class="field">
-        <label>표시 이름 (작가명)</label>
-        <input id="suName" placeholder="예: 글쓰는토끼" autocomplete="nickname">
-      </div>
-      <div class="field">
-        <label>아이디 *</label>
-        <input id="suUser" placeholder="2자 이상" autocomplete="username">
-      </div>
-      <div class="field">
-        <label>비밀번호 *</label>
-        <input id="suPass" type="password" placeholder="4자 이상" autocomplete="new-password">
-      </div>
-      <button class="btn block" type="submit">계정 만들고 시작하기</button>
-    </form>
-
-    <!-- 로그인 패널 -->
-    <form id="loginForm" autocomplete="off" novalidate style="display:none">
-      <div class="field">
-        <label>아이디</label>
-        <input id="loginUser" autocomplete="username" placeholder="아이디">
-      </div>
-      <div class="field">
-        <label>비밀번호</label>
-        <input id="loginPass" type="password" autocomplete="current-password" placeholder="비밀번호">
-      </div>
-      <button class="btn block" type="submit">로그인</button>
-    </form>
-
-    <div class="divider"></div>
-    <p class="muted" style="font-size:12px; text-align:center; margin:0;">
-      모든 데이터는 이 브라우저에만 저장됩니다.<br>
-      다른 기기로 옮기려면 [설정 → 백업] 을 사용하세요.
-    </p>
-  </div>
-</div>
-
-<script src="js/storage.js"></script>
 <script>
-(function () {
-  // 이미 로그인되어 있으면 대시보드로
-  if (SF.currentUser()) { location.replace('dashboard.html'); return; }
+/* =====================================================================
+ * StoryForge — Single-file SPA
+ * 100% static. Drop index.html into any GitHub Pages repo and it works.
+ * ===================================================================== */
+'use strict';
 
-  // 사용자가 한 명도 없으면 회원가입 탭이 기본 (이미 그렇게 되어있음).
-  // 사용자가 한 명이라도 있으면 로그인 탭을 기본으로 노출.
-  if (SF.hasAnyUser()) showTab('login');
+/* ---------- tiny helpers ---------- */
+const $  = (s, c) => (c||document).querySelector(s);
+const $$ = (s, c) => Array.from((c||document).querySelectorAll(s));
+const escapeHtml = s => String(s==null?'':s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const escapeAttr = s => String(s==null?'':s).replace(/[<>"&]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const uid = pre => (pre||'') + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+function toast(msg, type){
+  const w = $('#toasts'); const el = document.createElement('div');
+  el.className = 'toast ' + (type||''); el.textContent = msg;
+  w.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.remove(),250); }, 2600);
+}
 
-  function showTab(name) {
+/* ---------- Storage ---------- */
+const KEY_USERS='sf_users', KEY_SESSION='sf_session', KEY_DATA='sf_data';
+function getJSON(k,fb){ try{ return JSON.parse(localStorage.getItem(k)||JSON.stringify(fb)); }catch(e){ return fb; } }
+function setJSON(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+function djb2(s){ let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(36); }
+
+const SF = {
+  _users(){ return getJSON(KEY_USERS, []); },
+  _saveUsers(u){ setJSON(KEY_USERS, u); },
+  hasAnyUser(){ return this._users().length > 0; },
+
+  signup({username, password, displayName}){
+    username = String(username||'').trim();
+    password = String(password||'');
+    displayName = String(displayName||'').trim() || username;
+    if(!username) throw new Error('아이디를 입력하세요.');
+    if(username.length < 2) throw new Error('아이디는 2자 이상이어야 합니다.');
+    if(password.length < 4) throw new Error('비밀번호는 4자 이상이어야 합니다.');
+    const users = this._users();
+    if(users.some(u=>u.username===username)) throw new Error('이미 존재하는 아이디입니다.');
+    const u = { id: uid('u_'), username, passHash: djb2(password+'|'+username), displayName, createdAt: Date.now() };
+    users.push(u); this._saveUsers(users);
+    this._initData(u.id);
+    localStorage.setItem(KEY_SESSION, u.id);
+    return u;
+  },
+  login(username, password){
+    username = String(username||'').trim(); password = String(password||'');
+    const u = this._users().find(x => x.username === username);
+    if(!u || u.passHash !== djb2(password+'|'+username)) throw new Error('아이디 또는 비밀번호가 올바르지 않습니다.');
+    localStorage.setItem(KEY_SESSION, u.id);
+    return u;
+  },
+  logout(){ localStorage.removeItem(KEY_SESSION); },
+  currentUser(){
+    const id = localStorage.getItem(KEY_SESSION);
+    if(!id) return null;
+    return this._users().find(u => u.id === id) || null;
+  },
+  updateUser(patch){
+    const u = this.currentUser(); if(!u) return null;
+    const users = this._users(); const i = users.findIndex(x => x.id === u.id);
+    users[i] = { ...users[i], ...patch }; this._saveUsers(users); return users[i];
+  },
+  _all(){ return getJSON(KEY_DATA, {}); },
+  _saveAll(d){ setJSON(KEY_DATA, d); },
+  _initData(id){
+    const d = this._all();
+    if(!d[id]){ d[id] = { projects: [], settings:{ theme:'dark', font:'Noto Sans KR', accent:'#7c5cff' } }; this._saveAll(d); }
+  },
+  data(){
+    const u = this.currentUser(); if(!u) return null;
+    const all = this._all(); if(!all[u.id]){ this._initData(u.id); return this._all()[u.id]; }
+    return all[u.id];
+  },
+  saveData(d){ const u = this.currentUser(); if(!u) return; const all = this._all(); all[u.id] = d; this._saveAll(all); },
+  getProjects(){ const d = this.data(); return d ? d.projects : []; },
+  getProject(id){ return this.getProjects().find(p => p.id === id) || null; },
+  addProject(o){
+    const d = this.data();
+    const p = { id: uid('p_'), title: o.title, genre: o.genre||'미지정', summary: o.summary||'', cover: o.cover||'',
+      createdAt: Date.now(), characters: [], relations: [], relPositions:{},
+      tree:{ nodes:[], edges:[] }, world:{ sections:[] },
+      timeline:[], items:[], gallery:[], docs:[], genres:[] };
+    d.projects.push(p); this.saveData(d); return p;
+  },
+  updateProject(id, patch){
+    const d = this.data(); const i = d.projects.findIndex(p => p.id === id); if(i<0) return null;
+    d.projects[i] = { ...d.projects[i], ...patch }; this.saveData(d); return d.projects[i];
+  },
+  deleteProject(id){ const d = this.data(); d.projects = d.projects.filter(p => p.id !== id); this.saveData(d); },
+  addCharacter(pid, c){
+    const d = this.data(); const p = d.projects.find(x => x.id === pid); if(!p) return null;
+    c.id = uid('c_'); c.createdAt = Date.now(); p.characters = p.characters||[]; p.characters.push(c); this.saveData(d); return c;
+  },
+  updateCharacter(pid, cid, patch){
+    const d = this.data(); const p = d.projects.find(x => x.id === pid); if(!p) return null;
+    const i = (p.characters||[]).findIndex(c => c.id === cid); if(i<0) return null;
+    p.characters[i] = { ...p.characters[i], ...patch }; this.saveData(d); return p.characters[i];
+  },
+  deleteCharacter(pid, cid){
+    const d = this.data(); const p = d.projects.find(x => x.id === pid); if(!p) return;
+    p.characters = (p.characters||[]).filter(c => c.id !== cid);
+    p.relations  = (p.relations ||[]).filter(r => r.from !== cid && r.to !== cid);
+    this.saveData(d);
+  },
+  getSettings(){ const d = this.data(); return (d&&d.settings) || { theme:'dark', font:'Noto Sans KR', accent:'#7c5cff' }; },
+  saveSettings(s){ const d = this.data(); if(!d) return; d.settings = { ...d.settings, ...s }; this.saveData(d); },
+  exportJSON(){
+    const u = this.currentUser(); if(!u) return null;
+    return JSON.stringify({ version:1, user:{ username:u.username, displayName:u.displayName }, data: this.data() }, null, 2);
+  },
+  importJSON(text){
+    const o = JSON.parse(text); if(!o || !o.data) throw new Error('잘못된 백업 파일입니다.');
+    const u = this.currentUser(); if(!u) throw new Error('로그인이 필요합니다.');
+    const all = this._all(); all[u.id] = o.data; this._saveAll(all);
+  },
+  wipeMyData(){ const u = this.currentUser(); if(!u) return; const all = this._all(); delete all[u.id]; this._saveAll(all); this._initData(u.id); }
+};
+window.SF = SF;
+
+/* ---------- Theme ---------- */
+function applyTheme(){
+  const s = SF.getSettings();
+  document.documentElement.setAttribute('data-theme', s.theme || 'dark');
+  if(s.font) document.body.style.fontFamily = `'${s.font}', system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
+  if(s.accent){
+    document.documentElement.style.setProperty('--primary', s.accent);
+    document.documentElement.style.setProperty('--primary-hover', s.accent);
+  }
+}
+
+/* ---------- Markdown ---------- */
+function renderMD(src){
+  if(!src) return '';
+  src = String(src).replace(/\r\n/g, '\n');
+  const codes = [];
+  src = src.replace(/```([\w-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
+    codes.push(`<pre><code class="lang-${escapeHtml(lang)}">${escapeHtml(code)}</code></pre>`);
+    return '\u0000C' + (codes.length-1) + '\u0000';
+  });
+  src = src.replace(/(^|\n)((?:\|.*\|\n)+)/g, (m, lead, block) => {
+    const rows = block.trim().split('\n').map(r => r.trim());
+    if(rows.length < 2 || !/^\|[\s:|-]+\|$/.test(rows[1])) return m;
+    const head = rows[0].slice(1,-1).split('|').map(s=>s.trim());
+    const body = rows.slice(2).map(r => r.slice(1,-1).split('|').map(s=>s.trim()));
+    let out = '<table><thead><tr>' + head.map(h=>`<th>${inline(h)}</th>`).join('') + '</tr></thead><tbody>';
+    body.forEach(r => { out += '<tr>' + r.map(c => `<td>${inline(c)}</td>`).join('') + '</tr>'; });
+    out += '</tbody></table>'; return lead + out;
+  });
+  const lines = src.split('\n');
+  let out = '', inUl=false, inOl=false, inBq=false;
+  function close(){ if(inUl){out+='</ul>';inUl=false;} if(inOl){out+='</ol>';inOl=false;} if(inBq){out+='</blockquote>';inBq=false;} }
+  for(const line of lines){
+    if(/^\s*<\/?(iframe|video|img|audio|div|details|summary|section|article|figure|figcaption|hr)/i.test(line)){ close(); out += line + '\n'; continue; }
+    if(/^\s*$/.test(line)){ close(); continue; }
+    let m;
+    if(m = line.match(/^(#{1,6})\s+(.*)$/)){ close(); out += `<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`; continue; }
+    if(/^\s*([-*_])\1\1[\s\1]*$/.test(line)){ close(); out += '<hr>'; continue; }
+    if(m = line.match(/^\s*[-*+]\s+(.*)$/)){ if(!inUl){close(); out+='<ul>'; inUl=true;} out += `<li>${inline(m[1])}</li>`; continue; }
+    if(m = line.match(/^\s*\d+\.\s+(.*)$/)){ if(!inOl){close(); out+='<ol>'; inOl=true;} out += `<li>${inline(m[1])}</li>`; continue; }
+    if(m = line.match(/^>\s?(.*)$/)){ if(!inBq){close(); out+='<blockquote>'; inBq=true;} out += inline(m[1]) + '<br>'; continue; }
+    close(); out += `<p>${inline(line)}</p>`;
+  }
+  close();
+  return out.replace(/\u0000C(\d+)\u0000/g, (_, i) => codes[+i]);
+}
+function inline(s){
+  if(!s) return '';
+  s = s.replace(/`([^`]+)`/g, (_, c) => `<code>${escapeHtml(c)}</code>`);
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)/g, (_,a,u,t) =>
+    `<img alt="${escapeAttr(a)}" src="${escapeAttr(u)}"${t?` title="${escapeAttr(t)}"`:''} loading="lazy">`);
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_,t,u) => `<a href="${escapeAttr(u)}" target="_blank" rel="noopener">${escapeHtml(t)}</a>`);
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  s = s.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  return s;
+}
+
+/* ---------- Router ---------- */
+const routes = {};
+function route(name, fn){ routes[name] = fn; }
+function go(hash){ location.hash = hash; }
+function parseHash(){
+  const h = (location.hash || '#/').replace(/^#\/?/, '');
+  const [pathPart, queryPart] = h.split('?');
+  const parts = pathPart.split('/').filter(Boolean);
+  const params = {};
+  if(queryPart) queryPart.split('&').forEach(p => { const [k,v] = p.split('='); params[k] = decodeURIComponent(v||''); });
+  return { name: parts[0] || '', arg: parts[1] || '', params };
+}
+
+function render(){
+  const r = parseHash();
+  const u = SF.currentUser();
+  if(!u){
+    routes['auth']();
+    return;
+  }
+  applyTheme();
+  const fn = routes[r.name] || routes['dashboard'];
+  fn(r);
+}
+window.addEventListener('hashchange', render);
+
+/* ---------- Shell ---------- */
+function shell(activeKey, title, actionsHtml, bodyHtml, pid){
+  const u = SF.currentUser();
+  const isProjScope = ['project','character','relations','tree','world','timeline','items','gallery','editor'].includes(activeKey);
+  pid = pid || (isProjScope ? '' : '');
+  function nav(key, hash, icon, label){
+    return `<a class="${activeKey===key?'active':''}" data-go="${hash}">${icon} ${label}</a>`;
+  }
+  const projLink = pid ? '/' + pid : '';
+  const sidebarNav = `
+    ${nav('dashboard', '/dashboard', '🏠', '대시보드')}
+    ${pid ? `
+      <div class="sb-section">현재 프로젝트</div>
+      ${nav('project',   '/project'  + projLink, '📖', '프로젝트 홈')}
+      ${nav('character', '/character'+ projLink, '👥', '등장인물')}
+      ${nav('relations', '/relations'+ projLink, '💞', '관계 그래프')}
+      ${nav('tree',      '/tree'     + projLink, '🌳', '가계도/조직도')}
+      ${nav('world',     '/world'    + projLink, '🌍', '세계관')}
+      ${nav('timeline',  '/timeline' + projLink, '⏳', '타임라인')}
+      ${nav('items',     '/items'    + projLink, '⚔️', '아이템 도감')}
+      ${nav('gallery',   '/gallery'  + projLink, '🖼️', '영감 보드')}
+      ${nav('editor',    '/editor'   + projLink, '📝', '문서 / 에디터')}
+    ` : ''}
+    <div class="sb-section">계정</div>
+    ${nav('settings', '/settings', '⚙️', '설정 / 백업')}
+    <a id="sf-logout">🚪 로그아웃</a>`;
+
+  document.getElementById('app').innerHTML = `
+    <div class="app">
+      <aside class="sidebar" id="sf-sidebar">
+        <h2>📚 StoryForge</h2>
+        <div class="who">${escapeHtml(u.displayName)}</div>
+        <nav>${sidebarNav}</nav>
+      </aside>
+      <main class="main">
+        <button class="menu-btn" id="sf-menu" type="button">☰</button>
+        <div class="topbar">
+          <h1>${title}</h1>
+          <div class="actions">${actionsHtml||''}</div>
+        </div>
+        ${bodyHtml}
+      </main>
+    </div>`;
+
+  const sidebar = document.getElementById('sf-sidebar');
+  const scrim   = document.getElementById('scrim');
+  const close = () => { sidebar.classList.remove('open'); scrim.classList.remove('open'); };
+  document.getElementById('sf-menu').addEventListener('click', () => {
+    sidebar.classList.add('open'); scrim.classList.add('open');
+  });
+  scrim.addEventListener('click', close);
+  $$('nav a', sidebar).forEach(a => a.addEventListener('click', close));
+  $$('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go('#' + a.dataset.go); }));
+  document.getElementById('sf-logout').addEventListener('click', () => {
+    SF.logout(); location.hash = '#/'; render();
+  });
+}
+
+/* ---------- View: Auth ---------- */
+route('auth', function(){
+  const hasUsers = SF.hasAnyUser();
+  document.getElementById('app').innerHTML = `
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <h1>StoryForge</h1>
+        <p class="sub">소설가, 웹소설 작가, OC 제작자를 위한 올인원 설정집 ✨</p>
+        <div class="tabs">
+          <button id="tabSignup" type="button" class="${hasUsers?'':'active'}">회원가입</button>
+          <button id="tabLogin"  type="button" class="${hasUsers?'active':''}">로그인</button>
+        </div>
+        <form id="signupForm" autocomplete="off" novalidate style="${hasUsers?'display:none':''}">
+          <div class="field"><label>표시 이름 (작가명)</label>
+            <input id="suName" placeholder="예: 글쓰는토끼" autocomplete="nickname"></div>
+          <div class="field"><label>아이디 *</label>
+            <input id="suUser" placeholder="2자 이상" autocomplete="username"></div>
+          <div class="field"><label>비밀번호 *</label>
+            <input id="suPass" type="password" placeholder="4자 이상" autocomplete="new-password"></div>
+          <button class="btn block" type="submit">계정 만들고 시작하기</button>
+        </form>
+        <form id="loginForm" autocomplete="off" novalidate style="${hasUsers?'':'display:none'}">
+          <div class="field"><label>아이디</label>
+            <input id="loginUser" autocomplete="username" placeholder="아이디"></div>
+          <div class="field"><label>비밀번호</label>
+            <input id="loginPass" type="password" autocomplete="current-password" placeholder="비밀번호"></div>
+          <button class="btn block" type="submit">로그인</button>
+        </form>
+        <div class="divider"></div>
+        <p class="muted" style="font-size:12px;text-align:center;margin:0">
+          모든 데이터는 이 브라우저에만 저장됩니다.<br>
+          다른 기기로 옮기려면 [설정 → 백업] 을 사용하세요.
+        </p>
+      </div>
+    </div>`;
+
+  function showTab(name){
     const isLogin = name === 'login';
     $('#tabLogin').classList.toggle('active', isLogin);
     $('#tabSignup').classList.toggle('active', !isLogin);
@@ -79,34 +472,990 @@
   $('#tabLogin').addEventListener('click',  () => showTab('login'));
   $('#tabSignup').addEventListener('click', () => showTab('signup'));
 
-  // SUBMIT — signup
   $('#signupForm').addEventListener('submit', e => {
     e.preventDefault();
     try {
-      SF.signup({
-        username: $('#suUser').value,
-        password: $('#suPass').value,
-        displayName: $('#suName').value
-      });
-      toast('환영합니다! 대시보드로 이동합니다.', 'success');
-      setTimeout(() => location.replace('dashboard.html'), 350);
-    } catch (err) {
-      toast(err.message, 'error');
-      console.error(err);
-    }
+      SF.signup({ username:$('#suUser').value, password:$('#suPass').value, displayName:$('#suName').value });
+      toast('환영합니다!', 'success');
+      go('#/dashboard');
+    } catch(err){ toast(err.message, 'error'); }
   });
-
-  // SUBMIT — login
   $('#loginForm').addEventListener('submit', e => {
     e.preventDefault();
-    try {
-      SF.login($('#loginUser').value, $('#loginPass').value);
-      location.replace('dashboard.html');
-    } catch (err) {
-      toast(err.message, 'error');
-    }
+    try { SF.login($('#loginUser').value, $('#loginPass').value); go('#/dashboard'); }
+    catch(err){ toast(err.message, 'error'); }
   });
-})();
+});
+
+/* ---------- View: Dashboard ---------- */
+route('dashboard', function(){
+  const list = SF.getProjects();
+  const body = list.length
+    ? `<div class="grid">${list.map(p => `
+        <div class="thumb-card" data-go="/project/${p.id}">
+          <div class="avatar" style="${p.cover?`background-image:url('${escapeAttr(p.cover)}')`:''}">${p.cover?'':'📖'}</div>
+          <div class="info">
+            <h4>${escapeHtml(p.title)}</h4>
+            <div class="role">${escapeHtml(p.genre||'미지정')}</div>
+            <div class="muted" style="font-size:12px;margin-top:4px">
+              인물 ${(p.characters||[]).length} · 문서 ${(p.docs||[]).length}
+            </div>
+          </div>
+        </div>`).join('')}</div>`
+    : `<div class="empty"><div style="font-size:48px">📖</div>
+        <h3>아직 프로젝트가 없어요</h3><p>오른쪽 위 <b>+ 새 프로젝트</b> 로 첫 작품을 만들어 보세요.</p></div>`;
+  shell('dashboard', '내 프로젝트',
+    `<button class="btn" id="newProjBtn" type="button">+ 새 프로젝트</button>`,
+    body);
+
+  $$('.thumb-card').forEach(el => el.addEventListener('click', () => go('#' + el.dataset.go)));
+  $('#newProjBtn').addEventListener('click', () => openProjModal(null));
+});
+
+function openProjModal(pid){
+  const proj = pid ? SF.getProject(pid) : { title:'', genre:'', summary:'', cover:'' };
+  const m = document.createElement('div');
+  m.className = 'modal-bg open'; m.innerHTML = `
+    <div class="modal">
+      <header><h3>${pid?'프로젝트 정보':'새 프로젝트 만들기'}</h3><button class="close" data-x type="button">×</button></header>
+      <form id="npf">
+        <div class="field"><label>제목 *</label>
+          <input id="npTitle" value="${escapeAttr(proj.title)}" required></div>
+        <div class="field"><label>장르 (자유 입력)</label>
+          <input id="npGenre" value="${escapeAttr(proj.genre)}" placeholder="예: 헌터물 / 능력물 / 로맨스 판타지..."></div>
+        <div class="field"><label>한줄 소개</label>
+          <textarea id="npSummary">${escapeHtml(proj.summary)}</textarea></div>
+        <div class="field"><label>커버 이미지 URL (선택)</label>
+          <input id="npCover" value="${escapeAttr(proj.cover)}" placeholder="https://..."></div>
+        <div class="flex" style="justify-content:flex-end;gap:8px">
+          <button class="btn ghost" type="button" data-x>취소</button>
+          <button class="btn" type="submit">${pid?'저장':'만들기'}</button>
+        </div>
+      </form>
+    </div>`;
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
+  m.addEventListener('click', e => { if(e.target === m) close(); });
+  setTimeout(() => $('#npTitle', m).focus(), 30);
+  $('#npf', m).addEventListener('submit', e => {
+    e.preventDefault();
+    const title = $('#npTitle', m).value.trim(); if(!title){ toast('제목을 입력하세요.', 'error'); return; }
+    const data = { title, genre: $('#npGenre', m).value.trim(), summary: $('#npSummary', m).value.trim(), cover: $('#npCover', m).value.trim() };
+    if(pid){ SF.updateProject(pid, data); close(); render(); toast('저장됨', 'success'); }
+    else   { const np = SF.addProject(data); close(); go('#/project/' + np.id); }
+  });
+}
+
+/* ---------- View: Project Home ---------- */
+route('project', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const body = `
+    <div class="row" style="grid-template-columns:2fr 1fr">
+      <div>
+        <div class="card">
+          <h3>프로젝트 정보</h3>
+          <div class="field"><label>제목</label><input id="pfTitle" value="${escapeAttr(proj.title)}"></div>
+          <div class="row">
+            <div class="field"><label>장르</label><input id="pfGenre" value="${escapeAttr(proj.genre)}"></div>
+            <div class="field"><label>커버 이미지 URL</label><input id="pfCover" value="${escapeAttr(proj.cover||'')}"></div>
+          </div>
+          <div class="field"><label>한줄 소개</label><textarea id="pfSummary">${escapeHtml(proj.summary||'')}</textarea></div>
+          <div class="flex" style="justify-content:flex-end;gap:8px">
+            <button class="btn danger" id="delProj" type="button">프로젝트 삭제</button>
+            <button class="btn" id="saveProj" type="button">저장</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>커스텀 장르 / 태그</h3>
+          <p class="muted">자신만의 장르를 만들어 두면 인물·문서에 태그로 사용할 수 있어요.</p>
+          <form id="genreForm" class="flex">
+            <input id="newGenre" placeholder="예: 흑마법 학원물">
+            <button class="btn" type="submit">추가</button>
+          </form>
+          <div id="genreTags" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card"><h3>요약</h3><div id="counters"></div></div>
+      </div>
+    </div>`;
+  shell('project', escapeHtml(proj.title), `<span class="muted">${escapeHtml(proj.genre||'')}</span>`, body, pid);
+
+  $('#saveProj').addEventListener('click', () => {
+    SF.updateProject(pid, {
+      title: $('#pfTitle').value.trim() || proj.title,
+      genre: $('#pfGenre').value.trim(),
+      cover: $('#pfCover').value.trim(),
+      summary: $('#pfSummary').value.trim()
+    });
+    toast('저장됨', 'success'); render();
+  });
+  $('#delProj').addEventListener('click', () => {
+    if(!confirm('정말 삭제할까요? 모든 인물·문서가 함께 사라집니다.')) return;
+    SF.deleteProject(pid); go('#/dashboard');
+  });
+
+  function renderGenres(){
+    const tags = SF.getProject(pid).genres || [];
+    $('#genreTags').innerHTML = tags.length
+      ? tags.map(t => `<span class="tag primary">${escapeHtml(t)} <span class="x" data-t="${escapeAttr(t)}">✕</span></span>`).join('')
+      : '<span class="muted">아직 없음</span>';
+    $$('.tag .x').forEach(el => el.addEventListener('click', () => {
+      const cur = SF.getProject(pid);
+      cur.genres = (cur.genres||[]).filter(x => x !== el.dataset.t);
+      SF.updateProject(pid, { genres: cur.genres }); renderGenres();
+    }));
+  }
+  renderGenres();
+  $('#genreForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('#newGenre').value.trim(); if(!v) return;
+    const cur = SF.getProject(pid);
+    cur.genres = Array.from(new Set([...(cur.genres||[]), v]));
+    SF.updateProject(pid, { genres: cur.genres });
+    $('#newGenre').value = ''; renderGenres();
+  });
+  $('#counters').innerHTML = `
+    <div>등장인물 <b>${(proj.characters||[]).length}</b></div>
+    <div>관계 <b>${(proj.relations||[]).length}</b></div>
+    <div>가계도 노드 <b>${(proj.tree&&proj.tree.nodes||[]).length}</b></div>
+    <div>세계관 항목 <b>${(proj.world&&proj.world.sections||[]).length}</b></div>
+    <div>타임라인 <b>${(proj.timeline||[]).length}</b></div>
+    <div>아이템 <b>${(proj.items||[]).length}</b></div>
+    <div>영감 이미지 <b>${(proj.gallery||[]).length}</b></div>
+    <div>문서 <b>${(proj.docs||[]).length}</b></div>`;
+});
+
+/* ---------- View: Character ---------- */
+route('character', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const body = `
+    <div class="flex" style="margin-bottom:12px;gap:8px">
+      <input id="csearch" placeholder="검색..." style="max-width:240px">
+    </div>
+    <div id="charList" class="grid"></div>`;
+  shell('character', '👥 등장인물',
+    `<button class="btn" id="newBtn" type="button">+ 새 인물</button>`, body, pid);
+
+  function refresh(){
+    const q = $('#csearch').value.trim().toLowerCase();
+    const list = (SF.getProject(pid).characters || []).filter(c => {
+      if(!q) return true;
+      return [c.name,c.role,c.tagline,...(c.tags||[])].join(' ').toLowerCase().includes(q);
+    });
+    const w = $('#charList');
+    if(!list.length){
+      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div style="font-size:48px">👥</div>
+        <h3>등장인물이 없어요</h3><p><b>+ 새 인물</b> 로 첫 캐릭터를 추가하세요.</p></div>`;
+      return;
+    }
+    w.innerHTML = list.map(c => `
+      <div class="thumb-card" data-id="${c.id}">
+        <div class="avatar" style="${c.avatar?`background-image:url('${escapeAttr(c.avatar)}')`:''}">${c.avatar?'':'👤'}</div>
+        <div class="info">
+          <h4>${escapeHtml(c.name)}</h4>
+          <div class="role">${escapeHtml(c.role||'')} ${c.age?'· '+escapeHtml(c.age):''}</div>
+          ${c.tagline?`<div class="muted" style="margin-top:4px">${escapeHtml(c.tagline)}</div>`:''}
+          <div class="tags">${(c.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+        </div>
+      </div>`).join('');
+    $$('.thumb-card', w).forEach(el => el.addEventListener('click', () => openCharModal(pid, el.dataset.id, refresh)));
+  }
+  $('#csearch').addEventListener('input', refresh);
+  $('#newBtn').addEventListener('click', () => openCharModal(pid, null, refresh));
+  refresh();
+});
+
+function openCharModal(pid, cid, onChange){
+  const c = cid ? SF.getProject(pid).characters.find(x => x.id === cid) : {};
+  const m = document.createElement('div');
+  m.className = 'modal-bg open'; m.innerHTML = `
+    <div class="modal lg">
+      <header><h3>${cid?'인물 편집 · '+escapeHtml(c.name||''):'새 인물'}</h3><button class="close" data-x type="button">×</button></header>
+      <form id="cf">
+        <div class="row">
+          <div>
+            <div class="field"><label>이미지 (선택)</label>
+              <input id="cAvatarFile" type="file" accept="image/*">
+              <input id="cAvatar" placeholder="또는 이미지 URL" value="${escapeAttr(c.avatar||'')}" style="margin-top:6px"></div>
+            <div id="ap" style="border-radius:8px;height:200px;background-size:cover;background-position:center;background-color:var(--bg-soft);display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:36px">${c.avatar?'':'👤'}</div>
+          </div>
+          <div>
+            <div class="field"><label>이름 *</label><input id="cName" value="${escapeAttr(c.name||'')}" required></div>
+            <div class="row">
+              <div class="field"><label>역할</label><input id="cRole" value="${escapeAttr(c.role||'')}" placeholder="주인공/조연/적대..."></div>
+              <div class="field"><label>나이</label><input id="cAge" value="${escapeAttr(c.age||'')}"></div>
+            </div>
+            <div class="row">
+              <div class="field"><label>성별</label><input id="cGender" value="${escapeAttr(c.gender||'')}"></div>
+              <div class="field"><label>직업/소속</label><input id="cJob" value="${escapeAttr(c.job||'')}"></div>
+            </div>
+            <div class="field"><label>한줄 소개</label><input id="cTagline" value="${escapeAttr(c.tagline||'')}"></div>
+          </div>
+        </div>
+        <div class="field"><label>외모</label><textarea id="cAppearance">${escapeHtml(c.appearance||'')}</textarea></div>
+        <div class="field"><label>성격</label><textarea id="cPersonality">${escapeHtml(c.personality||'')}</textarea></div>
+        <div class="field"><label>능력 / 스킬 / 특기</label><textarea id="cAbility">${escapeHtml(c.ability||'')}</textarea></div>
+        <div class="field"><label>배경 / 과거사</label><textarea id="cBackground">${escapeHtml(c.background||'')}</textarea></div>
+        <div class="row">
+          <div class="field"><label>좋아하는 것</label><input id="cLike" value="${escapeAttr(c.like||'')}"></div>
+          <div class="field"><label>싫어하는 것</label><input id="cDislike" value="${escapeAttr(c.dislike||'')}"></div>
+        </div>
+        <div class="field"><label>태그 (쉼표)</label><input id="cTags" value="${escapeAttr((c.tags||[]).join(', '))}"></div>
+        <div class="field"><label>자유 메모 (마크다운/HTML)</label><textarea id="cNote" rows="4">${escapeHtml(c.note||'')}</textarea></div>
+        <div class="flex" style="justify-content:space-between">
+          <button class="btn danger" id="cDel" type="button" style="${cid?'':'display:none'}">삭제</button>
+          <div class="flex" style="gap:8px"><button class="btn ghost" type="button" data-x>취소</button>
+          <button class="btn" type="submit">저장</button></div>
+        </div>
+      </form>
+    </div>`;
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
+  m.addEventListener('click', e => { if(e.target === m) close(); });
+  setTimeout(() => $('#cName', m).focus(), 30);
+
+  function setAvatar(url){
+    const ap = $('#ap', m);
+    ap.style.backgroundImage = url ? `url('${url}')` : '';
+    ap.textContent = url ? '' : '👤';
+  }
+  $('#cAvatar', m).addEventListener('input', e => setAvatar(e.target.value));
+  $('#cAvatarFile', m).addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => { $('#cAvatar', m).value = r.result; setAvatar(r.result); };
+    r.readAsDataURL(f);
+  });
+  if(c.avatar) setAvatar(c.avatar);
+
+  $('#cf', m).addEventListener('submit', e => {
+    e.preventDefault();
+    const data = {
+      name: $('#cName', m).value.trim(),
+      role: $('#cRole', m).value.trim(),
+      age: $('#cAge', m).value.trim(),
+      gender: $('#cGender', m).value.trim(),
+      job: $('#cJob', m).value.trim(),
+      tagline: $('#cTagline', m).value.trim(),
+      appearance: $('#cAppearance', m).value,
+      personality: $('#cPersonality', m).value,
+      ability: $('#cAbility', m).value,
+      background: $('#cBackground', m).value,
+      like: $('#cLike', m).value.trim(),
+      dislike: $('#cDislike', m).value.trim(),
+      tags: $('#cTags', m).value.split(',').map(s => s.trim()).filter(Boolean),
+      note: $('#cNote', m).value,
+      avatar: $('#cAvatar', m).value.trim()
+    };
+    if(!data.name){ toast('이름은 필수입니다.', 'error'); return; }
+    if(cid) SF.updateCharacter(pid, cid, data);
+    else SF.addCharacter(pid, data);
+    toast('저장됨', 'success'); close(); onChange && onChange();
+  });
+  $('#cDel', m).addEventListener('click', () => {
+    if(!cid) return;
+    if(!confirm('이 인물을 삭제할까요?')) return;
+    SF.deleteCharacter(pid, cid); close(); onChange && onChange();
+  });
+}
+
+/* ---------- View: Relations ---------- */
+route('relations', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  proj.relations = proj.relations || []; proj.relPositions = proj.relPositions || {};
+
+  const body = `
+    <p class="muted">등장인물 페이지에서 만든 인물들 사이의 관계(연인·라이벌·동료·멘토 등)를 자유롭게 연결하세요. 노드를 드래그해 위치를 옮길 수 있어요.</p>
+    <div class="tree-canvas" id="canvas"><svg class="tree-svg" id="svg"></svg></div>`;
+  shell('relations', '💞 인물 관계 그래프', `
+    <button class="btn ghost" id="autoArr" type="button">⟳ 자동 배치</button>
+    <button class="btn" id="addRel" type="button">+ 관계 추가</button>`, body, pid);
+
+  const canvas = $('#canvas'), svg = $('#svg');
+
+  function save(){ SF.updateProject(pid, { relations: proj.relations, relPositions: proj.relPositions }); }
+
+  function autoArr(){
+    const chars = proj.characters || []; const n = chars.length; if(!n) return;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const cx = w/2, cy = h/2, rd = Math.min(w,h)/2 - 80;
+    chars.forEach((c, i) => {
+      const a = (i/n) * Math.PI * 2 - Math.PI/2;
+      proj.relPositions[c.id] = { x: cx + rd*Math.cos(a) - 60, y: cy + rd*Math.sin(a) - 18 };
+    });
+    save(); draw();
+  }
+
+  function draw(){
+    $$('.node', canvas).forEach(n => n.remove());
+    const chars = proj.characters || [];
+    if(!chars.length){
+      const e = document.createElement('div');
+      e.style.padding = '20px'; e.style.color = 'var(--text-dim)';
+      e.textContent = '먼저 [등장인물]에서 인물을 추가하세요.';
+      canvas.appendChild(e); return;
+    }
+    chars.forEach((c, i) => {
+      if(!proj.relPositions[c.id]) proj.relPositions[c.id] = { x: 40 + (i%6)*160, y: 40 + Math.floor(i/6)*100 };
+    });
+    chars.forEach(c => {
+      const pos = proj.relPositions[c.id];
+      const el = document.createElement('div');
+      el.className = 'node'; el.style.left = pos.x+'px'; el.style.top = pos.y+'px';
+      el.innerHTML = `<div>${escapeHtml(c.name)}</div>${c.role?`<small>${escapeHtml(c.role)}</small>`:''}`;
+      canvas.appendChild(el);
+      drag(el, pos);
+    });
+    drawEdges();
+  }
+
+  function drawEdges(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`); svg.setAttribute('width', w); svg.setAttribute('height', h);
+    let html = '';
+    proj.relations.forEach(r2 => {
+      const a = proj.relPositions[r2.from], b = proj.relPositions[r2.to];
+      if(!a || !b) return;
+      const ax = a.x+60, ay = a.y+18, bx = b.x+60, by = b.y+18;
+      const color = r2.color || '#7c5cff';
+      html += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${color}" stroke-width="2" opacity=".75" data-rid="${r2.id}" style="cursor:pointer;pointer-events:stroke"/>`;
+      if(r2.label) html += `<text x="${(ax+bx)/2}" y="${(ay+by)/2-4}" fill="${color}" font-size="12" text-anchor="middle" data-rid="${r2.id}" style="cursor:pointer;pointer-events:auto">${escapeHtml(r2.label)}</text>`;
+    });
+    svg.innerHTML = html; svg.style.pointerEvents = 'auto';
+    $$('[data-rid]', svg).forEach(el => el.addEventListener('click', () => openRelModal(el.getAttribute('data-rid'))));
+  }
+
+  function drag(el, pos){
+    let sx,sy,ox,oy;
+    el.addEventListener('mousedown', e => {
+      if(e.button !== 0) return; e.preventDefault();
+      sx=e.clientX; sy=e.clientY; ox=pos.x; oy=pos.y;
+      el.classList.add('dragging');
+      const move = ev => {
+        pos.x = Math.max(0, Math.min(canvas.clientWidth-130, ox + (ev.clientX - sx)));
+        pos.y = Math.max(0, Math.min(canvas.clientHeight-50,  oy + (ev.clientY - sy)));
+        el.style.left = pos.x+'px'; el.style.top = pos.y+'px'; drawEdges();
+      };
+      const up = () => {
+        el.classList.remove('dragging');
+        document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up);
+        save();
+      };
+      document.addEventListener('mousemove', move); document.addEventListener('mouseup', up);
+    });
+  }
+
+  function openRelModal(rid){
+    const chars = proj.characters || [];
+    if(!chars.length){ toast('먼저 인물을 만들어 주세요.', 'warn'); return; }
+    const r2 = rid ? proj.relations.find(x => x.id === rid) : {};
+    const opts = chars.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+    const m = document.createElement('div');
+    m.className = 'modal-bg open'; m.innerHTML = `
+      <div class="modal">
+        <header><h3>${rid?'관계 편집':'관계 추가'}</h3><button class="close" data-x type="button">×</button></header>
+        <form id="rf">
+          <div class="row">
+            <div class="field"><label>인물 A</label><select id="rFrom">${opts}</select></div>
+            <div class="field"><label>인물 B</label><select id="rTo">${opts}</select></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>관계 라벨</label>
+              <input id="rLabel" value="${escapeAttr(r2.label||'')}" placeholder="예: 연인 / 라이벌 / 멘토 / 형제"></div>
+            <div class="field"><label>선 색상</label>
+              <input id="rColor" type="color" value="${r2.color||'#7c5cff'}"></div>
+          </div>
+          <div class="flex" style="justify-content:space-between">
+            <button class="btn danger" id="rDel" type="button" style="${rid?'':'display:none'}">삭제</button>
+            <div class="flex" style="gap:8px"><button class="btn ghost" type="button" data-x>취소</button>
+            <button class="btn" type="submit">저장</button></div>
+          </div>
+        </form>
+      </div>`;
+    document.body.appendChild(m);
+    $('#rFrom', m).value = r2.from || chars[0].id;
+    $('#rTo', m).value   = r2.to   || (chars[1]||chars[0]).id;
+    const close = () => m.remove();
+    $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
+    m.addEventListener('click', e => { if(e.target === m) close(); });
+    $('#rf', m).addEventListener('submit', e => {
+      e.preventDefault();
+      const data = { from:$('#rFrom', m).value, to:$('#rTo', m).value, label:$('#rLabel', m).value.trim(), color:$('#rColor', m).value };
+      if(data.from === data.to){ toast('서로 다른 인물을 선택하세요.', 'error'); return; }
+      if(rid){ const i = proj.relations.findIndex(x => x.id === rid); proj.relations[i] = { ...proj.relations[i], ...data }; }
+      else proj.relations.push({ id: uid('r_'), ...data });
+      save(); close(); draw();
+    });
+    $('#rDel', m).addEventListener('click', () => {
+      if(!rid) return; if(!confirm('이 관계를 삭제할까요?')) return;
+      proj.relations = proj.relations.filter(x => x.id !== rid);
+      save(); close(); draw();
+    });
+  }
+
+  $('#addRel').addEventListener('click', () => openRelModal(null));
+  $('#autoArr').addEventListener('click', autoArr);
+  window.addEventListener('resize', drawEdges);
+  draw();
+});
+
+/* ---------- View: Family/Org/Ability Tree ---------- */
+route('tree', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const tree = proj.tree || (proj.tree = { nodes:[], edges:[] });
+  let linkMode = false, pending = null;
+
+  const body = `
+    <p class="muted">노드를 드래그해 위치를 옮기고, [연결 모드] 를 켠 뒤 두 노드를 차례로 클릭하면 선이 그려집니다.<br>
+    노드 더블클릭=편집, 우클릭=삭제.</p>
+    <div class="tree-canvas" id="canvas"><svg class="tree-svg" id="svg"></svg></div>`;
+  shell('tree', '🌳 가계도 / 조직도', `
+    <select id="typeSel" style="width:auto">
+      <option value="가족">가족</option><option value="조직">조직 / 직급</option>
+      <option value="능력">능력 트리</option><option value="기타">기타</option>
+    </select>
+    <button class="btn" id="addNode" type="button">+ 노드</button>
+    <button class="btn ghost" id="linkBtn" type="button">🔗 연결 모드: OFF</button>
+    <button class="btn danger" id="clearAll" type="button">전체 삭제</button>`, body, pid);
+
+  const canvas = $('#canvas'), svg = $('#svg');
+  function save(){ SF.updateProject(pid, { tree }); }
+
+  function draw(){
+    $$('.node', canvas).forEach(n => n.remove());
+    tree.nodes.forEach(n => {
+      const el = document.createElement('div');
+      el.className = 'node'; el.style.left = n.x+'px'; el.style.top = n.y+'px';
+      el.dataset.type = n.type || '기타';
+      el.innerHTML = `<div>${escapeHtml(n.label)}</div>${n.sub?`<small>${escapeHtml(n.sub)}</small>`:''}`;
+      canvas.appendChild(el);
+      drag(el, n);
+      el.addEventListener('click', e => {
+        e.stopPropagation(); if(!linkMode) return;
+        if(!pending){ pending = n.id; el.classList.add('selected'); return; }
+        if(pending === n.id){ pending = null; el.classList.remove('selected'); return; }
+        const label = prompt('관계 라벨 (예: 부모, 부하, 멘토)', '') || '';
+        tree.edges.push({ id: uid('e_'), from: pending, to: n.id, label });
+        $$('.node.selected', canvas).forEach(s => s.classList.remove('selected'));
+        pending = null; save(); drawEdges();
+      });
+      el.addEventListener('dblclick', e => {
+        e.stopPropagation();
+        const lab = prompt('이름', n.label); if(lab === null) return;
+        const sub = prompt('부가설명', n.sub||'') || '';
+        n.label = lab || n.label; n.sub = sub; save(); draw();
+      });
+      el.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        if(!confirm('이 노드를 삭제할까요?')) return;
+        tree.nodes = tree.nodes.filter(x => x.id !== n.id);
+        tree.edges = tree.edges.filter(x => x.from !== n.id && x.to !== n.id);
+        save(); draw();
+      });
+    });
+    drawEdges();
+  }
+
+  function drawEdges(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`); svg.setAttribute('width', w); svg.setAttribute('height', h);
+    let html = '';
+    tree.edges.forEach(e => {
+      const a = tree.nodes.find(n => n.id === e.from); const b = tree.nodes.find(n => n.id === e.to);
+      if(!a || !b) return;
+      const ax = a.x+60, ay = a.y+18, bx = b.x+60, by = b.y+18;
+      html += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="currentColor" stroke-width="2" opacity=".55"/>`;
+      if(e.label) html += `<text x="${(ax+bx)/2}" y="${(ay+by)/2-4}" fill="currentColor" font-size="11" text-anchor="middle">${escapeHtml(e.label)}</text>`;
+    });
+    svg.innerHTML = html;
+  }
+
+  function drag(el, n){
+    let sx,sy,ox,oy;
+    el.addEventListener('mousedown', e => {
+      if(e.button !== 0 || linkMode) return; e.preventDefault();
+      sx=e.clientX; sy=e.clientY; ox=n.x; oy=n.y;
+      el.classList.add('dragging');
+      const move = ev => {
+        n.x = Math.max(0, Math.min(canvas.clientWidth-130, ox + (ev.clientX - sx)));
+        n.y = Math.max(0, Math.min(canvas.clientHeight-50,  oy + (ev.clientY - sy)));
+        el.style.left = n.x+'px'; el.style.top = n.y+'px'; drawEdges();
+      };
+      const up = () => {
+        el.classList.remove('dragging');
+        document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up);
+        save();
+      };
+      document.addEventListener('mousemove', move); document.addEventListener('mouseup', up);
+    });
+  }
+
+  $('#addNode').addEventListener('click', () => {
+    const type = $('#typeSel').value;
+    const label = prompt(`${type} 노드 이름`, ''); if(!label) return;
+    const sub = prompt('부가설명 (선택)', '') || '';
+    tree.nodes.push({ id: uid('n_'), label, sub, type, x: 40 + Math.random()*200, y: 40 + Math.random()*200 });
+    save(); draw();
+  });
+  $('#linkBtn').addEventListener('click', () => {
+    linkMode = !linkMode;
+    $('#linkBtn').textContent = '🔗 연결 모드: ' + (linkMode ? 'ON' : 'OFF');
+    pending = null; $$('.node.selected', canvas).forEach(s => s.classList.remove('selected'));
+  });
+  $('#clearAll').addEventListener('click', () => {
+    if(!confirm('모든 노드와 연결을 삭제할까요?')) return;
+    tree.nodes = []; tree.edges = []; save(); draw();
+  });
+  window.addEventListener('resize', drawEdges);
+  draw();
+});
+
+/* ---------- View: World ---------- */
+route('world', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const world = proj.world || (proj.world = { sections: [] });
+  const body = `
+    <p class="muted">지역, 종족, 마법 체계, 길드, 헌터협회, 계급, 유물 등 자유롭게 항목을 만들 수 있어요. (마크다운/HTML)</p>
+    <div id="sections"></div>`;
+  shell('world', '🌍 세계관 설정', `<button class="btn" id="addSec" type="button">+ 항목 추가</button>`, body, pid);
+
+  function save(){ SF.updateProject(pid, { world }); }
+  function refresh(){
+    const w = $('#sections');
+    if(!world.sections.length){
+      w.innerHTML = `<div class="empty"><div style="font-size:48px">🌍</div><h3>세계관 항목이 없어요</h3></div>`;
+      return;
+    }
+    w.innerHTML = world.sections.map((s, i) => `
+      <div class="card" data-i="${i}">
+        <div class="flex between" style="margin-bottom:8px">
+          <input class="t" value="${escapeAttr(s.title)}" style="flex:1;font-size:16px;font-weight:600;background:transparent;border:none">
+          <div class="flex" style="gap:6px">
+            <button class="btn sm ghost" data-up type="button">▲</button>
+            <button class="btn sm ghost" data-dn type="button">▼</button>
+            <button class="btn sm danger" data-del type="button">삭제</button>
+          </div>
+        </div>
+        <textarea class="b" rows="6" placeholder="자유 서술 (마크다운/HTML)">${escapeHtml(s.body||'')}</textarea>
+      </div>`).join('');
+    $$('.card', w).forEach(card => {
+      const i = +card.dataset.i;
+      $('.t', card).addEventListener('input', e => { world.sections[i].title = e.target.value; save(); });
+      $('.b', card).addEventListener('input', e => { world.sections[i].body  = e.target.value; save(); });
+      $('[data-del]', card).addEventListener('click', () => { if(confirm('삭제할까요?')){ world.sections.splice(i,1); save(); refresh(); }});
+      $('[data-up]', card).addEventListener('click', () => { if(i>0){ [world.sections[i-1],world.sections[i]] = [world.sections[i],world.sections[i-1]]; save(); refresh(); }});
+      $('[data-dn]', card).addEventListener('click', () => { if(i<world.sections.length-1){ [world.sections[i+1],world.sections[i]] = [world.sections[i],world.sections[i+1]]; save(); refresh(); }});
+    });
+  }
+  $('#addSec').addEventListener('click', () => {
+    const t = prompt('항목 제목 (예: 헌터 등급, 마탑, 길드, 종족...)', ''); if(!t) return;
+    world.sections.push({ title: t, body: '' }); save(); refresh();
+  });
+  refresh();
+});
+
+/* ---------- View: Timeline ---------- */
+route('timeline', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const tl = proj.timeline || (proj.timeline = []);
+  const body = `<div class="card"><div class="timeline" id="tl"></div></div>`;
+  shell('timeline', '⏳ 타임라인', `<button class="btn" id="addEv" type="button">+ 사건 추가</button>`, body, pid);
+
+  function save(){ SF.updateProject(pid, { timeline: tl }); }
+  function refresh(){
+    const sorted = [...tl].sort((a,b) => (a.order||0) - (b.order||0));
+    const w = $('#tl');
+    if(!sorted.length){ w.innerHTML = `<div class="empty"><div style="font-size:48px">⏳</div><h3>등록된 사건이 없어요</h3></div>`; return; }
+    w.innerHTML = sorted.map(e => `
+      <div class="tl-item" data-id="${e.id}">
+        <div class="when">${escapeHtml(e.when||'')}</div>
+        <h4>${escapeHtml(e.name)}</h4>
+        <div>${renderMD(e.body||'')}</div>
+      </div>`).join('');
+    $$('.tl-item', w).forEach(el => el.addEventListener('click', () => openEv(el.dataset.id)));
+  }
+  function openEv(id){
+    const e = id ? tl.find(x => x.id === id) : { order: tl.length };
+    const m = document.createElement('div');
+    m.className = 'modal-bg open'; m.innerHTML = `
+      <div class="modal">
+        <header><h3>${id?'사건 편집':'새 사건'}</h3><button class="close" data-x type="button">×</button></header>
+        <form id="ef">
+          <div class="row">
+            <div class="field"><label>시점/날짜 (자유 형식)</label><input id="evWhen" value="${escapeAttr(e.when||'')}" placeholder="예: 1024년 봄, 또는 1화"></div>
+            <div class="field"><label>정렬 키</label><input id="evOrder" type="number" value="${e.order||0}"></div>
+          </div>
+          <div class="field"><label>제목 *</label><input id="evName" value="${escapeAttr(e.name||'')}" required></div>
+          <div class="field"><label>내용 (마크다운/HTML)</label><textarea id="evBody" rows="6">${escapeHtml(e.body||'')}</textarea></div>
+          <div class="flex" style="justify-content:space-between">
+            <button class="btn danger" id="evDel" type="button" style="${id?'':'display:none'}">삭제</button>
+            <div class="flex" style="gap:8px"><button class="btn ghost" type="button" data-x>취소</button>
+            <button class="btn" type="submit">저장</button></div>
+          </div>
+        </form>
+      </div>`;
+    document.body.appendChild(m);
+    const close = () => m.remove();
+    $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
+    m.addEventListener('click', e2 => { if(e2.target === m) close(); });
+    setTimeout(() => $('#evName', m).focus(), 30);
+    $('#ef', m).addEventListener('submit', ev => {
+      ev.preventDefault();
+      const name = $('#evName', m).value.trim(); if(!name){ toast('제목 필수', 'error'); return; }
+      const data = { name, when:$('#evWhen', m).value.trim(), order:+$('#evOrder', m).value||0, body:$('#evBody', m).value };
+      if(id){ const i = tl.findIndex(x => x.id === id); tl[i] = { ...tl[i], ...data }; }
+      else tl.push({ id: uid('e_'), ...data });
+      save(); close(); refresh();
+    });
+    $('#evDel', m).addEventListener('click', () => {
+      if(!confirm('삭제할까요?')) return;
+      const i = tl.findIndex(x => x.id === id); tl.splice(i,1); save(); close(); refresh();
+    });
+  }
+  $('#addEv').addEventListener('click', () => openEv(null));
+  refresh();
+});
+
+/* ---------- View: Items ---------- */
+route('items', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const items = proj.items || (proj.items = []);
+  const body = `
+    <div class="flex" style="margin-bottom:12px;gap:8px;flex-wrap:wrap">
+      <input id="isearch" placeholder="검색..." style="max-width:200px">
+      <select id="itypeFilter" style="max-width:200px"><option value="">전체 종류</option></select>
+    </div>
+    <div id="ilist" class="grid compact"></div>`;
+  shell('items', '⚔️ 아이템 도감', `<button class="btn" id="newBtn" type="button">+ 새 아이템</button>`, body, pid);
+
+  function save(){ SF.updateProject(pid, { items }); }
+  function refreshFilter(){
+    const types = Array.from(new Set(items.map(i => i.type).filter(Boolean)));
+    $('#itypeFilter').innerHTML = '<option value="">전체 종류</option>' + types.map(t => `<option>${escapeHtml(t)}</option>`).join('');
+  }
+  function refresh(){
+    refreshFilter();
+    const q = $('#isearch').value.trim().toLowerCase();
+    const f = $('#itypeFilter').value;
+    const list = items.filter(i => {
+      if(f && i.type !== f) return false;
+      if(!q) return true;
+      return [i.name,i.type,i.rarity,...(i.tags||[])].join(' ').toLowerCase().includes(q);
+    });
+    const w = $('#ilist');
+    if(!list.length){
+      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div style="font-size:48px">⚔️</div>
+        <h3>아이템이 없어요</h3><p><b>+ 새 아이템</b> 으로 추가하세요.</p></div>`; return;
+    }
+    w.innerHTML = list.map(i => `
+      <div class="thumb-card" data-id="${i.id}">
+        <div class="avatar" style="${i.image?`background-image:url('${escapeAttr(i.image)}')`:''}">${i.image?'':'⚔️'}</div>
+        <div class="info">
+          <h4>${escapeHtml(i.name)}</h4>
+          <div class="role">${escapeHtml(i.type||'')} ${i.rarity?'· '+escapeHtml(i.rarity):''}</div>
+          <div class="tags">${(i.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+        </div>
+      </div>`).join('');
+    $$('.thumb-card', w).forEach(el => el.addEventListener('click', () => openItem(el.dataset.id)));
+  }
+  function openItem(id){
+    const i = id ? items.find(x => x.id === id) : {};
+    const m = document.createElement('div');
+    m.className = 'modal-bg open'; m.innerHTML = `
+      <div class="modal">
+        <header><h3>${id?'아이템 편집':'새 아이템'}</h3><button class="close" data-x type="button">×</button></header>
+        <form id="if">
+          <div class="row">
+            <div class="field"><label>이름 *</label><input id="iName" value="${escapeAttr(i.name||'')}" required></div>
+            <div class="field"><label>종류</label><input id="iType" value="${escapeAttr(i.type||'')}" placeholder="예: 무기 / 스킬 / 유물"></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>등급/희귀도</label><input id="iRarity" value="${escapeAttr(i.rarity||'')}" placeholder="예: SSR / 전설"></div>
+            <div class="field"><label>이미지 URL</label><input id="iImage" value="${escapeAttr(i.image||'')}"></div>
+          </div>
+          <div class="field"><label>설명 (마크다운/HTML)</label><textarea id="iDesc" rows="6">${escapeHtml(i.desc||'')}</textarea></div>
+          <div class="field"><label>태그 (쉼표)</label><input id="iTags" value="${escapeAttr((i.tags||[]).join(', '))}"></div>
+          <div class="flex" style="justify-content:space-between">
+            <button class="btn danger" id="iDel" type="button" style="${id?'':'display:none'}">삭제</button>
+            <div class="flex" style="gap:8px"><button class="btn ghost" type="button" data-x>취소</button>
+            <button class="btn" type="submit">저장</button></div>
+          </div>
+        </form>
+      </div>`;
+    document.body.appendChild(m);
+    const close = () => m.remove();
+    $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
+    m.addEventListener('click', e => { if(e.target === m) close(); });
+    setTimeout(() => $('#iName', m).focus(), 30);
+    $('#if', m).addEventListener('submit', e => {
+      e.preventDefault();
+      const name = $('#iName', m).value.trim(); if(!name){ toast('이름 필수', 'error'); return; }
+      const data = {
+        name, type:$('#iType', m).value.trim(), rarity:$('#iRarity', m).value.trim(),
+        image:$('#iImage', m).value.trim(), desc:$('#iDesc', m).value,
+        tags:$('#iTags', m).value.split(',').map(s => s.trim()).filter(Boolean)
+      };
+      if(id){ const idx = items.findIndex(x => x.id === id); items[idx] = { ...items[idx], ...data }; }
+      else items.push({ id: uid('i_'), ...data });
+      save(); close(); refresh();
+    });
+    $('#iDel', m).addEventListener('click', () => {
+      if(!confirm('삭제할까요?')) return;
+      const idx = items.findIndex(x => x.id === id); items.splice(idx,1); save(); close(); refresh();
+    });
+  }
+  $('#newBtn').addEventListener('click', () => openItem(null));
+  $('#isearch').addEventListener('input', refresh);
+  $('#itypeFilter').addEventListener('change', refresh);
+  refresh();
+});
+
+/* ---------- View: Gallery ---------- */
+route('gallery', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const gal = proj.gallery || (proj.gallery = []);
+  const body = `
+    <p class="muted">참고 이미지 / 무드보드 / 장면 스케치 등을 모아 두는 공간이에요. 카드를 클릭하면 캡션을 편집할 수 있습니다.</p>
+    <div id="grid" class="grid compact"></div>`;
+  shell('gallery', '🖼️ 영감 보드', `
+    <input id="addUrl" placeholder="이미지 URL" style="min-width:220px;width:auto">
+    <button class="btn" id="addUrlBtn" type="button">URL 추가</button>
+    <input id="addFile" type="file" accept="image/*" multiple style="display:none">
+    <button class="btn ghost" id="pickFile" type="button">파일 업로드</button>`, body, pid);
+
+  function save(){ SF.updateProject(pid, { gallery: gal }); }
+  function refresh(){
+    const w = $('#grid');
+    if(!gal.length){
+      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div style="font-size:48px">🖼️</div>
+        <h3>이미지가 없어요</h3><p>URL 을 붙여넣거나 파일을 업로드하세요.</p></div>`; return;
+    }
+    w.innerHTML = gal.map(g => `
+      <div class="thumb-card" data-id="${g.id}">
+        <div class="avatar" style="background-image:url('${escapeAttr(g.src)}')"></div>
+        <div class="info"><div class="muted" style="font-size:12px">${escapeHtml(g.caption||'클릭하여 캡션')}</div></div>
+      </div>`).join('');
+    $$('.thumb-card', w).forEach(el => el.addEventListener('click', () => {
+      const g = gal.find(x => x.id === el.dataset.id);
+      const cap = prompt('캡션 (취소: 무변경 / 빈 값 + 확인: 삭제)', g.caption||'');
+      if(cap === null) return;
+      if(cap === '' && confirm('이 이미지를 삭제할까요?')){ const i = gal.findIndex(x => x.id === g.id); gal.splice(i,1); }
+      else g.caption = cap;
+      save(); refresh();
+    }));
+  }
+  $('#addUrlBtn').addEventListener('click', () => {
+    const u = $('#addUrl').value.trim(); if(!u) return;
+    gal.push({ id: uid('g_'), src: u, caption: '' });
+    $('#addUrl').value = ''; save(); refresh();
+  });
+  $('#pickFile').addEventListener('click', () => $('#addFile').click());
+  $('#addFile').addEventListener('change', e => {
+    const fs = Array.from(e.target.files||[]); let pending = fs.length; if(!pending) return;
+    fs.forEach(f => {
+      const r2 = new FileReader();
+      r2.onload = () => { gal.push({ id: uid('g_'), src: r2.result, caption: f.name }); if(--pending === 0){ save(); refresh(); } };
+      r2.readAsDataURL(f);
+    });
+  });
+  refresh();
+});
+
+/* ---------- View: Editor ---------- */
+route('editor', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  proj.docs = proj.docs || [];
+  if(!proj.docs.length){
+    proj.docs.push({ id: uid('d_'), title:'메모', type:'md',
+      content:'# 환영합니다\n\n여기에 자유롭게 적어 보세요.\n\n- 마크다운 사용 가능\n- 표, 이미지, 동영상 임베드 모두 지원\n\n| 항목 | 값 |\n|---|---|\n| 예시 | 굿 |\n' });
+    SF.updateProject(pid, { docs: proj.docs });
+  }
+  const body = `
+    <div class="flex" style="margin-bottom:10px;gap:6px;flex-wrap:wrap">
+      <button class="btn sm ghost" data-ins="**굵게**" type="button"><b>B</b></button>
+      <button class="btn sm ghost" data-ins="*기울임*" type="button"><i>I</i></button>
+      <button class="btn sm ghost" data-ins="~~취소선~~" type="button">S</button>
+      <button class="btn sm ghost" data-ins="# 제목" type="button">H1</button>
+      <button class="btn sm ghost" data-ins="## 제목" type="button">H2</button>
+      <button class="btn sm ghost" data-ins="- 항목" type="button">• List</button>
+      <button class="btn sm ghost" data-ins="1. 항목" type="button">1. List</button>
+      <button class="btn sm ghost" data-ins="| 헤더1 | 헤더2 |\\n|---|---|\\n| 셀 | 셀 |" type="button">표</button>
+      <button class="btn sm ghost" data-ins="> 인용" type="button">인용</button>
+      <button class="btn sm ghost" data-ins="\`코드\`" type="button">코드</button>
+      <button class="btn sm ghost" data-ins="[링크 텍스트](https://)" type="button">링크</button>
+      <button class="btn sm ghost" data-ins="![설명](https://)" type="button">이미지</button>
+      <button class="btn sm ghost" data-ins='&lt;iframe src=&quot;https://&quot; width=&quot;100%&quot; height=&quot;400&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;' type="button">임베드</button>
+      <span class="spacer"></span>
+      <select id="modeSel" style="width:auto"><option value="md">마크다운 (HTML 혼합)</option><option value="html">순수 HTML</option></select>
+    </div>
+    <div class="editor-grid">
+      <textarea id="src" placeholder="여기에 작성하세요..."></textarea>
+      <div class="preview" id="preview"></div>
+    </div>`;
+  shell('editor', '📝 문서 / 에디터', `
+    <select id="docSel" style="min-width:200px;width:auto"></select>
+    <button class="btn ghost" id="newDoc" type="button">+ 새 문서</button>
+    <button class="btn ghost" id="renDoc" type="button">이름변경</button>
+    <button class="btn ghost" id="dlDoc"  type="button">⤓ 다운로드</button>
+    <button class="btn danger" id="delDoc" type="button">삭제</button>`, body, pid);
+
+  function save(){ SF.updateProject(pid, { docs: proj.docs }); }
+  function refreshSel(selectId){
+    const sel = $('#docSel');
+    sel.innerHTML = proj.docs.length
+      ? proj.docs.map(d => `<option value="${d.id}">${escapeHtml(d.title)} (${d.type})</option>`).join('')
+      : '<option value="">문서 없음</option>';
+    if(selectId) sel.value = selectId;
+    load();
+  }
+  function current(){ return proj.docs.find(d => d.id === $('#docSel').value); }
+  function load(){
+    const d = current();
+    if(!d){ $('#src').value=''; $('#preview').innerHTML='<div class="muted">문서를 만들어 주세요.</div>'; return; }
+    $('#src').value = d.content||''; $('#modeSel').value = d.type||'md'; renderPv();
+  }
+  function renderPv(){
+    const d = current(); if(!d) return;
+    $('#preview').innerHTML = $('#modeSel').value === 'html' ? $('#src').value : renderMD($('#src').value);
+  }
+
+  $('#docSel').addEventListener('change', load);
+  $('#src').addEventListener('input', () => { const d = current(); if(!d) return; d.content = $('#src').value; save(); renderPv(); });
+  $('#modeSel').addEventListener('change', () => { const d = current(); if(!d) return; d.type = $('#modeSel').value; save(); renderPv(); });
+  $('#newDoc').addEventListener('click', () => {
+    const t = prompt('문서 제목', '새 문서'); if(!t) return;
+    const d = { id: uid('d_'), title: t, type:'md', content:'' };
+    proj.docs.push(d); save(); refreshSel(d.id);
+  });
+  $('#renDoc').addEventListener('click', () => {
+    const d = current(); if(!d) return;
+    const t = prompt('새 제목', d.title); if(!t) return;
+    d.title = t; save(); refreshSel(d.id);
+  });
+  $('#delDoc').addEventListener('click', () => {
+    const d = current(); if(!d) return;
+    if(!confirm('삭제할까요?')) return;
+    proj.docs = proj.docs.filter(x => x.id !== d.id); save(); refreshSel();
+  });
+  $('#dlDoc').addEventListener('click', () => {
+    const d = current(); if(!d) return;
+    const blob = new Blob([d.content||''], { type: d.type==='html'?'text/html':'text/markdown' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = d.title.replace(/[^\w가-힣\- _.]/g, '_') + (d.type==='html'?'.html':'.md');
+    a.click();
+  });
+  $$('[data-ins]').forEach(b => b.addEventListener('click', () => {
+    const ins = b.dataset.ins.replace(/\\n/g, '\n');
+    const ta = $('#src'); const s = ta.selectionStart, e = ta.selectionEnd;
+    ta.value = ta.value.slice(0,s) + ins + ta.value.slice(e);
+    ta.focus(); ta.selectionStart = ta.selectionEnd = s + ins.length;
+    ta.dispatchEvent(new Event('input'));
+  }));
+  refreshSel(proj.docs[0] && proj.docs[0].id);
+});
+
+/* ---------- View: Settings ---------- */
+route('settings', function(){
+  const u = SF.currentUser(); const s = SF.getSettings();
+  const body = `
+    <div class="row">
+      <div>
+        <div class="card">
+          <h3>테마</h3>
+          <div class="field"><label>모드</label>
+            <select id="themeSel">
+              <option value="dark">다크</option><option value="light">라이트</option><option value="sepia">세피아</option>
+            </select></div>
+          <div class="field"><label>강조 색상</label><input id="accent" type="color" value="${s.accent||'#7c5cff'}"></div>
+          <div class="field"><label>폰트 (모두 무료 / Google Fonts)</label>
+            <select id="fontSel">
+              <option>Noto Sans KR</option><option>Noto Serif KR</option>
+              <option>Gowun Dodum</option><option>Gaegu</option>
+              <option>Nanum Pen Script</option><option>Nanum Myeongjo</option>
+              <option>Black Han Sans</option>
+            </select></div>
+          <button class="btn" id="saveTheme" type="button">적용</button>
+        </div>
+        <div class="card">
+          <h3>계정 정보</h3>
+          <div class="field"><label>아이디</label><input id="userName" disabled value="${escapeAttr(u.username)}"></div>
+          <div class="field"><label>표시 이름</label><input id="dispName" value="${escapeAttr(u.displayName)}"></div>
+          <button class="btn" id="saveName" type="button">변경</button>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>백업 (내보내기)</h3>
+          <p class="muted">현재 계정의 모든 데이터를 JSON 파일로 저장합니다.</p>
+          <button class="btn" id="exportBtn" type="button">JSON 다운로드</button>
+        </div>
+        <div class="card">
+          <h3>복원 (가져오기)</h3>
+          <p class="muted">기존 데이터를 덮어씁니다. 주의하세요.</p>
+          <input id="importFile" type="file" accept="application/json,.json">
+          <button class="btn danger" id="importBtn" type="button" style="margin-top:10px">가져오기</button>
+        </div>
+        <div class="card">
+          <h3>위험 구역</h3>
+          <button class="btn danger" id="wipeBtn" type="button">이 계정의 모든 데이터 삭제</button>
+        </div>
+      </div>
+    </div>`;
+  shell('settings', '⚙️ 설정 / 백업', '', body);
+
+  $('#themeSel').value = s.theme || 'dark';
+  $('#fontSel').value  = s.font  || 'Noto Sans KR';
+
+  $('#saveTheme').addEventListener('click', () => {
+    SF.saveSettings({ theme:$('#themeSel').value, accent:$('#accent').value, font:$('#fontSel').value });
+    applyTheme(); toast('테마가 적용되었습니다.', 'success');
+  });
+  $('#saveName').addEventListener('click', () => {
+    const v = $('#dispName').value.trim(); if(!v) return;
+    SF.updateUser({ displayName: v }); toast('저장됨', 'success'); setTimeout(render, 400);
+  });
+  $('#exportBtn').addEventListener('click', () => {
+    const data = SF.exportJSON();
+    const blob = new Blob([data], { type:'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `storyforge_${u.username}_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+  });
+  $('#importBtn').addEventListener('click', () => {
+    const f = $('#importFile').files && $('#importFile').files[0];
+    if(!f){ toast('파일을 선택하세요.', 'error'); return; }
+    if(!confirm('현재 데이터를 덮어씁니다. 계속할까요?')) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try { SF.importJSON(r.result); toast('복원 완료', 'success'); setTimeout(render, 400); }
+      catch(e){ toast(e.message, 'error'); }
+    };
+    r.readAsText(f);
+  });
+  $('#wipeBtn').addEventListener('click', () => {
+    if(!confirm('정말로 모든 프로젝트와 인물 데이터를 삭제할까요?')) return;
+    SF.wipeMyData(); toast('초기화됨', 'success'); setTimeout(render, 400);
+  });
+});
+
+/* ---------- Init ---------- */
+window.addEventListener('error', e => console.error('[SF]', e.message, e.filename, e.lineno));
+if(!location.hash) location.hash = '#/dashboard';
+render();
 </script>
 </body>
 </html>
