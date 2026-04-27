@@ -3,234 +3,340 @@
 <head>
 <meta charset="utf-8">
 <title>StoryForge — 창작자를 위한 설정집</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7a5cff">
+<meta name="description" content="소설가, 웹소설 작가, OC 제작자를 위한 올인원 설정집 + 집필 도구">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&family=Gaegu&family=Nanum+Pen+Script&family=Nanum+Myeongjo:wght@400;700;800&family=Black+Han+Sans&family=Single+Day&family=Hi+Melody&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&family=Gaegu&family=Nanum+Pen+Script&family=Nanum+Myeongjo:wght@400;700;800&family=Black+Han+Sans&family=Single+Day&family=Hi+Melody&family=East+Sea+Dokdo&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0f1115; --bg-elev:#161a22; --bg-soft:#1d222c; --border:#2a2f3a;
-  --text:#e6e8ee; --text-dim:#9aa3b2;
-  --primary:#7c5cff; --primary-hover:#6a48f5; --accent:#ff7ab8;
+  --bg:#0b0e16; --bg-elev:#131725; --bg-soft:#1a2030; --bg-hover:#212a3d; --bg-glass:rgba(19,23,37,.7);
+  --border:#252c3f; --border-strong:#33405e;
+  --text:#eaecf3; --text-dim:#9aa3b8; --text-faint:#5e6884;
+  --primary:#7a5cff; --primary-hover:#6747ee; --primary-soft:rgba(122,92,255,.16);
+  --accent:#ff7ab8; --accent-soft:rgba(255,122,184,.16);
   --success:#3ddc97; --warn:#ffb454; --danger:#ff5c7a;
-  --radius:12px; --radius-sm:8px; --shadow:0 8px 24px rgba(0,0,0,.3);
-  --font-base:'Noto Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --grad:linear-gradient(135deg,#7a5cff 0%,#ff7ab8 100%);
+  --grad-soft:linear-gradient(135deg,rgba(122,92,255,.18) 0%,rgba(255,122,184,.18) 100%);
+  --radius:14px; --radius-sm:10px; --radius-xs:6px;
+  --shadow-sm:0 2px 6px rgba(0,0,0,.18);
+  --shadow:0 8px 24px rgba(0,0,0,.28);
+  --shadow-lg:0 16px 48px rgba(0,0,0,.42);
+  --font-base:'Noto Sans KR','IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-display:'Noto Serif KR', 'Nanum Myeongjo', serif;
   --font-mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
   --font-write:'Noto Serif KR', 'Nanum Myeongjo', serif;
-  --line:1.6;
+  --line:1.65; --side-w:264px;
 }
-[data-theme="light"]{--bg:#f7f8fb;--bg-elev:#fff;--bg-soft:#eef0f5;--border:#dfe3eb;--text:#1a1d24;--text-dim:#5b6373;--shadow:0 8px 24px rgba(20,20,40,.08);--primary:#7c5cff;--primary-hover:#6a48f5;}
-[data-theme="sepia"]{--bg:#f3ecd8;--bg-elev:#fbf6e6;--bg-soft:#ebe2c6;--border:#d6c89c;--text:#3a2e1f;--text-dim:#7a6a4d;--primary:#a05a2c;--primary-hover:#844214;--accent:#c97e3a;--shadow:0 8px 24px rgba(80,60,20,.12);}
-[data-theme="midnight"]{--bg:#0a0e1f;--bg-elev:#121730;--bg-soft:#1b2244;--border:#2a3158;--text:#e7ecff;--text-dim:#8a93b8;--primary:#5cc8ff;--primary-hover:#3ab2f5;--accent:#9c7bff;}
-[data-theme="forest"]{--bg:#0f1a14;--bg-elev:#16241c;--bg-soft:#1f3327;--border:#2c4536;--text:#e6efe7;--text-dim:#9bb39f;--primary:#5cc88e;--primary-hover:#3fa872;--accent:#e0b54a;}
-[data-theme="rose"]{--bg:#1c0e16;--bg-elev:#26131e;--bg-soft:#3a1c2c;--border:#522538;--text:#fce6ef;--text-dim:#bd8aa0;--primary:#ff6b9c;--primary-hover:#e94d83;--accent:#ffb454;}
-[data-theme="ocean"]{--bg:#08161c;--bg-elev:#0f2129;--bg-soft:#172f3a;--border:#234450;--text:#e0f3f9;--text-dim:#7fa7b3;--primary:#27c2c2;--primary-hover:#15a3a3;--accent:#ffae5c;}
-[data-theme="paper"]{--bg:#fdfaf3;--bg-elev:#ffffff;--bg-soft:#f3eedf;--border:#e2dac4;--text:#22201b;--text-dim:#6f6852;--primary:#5b3a29;--primary-hover:#3f281a;--accent:#a86f3c;--shadow:0 8px 24px rgba(60,40,20,.08);}
-[data-theme="lavender"]{--bg:#f5f1fb;--bg-elev:#ffffff;--bg-soft:#ebe3f6;--border:#dccff0;--text:#241733;--text-dim:#6f5e88;--primary:#7c5cff;--primary-hover:#5d3df0;--accent:#ff7ab8;--shadow:0 8px 24px rgba(80,40,160,.10);}
+[data-theme="light"]{--bg:#f6f8fc;--bg-elev:#fff;--bg-soft:#eef1f7;--bg-hover:#e3e8f1;--bg-glass:rgba(255,255,255,.78);--border:#e0e5ee;--border-strong:#cbd2dd;--text:#1a1d28;--text-dim:#5b6373;--text-faint:#9098a8;--shadow-sm:0 2px 6px rgba(20,20,40,.06);--shadow:0 8px 24px rgba(20,20,40,.10);--shadow-lg:0 16px 48px rgba(20,20,40,.16);}
+[data-theme="sepia"]{--bg:#f4ecd6;--bg-elev:#fcf7e6;--bg-soft:#ece1c1;--bg-hover:#e1d5af;--bg-glass:rgba(252,247,230,.85);--border:#d6c89c;--border-strong:#b8a874;--text:#3a2e1f;--text-dim:#7a6a4d;--text-faint:#9c8d6e;--primary:#a05a2c;--primary-hover:#844214;--primary-soft:rgba(160,90,44,.14);--accent:#c97e3a;--accent-soft:rgba(201,126,58,.14);--shadow:0 8px 24px rgba(80,60,20,.12);--grad:linear-gradient(135deg,#a05a2c,#c97e3a);}
+[data-theme="midnight"]{--bg:#070b1d;--bg-elev:#0e1430;--bg-soft:#162048;--bg-hover:#1f2a5a;--bg-glass:rgba(14,20,48,.78);--border:#26315f;--border-strong:#3a4a82;--text:#e7ecff;--text-dim:#8a93b8;--text-faint:#5d6489;--primary:#5cc8ff;--primary-hover:#3ab2f5;--primary-soft:rgba(92,200,255,.14);--accent:#9c7bff;--accent-soft:rgba(156,123,255,.14);--grad:linear-gradient(135deg,#5cc8ff,#9c7bff);}
+[data-theme="forest"]{--bg:#0c1612;--bg-elev:#13231a;--bg-soft:#1b3024;--bg-hover:#234131;--bg-glass:rgba(19,35,26,.78);--border:#2a4434;--border-strong:#3e6650;--text:#e6efe7;--text-dim:#9bb39f;--text-faint:#6f8275;--primary:#5cc88e;--primary-hover:#3fa872;--primary-soft:rgba(92,200,142,.14);--accent:#e0b54a;--accent-soft:rgba(224,181,74,.14);--grad:linear-gradient(135deg,#5cc88e,#e0b54a);}
+[data-theme="rose"]{--bg:#1a0c14;--bg-elev:#23121c;--bg-soft:#371a2a;--bg-hover:#4d2238;--bg-glass:rgba(35,18,28,.78);--border:#4f2538;--border-strong:#723652;--text:#fce6ef;--text-dim:#bd8aa0;--text-faint:#876275;--primary:#ff6b9c;--primary-hover:#e94d83;--primary-soft:rgba(255,107,156,.14);--accent:#ffb454;--accent-soft:rgba(255,180,84,.14);--grad:linear-gradient(135deg,#ff6b9c,#ffb454);}
+[data-theme="ocean"]{--bg:#06141a;--bg-elev:#0d1f27;--bg-soft:#152d38;--bg-hover:#1f4252;--bg-glass:rgba(13,31,39,.78);--border:#214251;--border-strong:#356477;--text:#e0f3f9;--text-dim:#7fa7b3;--text-faint:#577783;--primary:#27c2c2;--primary-hover:#15a3a3;--primary-soft:rgba(39,194,194,.14);--accent:#ffae5c;--accent-soft:rgba(255,174,92,.14);--grad:linear-gradient(135deg,#27c2c2,#ffae5c);}
+[data-theme="paper"]{--bg:#fdfaf3;--bg-elev:#fff;--bg-soft:#f3eedf;--bg-hover:#ebe4cf;--bg-glass:rgba(255,255,255,.85);--border:#e2dac4;--border-strong:#c8bea0;--text:#22201b;--text-dim:#6f6852;--text-faint:#9c9676;--primary:#5b3a29;--primary-hover:#3f281a;--primary-soft:rgba(91,58,41,.10);--accent:#a86f3c;--accent-soft:rgba(168,111,60,.10);--shadow:0 8px 24px rgba(60,40,20,.08);--grad:linear-gradient(135deg,#5b3a29,#a86f3c);}
+[data-theme="lavender"]{--bg:#f5f1fb;--bg-elev:#fff;--bg-soft:#ebe3f6;--bg-hover:#dbcef0;--bg-glass:rgba(255,255,255,.85);--border:#dccff0;--border-strong:#b9a4dd;--text:#241733;--text-dim:#6f5e88;--text-faint:#9285a8;--primary:#7c5cff;--primary-hover:#5d3df0;--primary-soft:rgba(124,92,255,.12);--accent:#ff7ab8;--accent-soft:rgba(255,122,184,.12);--shadow:0 8px 24px rgba(80,40,160,.10);}
+[data-theme="mint"]{--bg:#eef9f4;--bg-elev:#fff;--bg-soft:#dcf2e8;--bg-hover:#c6e8d7;--bg-glass:rgba(255,255,255,.85);--border:#bfe3d3;--border-strong:#94caaf;--text:#0f3325;--text-dim:#4d735f;--text-faint:#7a937f;--primary:#1ea674;--primary-hover:#15814f;--primary-soft:rgba(30,166,116,.12);--accent:#ff8a4c;--accent-soft:rgba(255,138,76,.12);--grad:linear-gradient(135deg,#1ea674,#ff8a4c);}
+[data-theme="cyberpunk"]{--bg:#06031a;--bg-elev:#100a30;--bg-soft:#1c1448;--bg-hover:#2c1f6a;--bg-glass:rgba(16,10,48,.78);--border:#3b2a78;--border-strong:#5a3fbf;--text:#e8e0ff;--text-dim:#a99dd2;--text-faint:#766abc;--primary:#ff2ad1;--primary-hover:#e019b8;--primary-soft:rgba(255,42,209,.14);--accent:#3df0ff;--accent-soft:rgba(61,240,255,.14);--grad:linear-gradient(135deg,#ff2ad1,#3df0ff);}
 
-*{box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:var(--font-base);font-size:15px;line-height:var(--line);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .25s, color .25s}
-a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
-img{max-width:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-base);font-size:15px;line-height:var(--line);min-height:100vh;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;transition:background .35s ease,color .35s ease;overflow-x:hidden}
+a{color:var(--primary);text-decoration:none;transition:color .15s}
+a:hover{color:var(--primary-hover);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+img,svg,video{max-width:100%;display:block}
 hr{border:none;border-top:1px solid var(--border);margin:20px 0}
 ::selection{background:var(--primary);color:#fff}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--text-faint)}
+::-webkit-scrollbar-track{background:transparent}
 
-.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-.sidebar{background:var(--bg-elev);border-right:1px solid var(--border);padding:20px 16px;position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;transition:transform .2s, background .25s, border-color .25s}
-.sidebar h2{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:8px}
-.sidebar .who{font-size:12px;color:var(--text-dim);margin:0 4px 14px}
-.sidebar nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;margin-bottom:3px;font-size:14px;cursor:pointer;transition:background .15s,color .15s,transform .05s}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;letter-spacing:-.01em;line-height:1.25;margin:0}
+h1{font-size:clamp(22px,3vw,30px)} h2{font-size:20px} h3{font-size:17px} h4{font-size:15px}
+
+.app{display:grid;grid-template-columns:var(--side-w) 1fr;min-height:100vh}
+.sidebar{background:var(--bg-elev);border-right:1px solid var(--border);padding:18px 14px 100px;position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;transition:transform .25s cubic-bezier(.4,0,.2,1),background .35s,border-color .35s;z-index:20}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 8px 14px;font-family:var(--font-display);font-weight:900;font-size:20px;letter-spacing:-.02em}
+.brand-logo{width:32px;height:32px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-size:18px;box-shadow:var(--shadow-sm)}
+.brand-name{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.who{font-size:11.5px;color:var(--text-dim);padding:0 8px 12px;display:flex;align-items:center;gap:6px}
+.who-dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 25%, transparent)}
+.sidebar nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;margin-bottom:2px;font-size:13.5px;cursor:pointer;transition:background .12s,color .12s,transform .08s,box-shadow .12s;font-weight:500}
 .sidebar nav a:hover{background:var(--bg-soft);text-decoration:none;transform:translateX(2px)}
-.sidebar nav a.active{background:var(--primary);color:#fff}
-.sidebar .sb-section{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin:18px 12px 6px}
-.main{padding:28px 32px;min-width:0;animation:fadeIn .25s}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.sidebar nav a.active{background:var(--primary-soft);color:var(--primary);box-shadow:inset 3px 0 0 var(--primary)}
+.sidebar nav a .ic{font-size:15px;width:20px;display:inline-flex;justify-content:center}
+.sb-section{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint);margin:16px 12px 6px;font-weight:700}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
-.topbar h1{margin:0;font-size:24px}
+.main{padding:26px clamp(18px,3.4vw,40px) 90px;min-width:0;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.menu-btn{display:none;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;cursor:pointer;color:var(--text);margin-bottom:14px;font-size:18px;font-family:inherit}
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:14px;flex-wrap:wrap}
+.topbar .ttl{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .topbar .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.menu-btn{display:none;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 10px;cursor:pointer;color:var(--text);margin-bottom:14px;font-size:18px}
-.kbd{display:inline-block;font-family:var(--font-mono);font-size:11px;padding:1px 6px;border:1px solid var(--border);border-bottom-width:2px;border-radius:4px;background:var(--bg-soft);color:var(--text-dim)}
+.kbd{display:inline-block;font-family:var(--font-mono);font-size:11px;padding:1px 6px;border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;background:var(--bg-soft);color:var(--text-dim)}
+.crumb{font-size:13px;color:var(--text-dim);margin-bottom:6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.crumb a{color:var(--text-dim);cursor:pointer}
+.crumb a:hover{color:var(--text)}
 
-.btn{background:var(--primary);color:#fff;border:none;padding:9px 16px;border-radius:var(--radius-sm);cursor:pointer;font-weight:500;font-size:14px;font-family:inherit;transition:background .15s,transform .05s,opacity .15s,box-shadow .15s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;line-height:1}
-.btn:hover{background:var(--primary-hover);text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn{background:var(--primary);color:#fff;border:none;padding:9px 16px;border-radius:var(--radius-sm);cursor:pointer;font-weight:600;font-size:13.5px;font-family:inherit;transition:background .15s,transform .06s,opacity .15s,box-shadow .2s,border-color .15s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;line-height:1;white-space:nowrap}
+.btn:hover{background:var(--primary-hover);text-decoration:none;box-shadow:0 6px 16px color-mix(in srgb,var(--primary) 35%, transparent);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
 .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
-.btn.ghost:hover{background:var(--bg-soft);box-shadow:none}
+.btn.ghost:hover{background:var(--bg-soft);box-shadow:none;border-color:var(--border-strong)}
 .btn.danger{background:var(--danger)}
+.btn.danger:hover{background:#e54866;box-shadow:0 6px 16px rgba(255,92,122,.35)}
 .btn.success{background:var(--success);color:#04241a}
-.btn.sm{padding:6px 10px;font-size:13px}
+.btn.warn{background:var(--warn);color:#3a2400}
+.btn.sm{padding:6px 12px;font-size:12.5px;font-weight:500}
+.btn.lg{padding:12px 22px;font-size:15px}
 .btn.block{width:100%}
-.btn.icon{padding:8px;min-width:36px}
+.btn.icon{padding:8px;min-width:36px;font-size:15px}
+.btn.grad{background:var(--grad)}
+.btn.grad:hover{filter:brightness(1.1);box-shadow:0 8px 20px color-mix(in srgb,var(--primary) 40%, transparent)}
 
-input,textarea,select{width:100%;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-family:inherit;font-size:14px;transition:border-color .15s, box-shadow .15s, background .25s, color .25s}
-input[type="color"]{padding:4px;height:40px;cursor:pointer}
-input[type="file"]{padding:6px;cursor:pointer}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent)}
-textarea{resize:vertical;min-height:90px;line-height:1.6}
-label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:4px}
+input,textarea,select{width:100%;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;font-family:inherit;font-size:14px;transition:border-color .15s, box-shadow .15s, background .35s, color .35s;-webkit-appearance:none;appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 18px) center,calc(100% - 13px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px;cursor:pointer}
+input[type="color"]{padding:4px;height:42px;cursor:pointer;background:none}
+input[type="file"]{padding:7px;cursor:pointer}
+input[type="checkbox"],input[type="radio"]{width:auto;cursor:pointer;accent-color:var(--primary)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent)}
+input:disabled,textarea:disabled{opacity:.6;cursor:not-allowed}
+textarea{resize:vertical;min-height:90px;line-height:1.65}
+label{display:block;font-size:12.5px;color:var(--text-dim);margin-bottom:5px;font-weight:500}
 .field{margin-bottom:14px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-@media (max-width:700px){.row,.row3{grid-template-columns:1fr}}
+.row4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:760px){.row,.row3,.row4{grid-template-columns:1fr}}
 
-.card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;transition:background .25s, border-color .25s}
-.card h3{margin:0 0 12px;font-size:16px}
-.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
-.grid.compact{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;transition:background .35s, border-color .35s, box-shadow .2s, transform .15s}
+.card.hover:hover{border-color:var(--border-strong);box-shadow:var(--shadow-sm)}
+.card-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px;flex-wrap:wrap}
+.card-h h3{margin:0}
+.card.gradient{background:var(--grad-soft);border:1px solid var(--border)}
 
-.thumb-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
-.thumb-card:hover{transform:translateY(-2px);border-color:var(--primary);box-shadow:var(--shadow)}
-.thumb-card .avatar{width:100%;aspect-ratio:1/1;background:var(--bg-soft) center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--text-dim)}
-.thumb-card .info{padding:12px 14px}
-.thumb-card .info h4{margin:0 0 4px;font-size:15px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.grid.compact{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.grid.wide{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+
+.thumb-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform .18s cubic-bezier(.4,0,.2,1),border-color .15s,box-shadow .2s;display:flex;flex-direction:column}
+.thumb-card:hover{transform:translateY(-3px);border-color:var(--primary);box-shadow:var(--shadow)}
+.thumb-card .avatar{width:100%;aspect-ratio:1/1;background:var(--bg-soft) center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:42px;color:var(--text-faint);position:relative}
+.thumb-card .avatar::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.18))}
+.thumb-card .info{padding:12px 14px;flex:1;display:flex;flex-direction:column}
+.thumb-card .info h4{margin:0 0 4px;font-size:14.5px;font-family:var(--font-base);font-weight:600}
 .thumb-card .info .role{font-size:12px;color:var(--text-dim)}
-.thumb-card .info .tags{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
+.thumb-card .info .tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px}
 
-.tag{background:var(--bg-soft);color:var(--text);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:11px;display:inline-flex;align-items:center;gap:4px}
-.tag.primary{background:var(--primary);color:#fff;border-color:transparent}
-.tag.accent{background:var(--accent);color:#fff;border-color:transparent}
-.tag.success{background:var(--success);color:#04241a;border-color:transparent}
-.tag.warn{background:var(--warn);color:#3a2400;border-color:transparent}
+.tag{background:var(--bg-soft);color:var(--text);border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11px;display:inline-flex;align-items:center;gap:4px;font-weight:500}
+.tag.primary{background:var(--primary-soft);color:var(--primary);border-color:transparent}
+.tag.accent{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.tag.success{background:color-mix(in srgb,var(--success) 18%, transparent);color:var(--success);border-color:transparent}
+.tag.warn{background:color-mix(in srgb,var(--warn) 18%, transparent);color:var(--warn);border-color:transparent}
+.tag.danger{background:color-mix(in srgb,var(--danger) 18%, transparent);color:var(--danger);border-color:transparent}
 .tag .x{cursor:pointer;opacity:.7}
 .tag .x:hover{opacity:1}
 
-.auth-wrap{min-height:100vh;display:grid;place-items:center;background:radial-gradient(1000px 600px at -10% -10%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 60%),radial-gradient(800px 500px at 110% 110%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),var(--bg);padding:24px}
-.auth-card{width:100%;max-width:430px;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
-.auth-card h1{margin:0 0 6px;font-size:30px;line-height:1.2;background:linear-gradient(90deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
-.auth-card .sub{color:var(--text-dim);margin:0 0 20px;font-size:14px}
-.tabs{display:flex;background:var(--bg-soft);padding:4px;border-radius:var(--radius-sm);margin-bottom:18px}
-.tabs button{flex:1;background:transparent;border:none;padding:8px;color:var(--text-dim);cursor:pointer;border-radius:6px;font-family:inherit;font-size:14px;font-weight:500;transition:background .15s,color .15s}
-.tabs button.active{background:var(--bg-elev);color:var(--text);box-shadow:var(--shadow)}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;background:var(--bg-soft);color:var(--text-dim);border:1px solid var(--border);font-weight:500}
+.pill.primary{background:var(--primary-soft);color:var(--primary);border-color:transparent}
+.muted{color:var(--text-dim);font-size:13px}
+.flex{display:flex;gap:8px;align-items:center}
+.flex.between{justify-content:space-between}
+.flex.col{flex-direction:column;align-items:stretch}
+.flex.wrap{flex-wrap:wrap}
+.spacer{flex:1}
+.right{text-align:right}
 
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(2px);animation:fadeBg .15s}
+.stat{display:flex;flex-direction:column;gap:4px;padding:14px 16px;background:var(--bg-soft);border-radius:var(--radius-sm);border:1px solid var(--border);min-width:120px}
+.stat .lab{font-size:11.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.stat .val{font-size:22px;font-weight:700;font-family:var(--font-display);color:var(--text)}
+.stat.grad{background:var(--grad-soft);border:none}
+
+.empty{text-align:center;color:var(--text-dim);padding:60px 20px}
+.empty .ic{font-size:54px;margin-bottom:12px;opacity:.7}
+.empty h3{color:var(--text);margin:8px 0 6px}
+.empty p{margin:6px 0;font-size:13.5px}
+.divider{height:1px;background:var(--border);margin:18px 0}
+
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;
+  background:radial-gradient(900px 600px at 5% -10%, var(--primary-soft), transparent 55%),
+             radial-gradient(700px 500px at 100% 110%, var(--accent-soft), transparent 55%),
+             var(--bg)}
+.auth-card{width:100%;max-width:440px;background:var(--bg-elev);border:1px solid var(--border);border-radius:18px;padding:34px 30px;box-shadow:var(--shadow-lg)}
+.auth-card .logo{width:48px;height:48px;border-radius:14px;background:var(--grad);display:grid;place-items:center;font-size:24px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.auth-card h1{font-size:30px;line-height:1.15;margin:0 0 6px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.auth-card .sub{color:var(--text-dim);margin:0 0 22px;font-size:13.5px}
+.tabs{display:flex;background:var(--bg-soft);padding:4px;border-radius:var(--radius-sm);margin-bottom:18px}
+.tabs button{flex:1;background:transparent;border:none;padding:9px;color:var(--text-dim);cursor:pointer;border-radius:7px;font-family:inherit;font-size:13.5px;font-weight:600;transition:background .18s,color .18s}
+.tabs button.active{background:var(--bg-elev);color:var(--text);box-shadow:var(--shadow-sm)}
+
+.modal-bg{position:fixed;inset:0;background:rgba(2,4,12,.62);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(4px);animation:fadeBg .18s}
 @keyframes fadeBg{from{opacity:0}to{opacity:1}}
 .modal-bg.open{display:flex}
-.modal{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow);animation:popIn .18s}
-@keyframes popIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.modal{background:var(--bg-elev);border:1px solid var(--border);border-radius:18px;padding:26px;width:100%;max-width:580px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:popIn .22s cubic-bezier(.4,0,.2,1)}
+@keyframes popIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
 .modal.lg{max-width:820px}
-.modal.xl{max-width:1000px}
-.modal header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.modal header h3{margin:0}
-.modal .close{background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1}
+.modal.xl{max-width:1040px}
+.modal header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px}
+.modal header h3{margin:0;font-size:18px}
+.modal .close{background:transparent;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:8px;display:grid;place-items:center;transition:background .15s,color .15s}
+.modal .close:hover{background:var(--bg-soft);color:var(--text)}
 
-.toast-wrap{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:2000}
-.toast{background:var(--bg-elev);border:1px solid var(--border);padding:10px 16px;border-radius:var(--radius-sm);box-shadow:var(--shadow);animation:slideIn .25s;min-width:200px}
+.toast-wrap{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:2000;pointer-events:none}
+.toast{background:var(--bg-elev);border:1px solid var(--border);padding:11px 16px;border-radius:var(--radius-sm);box-shadow:var(--shadow);animation:slideIn .25s;min-width:200px;max-width:340px;font-size:13.5px;pointer-events:auto;font-weight:500}
 .toast.success{border-left:4px solid var(--success)}
 .toast.error{border-left:4px solid var(--danger)}
 .toast.warn{border-left:4px solid var(--warn)}
 .toast.info{border-left:4px solid var(--primary)}
 @keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
 
-.empty{text-align:center;color:var(--text-dim);padding:60px 20px}
-.empty h3{color:var(--text);margin:12px 0 6px}
-.divider{height:1px;background:var(--border);margin:16px 0}
-.flex{display:flex;gap:8px;align-items:center}
-.flex.between{justify-content:space-between}
-.flex.col{flex-direction:column;align-items:stretch}
-.spacer{flex:1}
-.muted{color:var(--text-dim);font-size:13px}
-.right{text-align:right}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;background:var(--bg-soft);color:var(--text-dim);border:1px solid var(--border)}
-
-.tree-canvas{position:relative;background:radial-gradient(circle, var(--border) 1px, transparent 1px) 0 0/24px 24px, var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);width:100%;height:600px;overflow:hidden;user-select:none;touch-action:none}
-.tree-svg{position:absolute;inset:0;pointer-events:none;color:var(--text-dim)}
-.node{position:absolute;background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;cursor:grab;user-select:none;min-width:120px;text-align:center;font-size:13px;font-weight:500;color:var(--text);box-shadow:0 2px 6px rgba(0,0,0,.2);transition:border-color .15s,box-shadow .15s}
+.tree-canvas{position:relative;background:radial-gradient(circle, var(--border) 1px, transparent 1px) 0 0/24px 24px, var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);width:100%;height:min(70vh,640px);overflow:hidden;user-select:none;touch-action:none}
+.tree-svg{position:absolute;inset:0;pointer-events:none;color:var(--text-faint)}
+.node{position:absolute;background:var(--bg-soft);border:2px solid var(--border-strong);border-radius:var(--radius-sm);padding:9px 13px;cursor:grab;user-select:none;min-width:120px;text-align:center;font-size:13px;font-weight:600;color:var(--text);box-shadow:var(--shadow-sm);transition:border-color .15s,box-shadow .15s,transform .1s}
+.node:hover{transform:translateY(-1px)}
 .node.dragging{cursor:grabbing;opacity:.85;z-index:5}
-.node.selected{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb, var(--primary) 30%, transparent)}
+.node.selected{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
 .node small{display:block;color:var(--text-dim);font-weight:400;font-size:11px;margin-top:2px}
 .node[data-type="가족"]{border-color:#7c5cff}
 .node[data-type="조직"]{border-color:#3ddc97}
 .node[data-type="능력"]{border-color:#ffb454}
 .node[data-type="기타"]{border-color:#7aa1ff}
 
-.preview{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:18px;overflow-y:auto;word-wrap:break-word}
-.preview h1,.preview h2,.preview h3{margin-top:0}
+.preview{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:20px;overflow-y:auto;word-wrap:break-word}
+.preview h1,.preview h2,.preview h3{margin-top:14px}
+.preview h1:first-child,.preview h2:first-child,.preview h3:first-child{margin-top:0}
 .preview table{border-collapse:collapse;width:100%;margin:10px 0}
-.preview th,.preview td{border:1px solid var(--border);padding:6px 10px;text-align:left}
-.preview th{background:var(--bg-soft)}
-.preview blockquote{border-left:4px solid var(--primary);margin:8px 0;padding:4px 12px;background:var(--bg-soft)}
-.preview pre{background:var(--bg-soft);padding:12px;border-radius:var(--radius-sm);overflow-x:auto}
+.preview th,.preview td{border:1px solid var(--border);padding:7px 10px;text-align:left}
+.preview th{background:var(--bg-soft);font-weight:700}
+.preview blockquote{border-left:4px solid var(--primary);margin:10px 0;padding:6px 14px;background:var(--bg-soft);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.preview pre{background:var(--bg-soft);padding:13px;border-radius:var(--radius-sm);overflow-x:auto}
 .preview code{font-family:var(--font-mono);font-size:13px}
 .preview iframe{width:100%;max-width:100%;min-height:280px;border:1px solid var(--border);border-radius:var(--radius-sm)}
 .preview img{border-radius:var(--radius-sm)}
 
 .editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;height:70vh}
-@media (max-width:900px){.editor-grid{grid-template-columns:1fr;height:auto}.editor-grid textarea{min-height:320px}}
-.editor-grid textarea{height:100%;font-family:var(--font-mono);font-size:13px}
+@media (max-width:920px){.editor-grid{grid-template-columns:1fr;height:auto}.editor-grid textarea{min-height:340px}}
+.editor-grid textarea{height:100%;font-family:var(--font-mono);font-size:13.5px}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px}
 
-.timeline{position:relative;padding-left:30px}
-.timeline::before{content:'';position:absolute;left:9px;top:0;bottom:0;width:2px;background:var(--border)}
-.tl-item{position:relative;margin-bottom:18px;cursor:pointer}
-.tl-item::before{content:'';position:absolute;left:-25px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--primary);border:3px solid var(--bg)}
-.tl-item .when{font-size:12px;color:var(--text-dim)}
-.tl-item h4{margin:2px 0 4px}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+.tl-item{position:relative;margin-bottom:18px;cursor:pointer;padding:10px 14px;border-radius:var(--radius-sm);transition:background .15s}
+.tl-item:hover{background:var(--bg-soft)}
+.tl-item::before{content:'';position:absolute;left:-27px;top:14px;width:14px;height:14px;border-radius:50%;background:var(--primary);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--primary)}
+.tl-item .when{font-size:12px;color:var(--text-dim);font-weight:600}
+.tl-item h4{margin:2px 0 4px;font-size:15px}
 
 /* Manuscript */
-.ms-grid{display:grid;grid-template-columns:280px 1fr;gap:16px;min-height:calc(100vh - 160px)}
-.ms-list{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:12px;overflow-y:auto;max-height:calc(100vh - 160px)}
-.ms-list .chap{padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;border:1px solid transparent;margin-bottom:4px;transition:background .15s,border-color .15s}
+.ms-grid{display:grid;grid-template-columns:300px 1fr;gap:16px;min-height:calc(100vh - 170px)}
+.ms-list{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:12px;overflow-y:auto;max-height:calc(100vh - 170px)}
+.ms-list .chap{padding:11px 12px;border-radius:var(--radius-sm);cursor:pointer;border:1px solid transparent;margin-bottom:4px;transition:background .15s,border-color .15s}
 .ms-list .chap:hover{background:var(--bg-soft)}
-.ms-list .chap.active{background:var(--bg-soft);border-color:var(--primary)}
-.ms-list .chap .ttl{font-size:14px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:6px}
-.ms-list .chap .meta{font-size:11px;color:var(--text-dim);margin-top:3px;display:flex;gap:8px;align-items:center}
+.ms-list .chap.active{background:var(--primary-soft);border-color:var(--primary)}
+.ms-list .chap .ttl{font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.ms-list .chap .meta{font-size:11px;color:var(--text-dim);margin-top:4px;display:flex;gap:8px;align-items:center}
 .ms-list .chap-actions{display:flex;gap:4px;margin-top:6px;opacity:0;transition:opacity .15s}
 .ms-list .chap:hover .chap-actions,.ms-list .chap.active .chap-actions{opacity:1}
-.ms-list .chap-actions button{flex:1;font-size:11px;padding:3px;background:transparent;color:var(--text-dim);border:1px solid var(--border);border-radius:4px;cursor:pointer}
+.ms-list .chap-actions button{flex:1;font-size:11px;padding:4px;background:transparent;color:var(--text-dim);border:1px solid var(--border);border-radius:5px;cursor:pointer;font-family:inherit}
 .ms-list .chap-actions button:hover{background:var(--bg);color:var(--text)}
 .ms-pane{display:flex;flex-direction:column;gap:10px;min-width:0}
-.ms-meta{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center}
-.ms-write{flex:1;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:8px;min-height:520px}
-.ms-write textarea{flex:1;min-height:480px;font-family:var(--font-write);font-size:16px;line-height:1.85;border:none;background:transparent;padding:6px 4px;resize:none}
+.ms-meta{display:grid;grid-template-columns:1fr auto auto auto auto;gap:8px;align-items:center}
+@media (max-width:600px){.ms-meta{grid-template-columns:1fr auto}}
+.ms-write{flex:1;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:8px;min-height:520px}
+.ms-write textarea{flex:1;min-height:480px;font-family:var(--font-write);font-size:16px;line-height:1.9;border:none;background:transparent;padding:6px 4px;resize:none}
 .ms-write textarea:focus{box-shadow:none}
-.ms-stats{display:flex;gap:14px;font-size:12px;color:var(--text-dim);flex-wrap:wrap;border-top:1px dashed var(--border);padding-top:8px}
-.ms-stats b{color:var(--text)}
-.ms-status{display:inline-flex;align-items:center;gap:6px}
+.ms-stats{display:flex;gap:14px;font-size:12px;color:var(--text-dim);flex-wrap:wrap;border-top:1px dashed var(--border);padding-top:9px;justify-content:space-between}
+.ms-stats b{color:var(--text);font-weight:600}
+.ms-status{display:inline-flex;align-items:center;gap:6px;font-weight:500}
 .status-draft{color:var(--text-dim)}
 .status-editing{color:var(--warn)}
 .status-done{color:var(--success)}
-@media (max-width:900px){.ms-grid{grid-template-columns:1fr}.ms-list{max-height:240px}}
+@media (max-width:920px){.ms-grid{grid-template-columns:1fr}.ms-list{max-height:240px}}
 
 /* Focus mode */
-body.focus .sidebar,body.focus .menu-btn,body.focus .topbar{display:none !important}
+body.focus .sidebar,body.focus .menu-btn,body.focus .topbar,body.focus .crumb,body.focus .mob-nav{display:none !important}
 body.focus .app{grid-template-columns:1fr}
-body.focus .main{padding:40px max(20px, calc((100vw - 760px)/2));max-width:none}
+body.focus .main{padding:48px max(20px,calc((100vw - 780px)/2))}
 body.focus .ms-grid{grid-template-columns:1fr;min-height:calc(100vh - 80px)}
 body.focus .ms-list{display:none}
+body.focus .ms-write{border:none;background:transparent}
 body.focus .ms-write textarea{font-size:18px;line-height:2}
 body.focus .focus-bar{display:flex !important}
 .focus-bar{display:none;position:fixed;top:14px;right:14px;gap:8px;z-index:50}
 
-/* Search palette */
-.search-modal{max-width:560px}
-.search-input{font-size:16px}
-.search-results{margin-top:12px;max-height:50vh;overflow-y:auto}
+/* Search */
+.search-modal{max-width:580px}
+.search-input{font-size:16px;padding:14px}
+.search-results{margin-top:12px;max-height:55vh;overflow-y:auto}
 .search-results .res{padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;border:1px solid transparent;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .search-results .res:hover,.search-results .res.sel{background:var(--bg-soft);border-color:var(--primary)}
 .search-results .res .ic{font-size:18px}
-.search-results .res .ti{font-weight:500}
+.search-results .res .ti{font-weight:600;font-size:14px}
 .search-results .res .meta{font-size:11px;color:var(--text-dim)}
 
-@media (max-width:800px){
+/* World templates */
+.tpl-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:center;transition:transform .15s,border-color .15s,background .15s}
+.tpl-card:hover{transform:translateY(-2px);border-color:var(--primary);background:var(--primary-soft)}
+.tpl-card .em{font-size:32px;margin-bottom:6px}
+.tpl-card .nm{font-weight:600;font-size:13.5px}
+
+/* Mobile bottom nav */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg-glass);backdrop-filter:blur(14px);border-top:1px solid var(--border);z-index:50;padding:8px max(8px,env(safe-area-inset-bottom))}
+.mob-nav-row{display:flex;gap:0;justify-content:space-around}
+.mob-nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;color:var(--text-dim);text-decoration:none;font-size:10.5px;border-radius:8px;transition:color .15s,background .15s}
+.mob-nav a.active{color:var(--primary);background:var(--primary-soft)}
+.mob-nav a .ic{font-size:18px}
+
+/* Viewer */
+.view-page{max-width:920px;margin:0 auto}
+.view-hero{position:relative;height:280px;border-radius:18px;background:var(--grad-soft) center/cover no-repeat;display:flex;align-items:flex-end;padding:30px;margin-bottom:30px;overflow:hidden}
+.view-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55))}
+.view-hero .meta{position:relative;z-index:1;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.view-hero h1{font-size:38px;color:#fff;margin:0 0 6px}
+.view-hero .gen{font-size:14px;opacity:.9}
+.view-toc{position:sticky;top:18px;align-self:start;font-size:13.5px}
+.view-toc a{display:block;padding:6px 12px;color:var(--text-dim);border-left:2px solid transparent;border-radius:0 6px 6px 0;cursor:pointer}
+.view-toc a:hover{color:var(--text);background:var(--bg-soft)}
+.view-toc a.cur{color:var(--primary);border-left-color:var(--primary);font-weight:600;background:var(--primary-soft)}
+.view-grid{display:grid;grid-template-columns:200px 1fr;gap:36px}
+@media (max-width:920px){.view-grid{grid-template-columns:1fr}.view-toc{position:static}.view-hero{height:200px;padding:20px}.view-hero h1{font-size:26px}}
+.view-sec{padding:30px 0;border-bottom:1px dashed var(--border);scroll-margin-top:20px}
+.view-sec h2{font-size:24px;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.view-char{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:16px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;background:var(--bg-elev)}
+.view-char .ava{width:120px;height:120px;border-radius:var(--radius);background:var(--bg-soft) center/cover no-repeat;display:grid;place-items:center;font-size:42px;color:var(--text-faint)}
+.view-char dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px}
+.view-char dt{color:var(--text-dim);font-weight:500}
+.view-char dd{margin:0}
+.view-world-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.view-world-card .tag-row{margin-bottom:8px}
+.view-world-card dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;margin:0 0 10px}
+.view-world-card dt{color:var(--text-dim);font-weight:500}
+.view-chapter{padding:18px 0;border-bottom:1px dashed var(--border)}
+.view-chapter h3{font-family:var(--font-write);font-size:20px;margin-bottom:8px}
+.view-chapter .syn{color:var(--text-dim);font-style:italic;margin-bottom:8px;font-size:13.5px}
+.view-chapter .body{font-family:var(--font-write);font-size:15.5px;line-height:1.95;white-space:pre-wrap}
+
+@media (max-width:820px){
+  :root{--side-w:240px}
   .app{grid-template-columns:1fr}
-  .sidebar{position:fixed;top:0;left:0;height:100vh;width:240px;transform:translateX(-100%);z-index:999;box-shadow:var(--shadow)}
+  .sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--side-w);transform:translateX(-100%);box-shadow:var(--shadow-lg)}
   .sidebar.open{transform:none}
-  .main{padding:20px}
   .menu-btn{display:inline-flex !important}
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:998}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:15;backdrop-filter:blur(2px)}
   .scrim.open{display:block}
+  .mob-nav{display:block}
+  .main{padding-bottom:90px}
 }
 @media print{
-  .sidebar,.actions,.menu-btn,.toast-wrap,.focus-bar,.scrim{display:none !important}
+  .sidebar,.actions,.menu-btn,.toast-wrap,.focus-bar,.scrim,.mob-nav,.crumb{display:none !important}
   .app{display:block}.main{padding:0}body{background:#fff;color:#000}
   .ms-grid{grid-template-columns:1fr}.ms-list{display:none}
-  .ms-write{border:none;box-shadow:none;padding:0}
-  .ms-write textarea{font-size:14pt;line-height:1.8;color:#000;background:#fff !important;-webkit-text-fill-color:#000}
-  .print-chap{page-break-after:always;padding:30px 0}
-  .print-chap h2{margin-top:0}
-  .print-body{white-space:pre-wrap;font-family:var(--font-write);font-size:13pt;line-height:1.85}
+  .ms-write{border:none;box-shadow:none;padding:0;background:#fff}
+  .ms-write textarea{font-size:13pt;line-height:1.85;color:#000;background:#fff !important;-webkit-text-fill-color:#000}
 }
 </style>
 </head>
@@ -241,11 +347,9 @@ body.focus .focus-bar{display:flex !important}
 <div class="focus-bar"><button class="btn ghost sm" id="focusExit" type="button">✕ 집중모드 종료 (Esc)</button></div>
 
 <script>
-/* =====================================================================
- * StoryForge — Single-file SPA  (v4)
- * Drop index.html into any GitHub Pages repo. No build step. No backend.
- * ===================================================================== */
 'use strict';
+/* StoryForge — single file SPA (v5)
+   Drop index.html into any GitHub Pages repo. No build step. No backend. */
 
 /* ---------- helpers ---------- */
 const $  = (s, c) => (c||document).querySelector(s);
@@ -256,20 +360,74 @@ const uid = pre => (pre||'') + Date.now().toString(36) + Math.random().toString(
 function debounce(fn, ms){ let t; return (...a) => { clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; }
 function toast(msg, type){
   const w = $('#toasts'); if(!w) return;
-  const el = document.createElement('div');
-  el.className = 'toast ' + (type||'info'); el.textContent = msg;
+  const el = document.createElement('div'); el.className = 'toast ' + (type||'info'); el.textContent = msg;
   w.appendChild(el);
-  setTimeout(()=>{ el.style.transition='opacity .25s'; el.style.opacity='0'; setTimeout(()=>el.remove(),250); }, 2400);
+  setTimeout(()=>{ el.style.transition='opacity .25s, transform .25s'; el.style.opacity='0'; el.style.transform='translateX(20px)'; setTimeout(()=>el.remove(),250); }, 2600);
 }
 function countText(s){
   s = String(s||'');
-  return {
-    chars: s.length,
-    charsNoSpace: s.replace(/\s/g,'').length,
-    words: s.trim() ? s.trim().split(/\s+/).length : 0
-  };
+  return { chars:s.length, charsNoSpace:s.replace(/\s/g,'').length, words:s.trim()?s.trim().split(/\s+/).length:0 };
 }
-function fmtNum(n){ return n.toLocaleString('ko-KR'); }
+const fmtNum = n => n.toLocaleString('ko-KR');
+function downloadBlob(content, filename, mime){
+  const blob = new Blob([content], { type: mime || 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 800);
+}
+function safeName(s){ return String(s||'untitled').replace(/[^\w가-힣\- _.]/g,'_').slice(0,80); }
+
+/* ---------- World templates ---------- */
+const WORLD_TYPES = {
+  free:     { label:'자유 항목',   em:'📝', fields:[] },
+  location: { label:'장소 / 지역', em:'🗺️', fields:[
+    { k:'climate',    l:'기후 / 지형' },
+    { k:'population', l:'인구 / 주민 구성' },
+    { k:'rule',       l:'통치자 / 통치 형태' },
+    { k:'features',   l:'특징 · 명소', ml:true } ]},
+  magic: { label:'마법 / 능력 체계', em:'✨', fields:[
+    { k:'source',  l:'힘의 원천' },
+    { k:'limits',  l:'제약 / 대가', ml:true },
+    { k:'rank',    l:'등급 / 단계' },
+    { k:'examples',l:'대표 스킬 / 주문', ml:true } ]},
+  org: { label:'조직 / 길드 / 세력', em:'🏛️', fields:[
+    { k:'leader',  l:'수장' },
+    { k:'scale',   l:'규모' },
+    { k:'rank',    l:'계급 / 직위', ml:true },
+    { k:'purpose', l:'목적 / 이념', ml:true },
+    { k:'enemy',   l:'적대 / 동맹' } ]},
+  race: { label:'종족 / 인종', em:'🧝', fields:[
+    { k:'appearance',l:'외형 특징' },
+    { k:'lifespan',  l:'평균 수명' },
+    { k:'traits',    l:'특기 / 능력', ml:true },
+    { k:'society',   l:'사회 / 문화', ml:true },
+    { k:'origin',    l:'기원' } ]},
+  religion: { label:'종교 / 신화', em:'⛩️', fields:[
+    { k:'gods',     l:'신격 / 존재' },
+    { k:'doctrine', l:'교리 / 신조', ml:true },
+    { k:'rituals',  l:'의식 / 축제', ml:true },
+    { k:'priest',   l:'사제 / 조직' } ]},
+  event: { label:'역사 / 사건', em:'📜', fields:[
+    { k:'when',        l:'시점' },
+    { k:'who',         l:'관련 인물 / 세력' },
+    { k:'consequence', l:'결과 · 영향', ml:true } ]},
+  artifact: { label:'유물 / 보구', em:'💎', fields:[
+    { k:'origin',  l:'기원' },
+    { k:'power',   l:'능력', ml:true },
+    { k:'cost',    l:'대가 / 부작용' },
+    { k:'owner',   l:'현재 소유자 / 위치' } ]},
+  language: { label:'언어 / 문자', em:'🔤', fields:[
+    { k:'speakers', l:'사용자' },
+    { k:'grammar',  l:'특징 · 문법', ml:true },
+    { k:'phrases',  l:'예시 어휘', ml:true } ]},
+  creature: { label:'생물 / 몬스터', em:'🐉', fields:[
+    { k:'habitat',  l:'서식지' },
+    { k:'size',     l:'크기 / 외형' },
+    { k:'rank',     l:'위협 등급' },
+    { k:'ability',  l:'능력 / 약점', ml:true },
+    { k:'drop',     l:'드롭 / 소재' } ]}
+};
 
 /* ---------- Storage ---------- */
 const KEY_USERS='sf_users', KEY_SESSION='sf_session', KEY_DATA='sf_data';
@@ -281,7 +439,6 @@ const SF = {
   _users(){ return getJSON(KEY_USERS, []); },
   _saveUsers(u){ setJSON(KEY_USERS, u); },
   hasAnyUser(){ return this._users().length > 0; },
-
   signup({username, password, displayName}){
     username = String(username||'').trim();
     password = String(password||'');
@@ -301,8 +458,7 @@ const SF = {
     username = String(username||'').trim(); password = String(password||'');
     const u = this._users().find(x => x.username === username);
     if(!u || u.passHash !== djb2(password+'|'+username)) throw new Error('아이디 또는 비밀번호가 올바르지 않습니다.');
-    localStorage.setItem(KEY_SESSION, u.id);
-    return u;
+    localStorage.setItem(KEY_SESSION, u.id); return u;
   },
   logout(){ localStorage.removeItem(KEY_SESSION); },
   currentUser(){
@@ -326,7 +482,7 @@ const SF = {
   _saveAll(d){ setJSON(KEY_DATA, d); },
   _initData(id){
     const d = this._all();
-    if(!d[id]){ d[id] = { projects: [], settings:{ theme:'dark', font:'Noto Sans KR', writeFont:'Noto Serif KR', accent:'#7c5cff', autoAccent:true } }; this._saveAll(d); }
+    if(!d[id]){ d[id] = { projects: [], settings:{ theme:'dark', font:'Noto Sans KR', writeFont:'Noto Serif KR', accent:'#7a5cff', autoAccent:true } }; this._saveAll(d); }
   },
   data(){
     const u = this.currentUser(); if(!u) return null;
@@ -341,8 +497,7 @@ const SF = {
     const p = { id: uid('p_'), title: o.title, genre: o.genre||'미지정', summary: o.summary||'', cover: o.cover||'',
       createdAt: Date.now(), characters: [], relations: [], relPositions:{},
       tree:{ nodes:[], edges:[] }, world:{ sections:[] },
-      timeline:[], items:[], gallery:[], docs:[], chapters:[], genres:[],
-      goal:0 };
+      timeline:[], items:[], gallery:[], docs:[], chapters:[], glossary:[], genres:[], goal:0 };
     d.projects.push(p); this.saveData(d); return p;
   },
   updateProject(id, patch){
@@ -387,18 +542,26 @@ const SF = {
     const i = p.chapters.findIndex(c => c.id === cid); if(i<0) return;
     const j = i + dir; if(j < 0 || j >= p.chapters.length) return;
     [p.chapters[i], p.chapters[j]] = [p.chapters[j], p.chapters[i]];
-    p.chapters.forEach((c, k) => c.order = k);
-    this.saveData(d);
+    p.chapters.forEach((c, k) => c.order = k); this.saveData(d);
   },
-  getSettings(){ const d = this.data(); return (d && d.settings) || { theme:'dark', font:'Noto Sans KR', writeFont:'Noto Serif KR', accent:'#7c5cff', autoAccent:true }; },
+  getSettings(){ const d = this.data(); return (d && d.settings) || { theme:'dark', font:'Noto Sans KR', writeFont:'Noto Serif KR', accent:'#7a5cff', autoAccent:true }; },
   saveSettings(s){ const d = this.data(); if(!d) return; d.settings = { ...d.settings, ...s }; this.saveData(d); },
   exportJSON(){
     const u = this.currentUser(); if(!u) return null;
-    return JSON.stringify({ version:2, user:{ username:u.username, displayName:u.displayName }, data: this.data() }, null, 2);
+    return JSON.stringify({ version:3, user:{ username:u.username, displayName:u.displayName }, data: this.data() }, null, 2);
+  },
+  exportProjectJSON(pid){
+    const p = this.getProject(pid); if(!p) return null;
+    return JSON.stringify({ version:3, kind:'project', project:p }, null, 2);
   },
   importJSON(text){
-    const o = JSON.parse(text); if(!o || !o.data) throw new Error('잘못된 백업 파일입니다.');
+    const o = JSON.parse(text); if(!o) throw new Error('잘못된 백업 파일입니다.');
     const u = this.currentUser(); if(!u) throw new Error('로그인이 필요합니다.');
+    if(o.kind === 'project' && o.project){
+      const d = this.data(); const p = { ...o.project, id: uid('p_'), title: (o.project.title||'') + ' (가져옴)' };
+      d.projects.push(p); this.saveData(d); return p.id;
+    }
+    if(!o.data) throw new Error('잘못된 백업 파일입니다.');
     const all = this._all(); all[u.id] = o.data; this._saveAll(all);
   },
   wipeMyData(){ const u = this.currentUser(); if(!u) return; const all = this._all(); delete all[u.id]; this._saveAll(all); this._initData(u.id); }
@@ -406,22 +569,11 @@ const SF = {
 window.SF = SF;
 
 /* ---------- Theme ---------- */
-const THEME_PRESETS = {
-  dark:     { primary:'#7c5cff', accent:'#ff7ab8' },
-  light:    { primary:'#7c5cff', accent:'#ff7ab8' },
-  sepia:    { primary:'#a05a2c', accent:'#c97e3a' },
-  midnight: { primary:'#5cc8ff', accent:'#9c7bff' },
-  forest:   { primary:'#5cc88e', accent:'#e0b54a' },
-  rose:     { primary:'#ff6b9c', accent:'#ffb454' },
-  ocean:    { primary:'#27c2c2', accent:'#ffae5c' },
-  paper:    { primary:'#5b3a29', accent:'#a86f3c' },
-  lavender: { primary:'#7c5cff', accent:'#ff7ab8' }
-};
 function applyTheme(){
   const s = SF.getSettings();
   const root = document.documentElement;
   root.setAttribute('data-theme', s.theme || 'dark');
-  if(s.font) document.body.style.fontFamily = `'${s.font}', system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
+  if(s.font) document.body.style.fontFamily = `'${s.font}','IBM Plex Sans KR', system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
   if(s.writeFont) root.style.setProperty('--font-write', `'${s.writeFont}', 'Noto Serif KR', serif`);
   if(s.autoAccent){
     root.style.removeProperty('--primary');
@@ -490,7 +642,7 @@ function parseHash(){
   const parts = pathPart.split('/').filter(Boolean);
   const params = {};
   if(queryPart) queryPart.split('&').forEach(p => { const [k,v] = p.split('='); params[k] = decodeURIComponent(v||''); });
-  return { name: parts[0] || '', arg: parts[1] || '', params };
+  return { name: parts[0] || '', arg: parts[1] || '', arg2: parts[2] || '', params };
 }
 function render(){
   const r = parseHash();
@@ -502,50 +654,72 @@ function render(){
 window.addEventListener('hashchange', render);
 
 /* ---------- Shell ---------- */
-function shell(activeKey, title, actionsHtml, bodyHtml, pid){
+const NAV_ITEMS = [
+  { k:'project',    h:'/project',    ic:'📖', label:'프로젝트' },
+  { k:'manuscript', h:'/manuscript', ic:'📜', label:'원고' },
+  { k:'character',  h:'/character',  ic:'👥', label:'인물' },
+  { k:'relations',  h:'/relations',  ic:'💞', label:'관계' },
+  { k:'tree',       h:'/tree',       ic:'🌳', label:'가계도' },
+  { k:'world',      h:'/world',      ic:'🌍', label:'세계관' },
+  { k:'timeline',   h:'/timeline',   ic:'⏳', label:'타임라인' },
+  { k:'items',      h:'/items',      ic:'⚔️', label:'아이템' },
+  { k:'glossary',   h:'/glossary',   ic:'📕', label:'용어집' },
+  { k:'gallery',    h:'/gallery',    ic:'🖼️', label:'영감' },
+  { k:'editor',     h:'/editor',     ic:'📝', label:'문서' },
+  { k:'view',       h:'/view',       ic:'👁️', label:'관람모드' }
+];
+
+function shell(activeKey, title, actionsHtml, bodyHtml, pid, crumbHtml){
   const u = SF.currentUser();
-  const isProjScope = ['project','character','relations','tree','world','timeline','items','gallery','editor','manuscript'].includes(activeKey);
-  pid = pid || (isProjScope ? '' : '');
   const projLink = pid ? '/' + pid : '';
-  function nav(key, hash, icon, label, kbd){
-    return `<a class="${activeKey===key?'active':''}" data-go="${hash}">${icon} ${label}${kbd?` <span class="spacer"></span><span class="kbd">${kbd}</span>`:''}</a>`;
+  const isMac = /Mac/i.test(navigator.platform);
+  function navLink(k, h, ic, label, kbd){
+    return `<a class="${activeKey===k?'active':''}" data-go="${h}"><span class="ic">${ic}</span><span>${label}</span>${kbd?`<span class="spacer"></span><span class="kbd">${kbd}</span>`:''}</a>`;
   }
-  const sidebarNav = `
-    ${nav('dashboard', '/dashboard', '🏠', '대시보드')}
-    <a data-act="search">🔍 빠른 검색 <span class="spacer"></span><span class="kbd">${navigator.platform.match(/Mac/)?'⌘K':'Ctrl+K'}</span></a>
-    ${pid ? `
-      <div class="sb-section">현재 프로젝트</div>
-      ${nav('project',     '/project'    + projLink, '📖', '프로젝트 홈')}
-      ${nav('manuscript',  '/manuscript' + projLink, '📜', '원고 / 챕터')}
-      ${nav('character',   '/character'  + projLink, '👥', '등장인물')}
-      ${nav('relations',   '/relations'  + projLink, '💞', '관계 그래프')}
-      ${nav('tree',        '/tree'       + projLink, '🌳', '가계도/조직도')}
-      ${nav('world',       '/world'      + projLink, '🌍', '세계관')}
-      ${nav('timeline',    '/timeline'   + projLink, '⏳', '타임라인')}
-      ${nav('items',       '/items'      + projLink, '⚔️', '아이템 도감')}
-      ${nav('gallery',     '/gallery'    + projLink, '🖼️', '영감 보드')}
-      ${nav('editor',      '/editor'     + projLink, '📝', '문서 / 에디터')}
-    ` : ''}
-    <div class="sb-section">계정</div>
-    ${nav('settings', '/settings', '⚙️', '설정 / 백업')}
-    <a id="sf-logout">🚪 로그아웃</a>`;
+  const projNavs = pid ? NAV_ITEMS.map(n => navLink(n.k, n.h+projLink, n.ic, n.label)).join('') : '';
+  const sidebarHtml = `
+    <a class="brand" data-go="/dashboard">
+      <span class="brand-logo">📚</span>
+      <span class="brand-name">StoryForge</span>
+    </a>
+    <div class="who"><span class="who-dot"></span>${escapeHtml(u.displayName)}</div>
+    <nav>
+      ${navLink('dashboard','/dashboard','🏠','대시보드')}
+      <a data-act="search"><span class="ic">🔍</span><span>빠른 검색</span><span class="spacer"></span><span class="kbd">${isMac?'⌘K':'Ctrl+K'}</span></a>
+      ${pid ? `<div class="sb-section">현재 프로젝트</div>${projNavs}` : ''}
+      <div class="sb-section">계정</div>
+      ${navLink('settings','/settings','⚙️','설정 / 백업')}
+      <a id="sf-logout"><span class="ic">🚪</span><span>로그아웃</span></a>
+    </nav>`;
+
+  const mobNavItems = pid ? [
+    { k:'project',   h:'/project'   + projLink, ic:'📖', label:'홈' },
+    { k:'manuscript',h:'/manuscript'+ projLink, ic:'📜', label:'원고' },
+    { k:'character', h:'/character' + projLink, ic:'👥', label:'인물' },
+    { k:'world',     h:'/world'     + projLink, ic:'🌍', label:'세계관' },
+    { k:'view',      h:'/view'      + projLink, ic:'👁️', label:'관람' }
+  ] : [
+    { k:'dashboard', h:'/dashboard', ic:'🏠', label:'홈' },
+    { k:'__search',  h:'__search',   ic:'🔍', label:'검색' },
+    { k:'settings',  h:'/settings',  ic:'⚙️', label:'설정' }
+  ];
 
   document.getElementById('app').innerHTML = `
     <div class="app">
-      <aside class="sidebar" id="sf-sidebar">
-        <h2>📚 StoryForge</h2>
-        <div class="who">${escapeHtml(u.displayName)}</div>
-        <nav>${sidebarNav}</nav>
-      </aside>
+      <aside class="sidebar" id="sf-sidebar">${sidebarHtml}</aside>
       <main class="main">
-        <button class="menu-btn" id="sf-menu" type="button">☰</button>
+        <button class="menu-btn" id="sf-menu" type="button" aria-label="메뉴 열기">☰ 메뉴</button>
+        ${crumbHtml ? `<div class="crumb">${crumbHtml}</div>` : ''}
         <div class="topbar">
-          <h1>${title}</h1>
+          <div class="ttl"><h1>${title}</h1></div>
           <div class="actions">${actionsHtml||''}</div>
         </div>
         ${bodyHtml}
       </main>
-    </div>`;
+    </div>
+    <nav class="mob-nav"><div class="mob-nav-row">
+      ${mobNavItems.map(n => `<a class="${activeKey===n.k?'active':''}" data-${n.h==='__search'?'act="search"':'go="'+n.h+'"'}><span class="ic">${n.ic}</span><span>${n.label}</span></a>`).join('')}
+    </div></nav>`;
 
   const sidebar = document.getElementById('sf-sidebar');
   const scrim   = document.getElementById('scrim');
@@ -554,7 +728,7 @@ function shell(activeKey, title, actionsHtml, bodyHtml, pid){
     sidebar.classList.add('open'); scrim.classList.add('open');
   });
   scrim.addEventListener('click', close);
-  $$('nav a', sidebar).forEach(a => a.addEventListener('click', close));
+  $$('a', sidebar).forEach(a => a.addEventListener('click', close));
   $$('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go('#' + a.dataset.go); }));
   $$('[data-act="search"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openSearch(); }));
   document.getElementById('sf-logout').addEventListener('click', () => {
@@ -569,8 +743,9 @@ route('auth', function(){
   document.getElementById('app').innerHTML = `
     <div class="auth-wrap">
       <div class="auth-card">
+        <div class="logo">📚</div>
         <h1>StoryForge</h1>
-        <p class="sub">소설가, 웹소설 작가, OC 제작자를 위한 올인원 설정집 ✨</p>
+        <p class="sub">소설가 · 웹소설 작가 · OC 제작자를 위한 올인원 설정집과 집필 도구</p>
         <div class="tabs">
           <button id="tabSignup" type="button" class="${hasUsers?'':'active'}">회원가입</button>
           <button id="tabLogin"  type="button" class="${hasUsers?'active':''}">로그인</button>
@@ -582,23 +757,22 @@ route('auth', function(){
             <input id="suUser" placeholder="2자 이상" autocomplete="username"></div>
           <div class="field"><label>비밀번호 *</label>
             <input id="suPass" type="password" placeholder="4자 이상" autocomplete="new-password"></div>
-          <button class="btn block" type="submit">계정 만들고 시작하기</button>
+          <button class="btn grad block lg" type="submit">계정 만들고 시작하기</button>
         </form>
         <form id="loginForm" autocomplete="off" novalidate style="${hasUsers?'':'display:none'}">
           <div class="field"><label>아이디</label>
             <input id="loginUser" autocomplete="username" placeholder="아이디"></div>
           <div class="field"><label>비밀번호</label>
             <input id="loginPass" type="password" autocomplete="current-password" placeholder="비밀번호"></div>
-          <button class="btn block" type="submit">로그인</button>
+          <button class="btn grad block lg" type="submit">로그인</button>
         </form>
         <div class="divider"></div>
         <p class="muted" style="font-size:12px;text-align:center;margin:0">
-          모든 데이터는 이 브라우저에만 저장됩니다.<br>
-          다른 기기로 옮기려면 [설정 → 백업] 을 사용하세요.
+          🔒 모든 데이터는 이 브라우저에만 저장됩니다.<br>
+          다른 기기로 옮기려면 [설정 → 백업]을 사용하세요.
         </p>
       </div>
     </div>`;
-
   function showTab(name){
     const isLogin = name === 'login';
     $('#tabLogin').classList.toggle('active', isLogin);
@@ -609,13 +783,11 @@ route('auth', function(){
   }
   $('#tabLogin').addEventListener('click',  () => showTab('login'));
   $('#tabSignup').addEventListener('click', () => showTab('signup'));
-
   $('#signupForm').addEventListener('submit', e => {
     e.preventDefault();
     try {
       SF.signup({ username:$('#suUser').value, password:$('#suPass').value, displayName:$('#suName').value });
-      toast('환영합니다!', 'success');
-      go('#/dashboard');
+      toast('환영합니다!', 'success'); go('#/dashboard');
     } catch(err){ toast(err.message, 'error'); }
   });
   $('#loginForm').addEventListener('submit', e => {
@@ -628,37 +800,41 @@ route('auth', function(){
 /* ---------- View: Dashboard ---------- */
 route('dashboard', function(){
   const list = SF.getProjects();
-  const totalWords = list.reduce((sum, p) => sum + (p.chapters||[]).reduce((s,c)=>s+countText(c.body).chars,0), 0);
+  const totalChars = list.reduce((sum,p)=>sum+(p.chapters||[]).reduce((s,c)=>s+countText(c.body).chars,0),0);
   const body = `
-    <div class="card" style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
-      <div><div class="muted" style="font-size:12px">프로젝트</div><b style="font-size:24px">${list.length}</b></div>
-      <div><div class="muted" style="font-size:12px">총 인물</div><b style="font-size:24px">${list.reduce((s,p)=>s+(p.characters||[]).length,0)}</b></div>
-      <div><div class="muted" style="font-size:12px">총 글자수 (원고)</div><b style="font-size:24px">${fmtNum(totalWords)}</b></div>
-      <div class="spacer"></div>
-      <button class="btn ghost" data-act="search" type="button">🔍 빠른 검색</button>
+    <div class="row3" style="margin-bottom:18px">
+      <div class="stat grad"><div class="lab">프로젝트</div><div class="val">${list.length}</div></div>
+      <div class="stat"><div class="lab">총 인물</div><div class="val">${list.reduce((s,p)=>s+(p.characters||[]).length,0)}</div></div>
+      <div class="stat"><div class="lab">총 글자수</div><div class="val">${fmtNum(totalChars)}</div></div>
     </div>
     ${list.length
-      ? `<div class="grid">${list.map(p => `
-        <div class="thumb-card" data-go="/project/${p.id}">
-          <div class="avatar" style="${p.cover?`background-image:url('${escapeAttr(p.cover)}')`:''}">${p.cover?'':'📖'}</div>
-          <div class="info">
-            <h4>${escapeHtml(p.title)}</h4>
-            <div class="role">${escapeHtml(p.genre||'미지정')}</div>
-            <div class="muted" style="font-size:12px;margin-top:4px">
-              인물 ${(p.characters||[]).length} · 챕터 ${(p.chapters||[]).length} · ${fmtNum((p.chapters||[]).reduce((s,c)=>s+countText(c.body).chars,0))}자
+      ? `<div class="grid wide">${list.map(p => {
+          const ch = (p.chapters||[]).reduce((s,c)=>s+countText(c.body).chars,0);
+          return `
+          <div class="thumb-card hover" data-go="/project/${p.id}">
+            <div class="avatar" style="${p.cover?`background-image:url('${escapeAttr(p.cover)}')`:''}">${p.cover?'':'📖'}</div>
+            <div class="info">
+              <h4>${escapeHtml(p.title)}</h4>
+              <div class="role">${escapeHtml(p.genre||'미지정')}</div>
+              <div class="muted" style="font-size:12px;margin-top:6px">
+                인물 ${(p.characters||[]).length} · 챕터 ${(p.chapters||[]).length} · ${fmtNum(ch)}자
+              </div>
+              ${p.summary?`<div class="muted" style="margin-top:6px;font-size:12px;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(p.summary)}</div>`:''}
             </div>
-          </div>
-        </div>`).join('')}</div>`
-      : `<div class="empty"><div style="font-size:48px">📖</div>
-        <h3>아직 프로젝트가 없어요</h3><p>오른쪽 위 <b>+ 새 프로젝트</b> 로 첫 작품을 만들어 보세요.</p></div>`
+          </div>`;
+        }).join('')}</div>`
+      : `<div class="empty"><div class="ic">📖</div>
+        <h3>아직 프로젝트가 없어요</h3>
+        <p>오른쪽 위 <b>+ 새 프로젝트</b> 로 첫 작품을 만들어 보세요.</p>
+        <button class="btn grad lg" id="emptyNew" type="button" style="margin-top:14px">+ 새 프로젝트 만들기</button></div>`
     }`;
   shell('dashboard', '내 프로젝트',
-    `<button class="btn" id="newProjBtn" type="button">+ 새 프로젝트</button>`,
+    `<button class="btn ghost" data-act="search" type="button">🔍 검색</button>
+     <button class="btn grad" id="newProjBtn" type="button">+ 새 프로젝트</button>`,
     body);
-
   $$('.thumb-card').forEach(el => el.addEventListener('click', () => go('#' + el.dataset.go)));
   $('#newProjBtn').addEventListener('click', () => openProjModal(null));
-  $$('[data-act="search"]').forEach(b => b.addEventListener('click', openSearch));
+  const en = $('#emptyNew'); if(en) en.addEventListener('click', () => openProjModal(null));
 });
 
 function openProjModal(pid){
@@ -666,17 +842,13 @@ function openProjModal(pid){
   const m = document.createElement('div');
   m.className = 'modal-bg open'; m.innerHTML = `
     <div class="modal">
-      <header><h3>${pid?'프로젝트 정보':'새 프로젝트 만들기'}</h3><button class="close" data-x type="button">×</button></header>
+      <header><h3>${pid?'프로젝트 정보':'새 프로젝트 만들기'}</h3><button class="close" data-x type="button" aria-label="닫기">×</button></header>
       <form id="npf">
-        <div class="field"><label>제목 *</label>
-          <input id="npTitle" value="${escapeAttr(proj.title)}" required></div>
-        <div class="field"><label>장르 (자유 입력)</label>
-          <input id="npGenre" value="${escapeAttr(proj.genre)}" placeholder="예: 헌터물 / 능력물 / 로맨스 판타지..."></div>
-        <div class="field"><label>한줄 소개</label>
-          <textarea id="npSummary">${escapeHtml(proj.summary)}</textarea></div>
-        <div class="field"><label>커버 이미지 URL (선택)</label>
-          <input id="npCover" value="${escapeAttr(proj.cover)}" placeholder="https://..."></div>
-        <div class="flex" style="justify-content:flex-end;gap:8px">
+        <div class="field"><label>제목 *</label><input id="npTitle" value="${escapeAttr(proj.title)}" required></div>
+        <div class="field"><label>장르 (자유)</label><input id="npGenre" value="${escapeAttr(proj.genre)}" placeholder="헌터물 · 능력물 · 로맨스 판타지..."></div>
+        <div class="field"><label>한줄 소개</label><textarea id="npSummary" rows="2">${escapeHtml(proj.summary)}</textarea></div>
+        <div class="field"><label>커버 이미지 URL (선택)</label><input id="npCover" value="${escapeAttr(proj.cover)}" placeholder="https://..."></div>
+        <div class="flex" style="justify-content:flex-end;gap:8px;margin-top:8px">
           <button class="btn ghost" type="button" data-x>취소</button>
           <button class="btn" type="submit">${pid?'저장':'만들기'}</button>
         </div>
@@ -707,53 +879,63 @@ route('project', function(r){
     <div class="row" style="grid-template-columns:2fr 1fr">
       <div>
         <div class="card">
-          <h3>프로젝트 정보</h3>
+          <div class="card-h"><h3>📋 프로젝트 정보</h3></div>
           <div class="field"><label>제목</label><input id="pfTitle" value="${escapeAttr(proj.title)}"></div>
           <div class="row">
             <div class="field"><label>장르</label><input id="pfGenre" value="${escapeAttr(proj.genre)}"></div>
             <div class="field"><label>커버 이미지 URL</label><input id="pfCover" value="${escapeAttr(proj.cover||'')}"></div>
           </div>
-          <div class="field"><label>한줄 소개</label><textarea id="pfSummary">${escapeHtml(proj.summary||'')}</textarea></div>
+          <div class="field"><label>한줄 소개</label><textarea id="pfSummary" rows="2">${escapeHtml(proj.summary||'')}</textarea></div>
           <div class="field"><label>목표 글자수 (선택)</label>
-            <input id="pfGoal" type="number" min="0" value="${proj.goal||''}" placeholder="예: 100000">
-          </div>
+            <input id="pfGoal" type="number" min="0" value="${proj.goal||''}" placeholder="예: 100000"></div>
           <div class="flex" style="justify-content:flex-end;gap:8px">
             <button class="btn danger" id="delProj" type="button">프로젝트 삭제</button>
             <button class="btn" id="saveProj" type="button">저장</button>
           </div>
         </div>
         <div class="card">
-          <h3>커스텀 장르 / 태그</h3>
+          <div class="card-h"><h3>🏷️ 커스텀 장르 / 태그</h3></div>
           <p class="muted">자신만의 장르를 만들어 두면 인물·문서에 태그로 사용할 수 있어요.</p>
-          <form id="genreForm" class="flex">
+          <form id="genreForm" class="flex" style="margin-top:8px">
             <input id="newGenre" placeholder="예: 흑마법 학원물">
             <button class="btn" type="submit">추가</button>
           </form>
-          <div id="genreTags" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px"></div>
+          <div id="genreTags" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>📤 내보내기</h3></div>
+          <p class="muted">이 프로젝트만 따로 백업하거나, 누구나 볼 수 있는 정적 HTML 파일로 출력할 수 있어요.</p>
+          <div class="flex wrap" style="gap:8px;margin-top:8px">
+            <button class="btn ghost" id="dlProjJson" type="button">⤓ 프로젝트 JSON 백업</button>
+            <button class="btn grad" id="dlStandalone" type="button">📤 정적 HTML 출력 (관람용)</button>
+          </div>
         </div>
       </div>
       <div>
         <div class="card">
-          <h3>요약</h3>
-          <div id="counters"></div>
+          <div class="card-h"><h3>📊 요약</h3></div>
+          <div id="counters" style="font-size:13.5px;line-height:1.9"></div>
           ${goal ? `
             <div class="divider"></div>
             <div class="muted" style="font-size:12px">목표 진행률 ${fmtNum(totalChars)} / ${fmtNum(goal)}자 (${pct}%)</div>
             <div style="background:var(--bg-soft);height:10px;border-radius:999px;overflow:hidden;margin-top:6px">
-              <div style="width:${pct}%;height:100%;background:var(--primary);transition:width .3s"></div>
+              <div style="width:${pct}%;height:100%;background:var(--grad);transition:width .35s"></div>
             </div>` : ''}
         </div>
         <div class="card">
-          <h3>빠른 이동</h3>
+          <div class="card-h"><h3>🚀 빠른 이동</h3></div>
           <div class="flex col" style="gap:6px">
             <button class="btn ghost" data-go="/manuscript/${proj.id}" type="button">📜 원고 쓰기 시작</button>
             <button class="btn ghost" data-go="/character/${proj.id}" type="button">👥 인물 추가</button>
             <button class="btn ghost" data-go="/world/${proj.id}" type="button">🌍 세계관 작성</button>
+            <button class="btn ghost" data-go="/glossary/${proj.id}" type="button">📕 용어집</button>
+            <button class="btn grad" data-go="/view/${proj.id}" type="button">👁️ 관람모드 보기</button>
           </div>
         </div>
       </div>
     </div>`;
-  shell('project', escapeHtml(proj.title), `<span class="pill">${escapeHtml(proj.genre||'미지정')}</span>`, body, pid);
+  shell('project', escapeHtml(proj.title), `<span class="pill">${escapeHtml(proj.genre||'미지정')}</span>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <span>${escapeHtml(proj.title)}</span>`);
 
   $('#saveProj').addEventListener('click', () => {
     SF.updateProject(pid, {
@@ -768,6 +950,14 @@ route('project', function(r){
   $('#delProj').addEventListener('click', () => {
     if(!confirm('정말 삭제할까요? 모든 인물·문서·원고가 함께 사라집니다.')) return;
     SF.deleteProject(pid); go('#/dashboard');
+  });
+  $('#dlProjJson').addEventListener('click', () => {
+    downloadBlob(SF.exportProjectJSON(pid), safeName(proj.title)+'.json', 'application/json');
+    toast('백업 다운로드됨', 'success');
+  });
+  $('#dlStandalone').addEventListener('click', () => {
+    downloadBlob(buildStandaloneHTML(SF.getProject(pid), SF.currentUser()), safeName(proj.title)+'.html', 'text/html');
+    toast('관람용 HTML 다운로드됨', 'success');
   });
 
   function renderGenres(){
@@ -791,19 +981,20 @@ route('project', function(r){
     $('#newGenre').value = ''; renderGenres();
   });
   $('#counters').innerHTML = `
-    <div>등장인물 <b>${(proj.characters||[]).length}</b></div>
-    <div>관계 <b>${(proj.relations||[]).length}</b></div>
-    <div>가계도 노드 <b>${(proj.tree&&proj.tree.nodes||[]).length}</b></div>
-    <div>세계관 항목 <b>${(proj.world&&proj.world.sections||[]).length}</b></div>
-    <div>타임라인 <b>${(proj.timeline||[]).length}</b></div>
-    <div>아이템 <b>${(proj.items||[]).length}</b></div>
-    <div>영감 이미지 <b>${(proj.gallery||[]).length}</b></div>
-    <div>설정 문서 <b>${(proj.docs||[]).length}</b></div>
-    <div>원고 챕터 <b>${(proj.chapters||[]).length}</b></div>
-    <div>총 글자수 <b>${fmtNum(totalChars)}</b></div>`;
+    <div>👥 등장인물 <b>${(proj.characters||[]).length}</b></div>
+    <div>💞 관계 <b>${(proj.relations||[]).length}</b></div>
+    <div>🌳 가계도 노드 <b>${(proj.tree&&proj.tree.nodes||[]).length}</b></div>
+    <div>🌍 세계관 항목 <b>${(proj.world&&proj.world.sections||[]).length}</b></div>
+    <div>⏳ 타임라인 <b>${(proj.timeline||[]).length}</b></div>
+    <div>⚔️ 아이템 <b>${(proj.items||[]).length}</b></div>
+    <div>📕 용어 <b>${(proj.glossary||[]).length}</b></div>
+    <div>🖼️ 이미지 <b>${(proj.gallery||[]).length}</b></div>
+    <div>📝 설정 문서 <b>${(proj.docs||[]).length}</b></div>
+    <div>📜 원고 챕터 <b>${(proj.chapters||[]).length}</b></div>
+    <div>✍️ 총 글자수 <b>${fmtNum(totalChars)}</b></div>`;
 });
 
-/* ---------- View: Manuscript (NEW) ---------- */
+/* ---------- View: Manuscript ---------- */
 route('manuscript', function(r){
   const pid = r.arg; const proj = SF.getProject(pid);
   if(!proj){ go('#/dashboard'); return; }
@@ -817,20 +1008,20 @@ route('manuscript', function(r){
     </div>`;
   shell('manuscript', '📜 원고 — ' + escapeHtml(proj.title),
     `<button class="btn ghost" id="msPrint" type="button">🖨️ 인쇄/PDF</button>
-     <button class="btn ghost" id="msExport" type="button">⤓ 전체 내보내기</button>
-     <button class="btn" id="msNew" type="button">+ 새 챕터</button>`, body, pid);
+     <button class="btn ghost" id="msExport" type="button">⤓ 내보내기</button>
+     <button class="btn grad" id="msNew" type="button">+ 새 챕터</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>원고</span>`);
 
   function refreshList(){
     const list = (SF.getProject(pid).chapters||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));
     const el = $('#msList');
     if(!list.length){
-      el.innerHTML = `<div class="empty" style="padding:20px"><div style="font-size:36px">📜</div>
+      el.innerHTML = `<div class="empty" style="padding:20px"><div class="ic">📜</div>
         <p>아직 챕터가 없어요.<br>오른쪽 위 <b>+ 새 챕터</b> 로 시작하세요.</p></div>`;
       return;
     }
     el.innerHTML = list.map((c, i) => {
-      const cn = countText(c.body);
-      const stat = c.status||'draft';
+      const cn = countText(c.body); const stat = c.status||'draft';
       const stLabel = stat==='editing'?'수정중':stat==='done'?'완료':'초안';
       return `
         <div class="chap ${c.id===activeId?'active':''}" data-id="${c.id}">
@@ -879,17 +1070,17 @@ route('manuscript', function(r){
     const ch = activeId && (SF.getProject(pid).chapters||[]).find(c=>c.id===activeId);
     if(!ch){
       pane.innerHTML = `<div class="card" style="text-align:center;padding:60px 20px;color:var(--text-dim)">
-        <div style="font-size:36px">📜</div><p>왼쪽에서 챕터를 선택하거나 <b>+ 새 챕터</b> 로 시작하세요.</p></div>`;
+        <div style="font-size:42px">📜</div><p>왼쪽에서 챕터를 선택하거나 <b>+ 새 챕터</b>로 시작하세요.</p></div>`;
       return;
     }
     pane.innerHTML = `
       <div class="ms-meta">
-        <input id="chTitle" value="${escapeAttr(ch.title)}" placeholder="챕터 제목" style="font-size:16px;font-weight:600">
+        <input id="chTitle" value="${escapeAttr(ch.title)}" placeholder="챕터 제목" style="font-size:16px;font-weight:700;font-family:var(--font-display)">
         <select id="chStatus" style="width:auto">
           <option value="draft">초안</option><option value="editing">수정중</option><option value="done">완료</option>
         </select>
         <span class="pill" id="saveInd">저장됨</span>
-        <button class="btn ghost icon" id="chFocus" type="button" title="집중모드">🌙</button>
+        <button class="btn ghost icon" id="chFocus" type="button" title="집중모드 (Esc)">🌙</button>
       </div>
       <div class="card" style="padding:14px;margin:0">
         <label style="margin-bottom:6px">개요 / 시놉시스</label>
@@ -902,16 +1093,16 @@ route('manuscript', function(r){
     $('#chStatus').value = ch.status || 'draft';
 
     const updateStats = () => {
-      const v = $('#chBody').value;
-      const c = countText(v);
+      const v = $('#chBody').value; const c = countText(v);
       const goal = SF.getProject(pid).goal || 0;
       const totalChars = (SF.getProject(pid).chapters||[]).reduce((s,x)=>s+(x.id===ch.id?c.chars:countText(x.body).chars),0);
       $('#chStats').innerHTML = `
-        <span><b>${fmtNum(c.chars)}</b> 자</span>
-        <span><b>${fmtNum(c.charsNoSpace)}</b> 자(공백 제외)</span>
-        <span><b>${fmtNum(c.words)}</b> 어절</span>
-        <span class="muted">|</span>
-        <span>프로젝트 총 <b>${fmtNum(totalChars)}</b> 자${goal?` / ${fmtNum(goal)} (${Math.min(100,Math.round(totalChars/goal*100))}%)`:''}</span>`;
+        <div class="flex wrap" style="gap:14px">
+          <span><b>${fmtNum(c.chars)}</b> 자</span>
+          <span><b>${fmtNum(c.charsNoSpace)}</b> 자(공백 제외)</span>
+          <span><b>${fmtNum(c.words)}</b> 어절</span>
+        </div>
+        <div class="muted">프로젝트 총 <b>${fmtNum(totalChars)}</b> 자${goal?` / ${fmtNum(goal)} (${Math.min(100,Math.round(totalChars/goal*100))}%)`:''}</div>`;
     };
     updateStats();
 
@@ -919,14 +1110,15 @@ route('manuscript', function(r){
     const save = debounce(patch => {
       SF.updateChapter(pid, ch.id, patch);
       saveInd.textContent = '저장됨'; saveInd.style.opacity = '.5';
-      const list = $('#msList'); if(list){
+      const list = $('#msList');
+      if(list){
         const card = list.querySelector(`.chap[data-id="${ch.id}"]`);
         if(card){
           const cn = countText($('#chBody').value);
           card.querySelector('.meta span:last-child').textContent = fmtNum(cn.chars) + '자';
         }
       }
-    }, 350);
+    }, 300);
     function dirty(patch){ saveInd.textContent = '저장 중...'; saveInd.style.opacity = '1'; save(patch); }
 
     $('#chTitle').addEventListener('input', e => {
@@ -953,8 +1145,7 @@ route('manuscript', function(r){
   }
 
   $('#msNew').addEventListener('click', () => {
-    const t = prompt('새 챕터 제목', (proj.chapters.length+1) + '화');
-    if(t === null) return;
+    const t = prompt('새 챕터 제목', (proj.chapters.length+1) + '화'); if(t === null) return;
     const ch = SF.addChapter(pid, { title: t || '제목 없음' });
     activeId = ch.id; refreshList(); refreshPane();
     toast('챕터 추가됨', 'success');
@@ -979,29 +1170,22 @@ route('manuscript', function(r){
   });
   $('#msExport').addEventListener('click', () => {
     const chs = (SF.getProject(pid).chapters||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));
-    const fmt = prompt('형식? (txt / md / html)', 'txt');
-    if(!fmt) return;
+    const fmt = prompt('형식? (txt / md / html)', 'txt'); if(!fmt) return;
     let out = '', mime = 'text/plain', ext = 'txt';
     if(fmt === 'md'){
       out = `# ${proj.title}\n\n` + chs.map((c,i)=>`## ${i+1}. ${c.title||'제목 없음'}\n\n${c.synopsis?'> '+c.synopsis+'\n\n':''}${c.body||''}\n`).join('\n');
       mime = 'text/markdown'; ext = 'md';
     } else if(fmt === 'html'){
-      out = `<!doctype html><meta charset="utf-8"><title>${escapeHtml(proj.title)}</title>`
-          + `<h1>${escapeHtml(proj.title)}</h1>`
-          + chs.map((c,i)=>`<h2>${i+1}. ${escapeHtml(c.title||'제목 없음')}</h2>`
-              + (c.synopsis?`<p><i>${escapeHtml(c.synopsis)}</i></p>`:'')
-              + `<pre style="white-space:pre-wrap;font-family:serif">${escapeHtml(c.body||'')}</pre>`).join('');
+      out = `<!doctype html><meta charset="utf-8"><title>${escapeHtml(proj.title)}</title><h1>${escapeHtml(proj.title)}</h1>`
+        + chs.map((c,i)=>`<h2>${i+1}. ${escapeHtml(c.title||'제목 없음')}</h2>`
+            + (c.synopsis?`<p><i>${escapeHtml(c.synopsis)}</i></p>`:'')
+            + `<pre style="white-space:pre-wrap;font-family:serif">${escapeHtml(c.body||'')}</pre>`).join('');
       mime = 'text/html'; ext = 'html';
     } else {
       out = `${proj.title}\n\n` + chs.map((c,i)=>`【${i+1}. ${c.title||'제목 없음'}】\n\n${c.body||''}\n`).join('\n----\n\n');
     }
-    const blob = new Blob([out], { type: mime });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = proj.title.replace(/[^\w가-힣\- _.]/g,'_') + '.' + ext;
-    a.click();
+    downloadBlob(out, safeName(proj.title)+'.'+ext, mime);
   });
-
   refreshList(); refreshPane();
 });
 
@@ -1010,24 +1194,31 @@ route('character', function(r){
   const pid = r.arg; const proj = SF.getProject(pid);
   if(!proj){ go('#/dashboard'); return; }
   const body = `
-    <div class="flex" style="margin-bottom:12px;gap:8px">
-      <input id="csearch" placeholder="검색..." style="max-width:240px">
+    <div class="flex" style="margin-bottom:14px;gap:8px;flex-wrap:wrap">
+      <input id="csearch" placeholder="🔍 인물 검색..." style="max-width:280px">
+      <select id="croleFilter" style="max-width:200px"><option value="">전체 역할</option></select>
     </div>
     <div id="charList" class="grid"></div>`;
-  shell('character', '👥 등장인물',
-    `<button class="btn" id="newBtn" type="button">+ 새 인물</button>`, body, pid);
+  shell('character', '👥 등장인물', `<button class="btn grad" id="newBtn" type="button">+ 새 인물</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>인물</span>`);
 
+  function refreshFilter(){
+    const roles = Array.from(new Set((SF.getProject(pid).characters||[]).map(c=>c.role).filter(Boolean)));
+    $('#croleFilter').innerHTML = '<option value="">전체 역할</option>' + roles.map(r=>`<option>${escapeHtml(r)}</option>`).join('');
+  }
   function refresh(){
+    refreshFilter();
     const q = $('#csearch').value.trim().toLowerCase();
+    const f = $('#croleFilter').value;
     const list = (SF.getProject(pid).characters || []).filter(c => {
+      if(f && c.role !== f) return false;
       if(!q) return true;
       return [c.name,c.role,c.tagline,...(c.tags||[])].join(' ').toLowerCase().includes(q);
     });
     const w = $('#charList');
     if(!list.length){
-      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div style="font-size:48px">👥</div>
-        <h3>등장인물이 없어요</h3><p><b>+ 새 인물</b> 로 첫 캐릭터를 추가하세요.</p></div>`;
-      return;
+      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="ic">👥</div>
+        <h3>등장인물이 없어요</h3><p><b>+ 새 인물</b>로 첫 캐릭터를 추가하세요.</p></div>`; return;
     }
     w.innerHTML = list.map(c => `
       <div class="thumb-card" data-id="${c.id}">
@@ -1042,6 +1233,7 @@ route('character', function(r){
     $$('.thumb-card', w).forEach(el => el.addEventListener('click', () => openCharModal(pid, el.dataset.id, refresh)));
   }
   $('#csearch').addEventListener('input', refresh);
+  $('#croleFilter').addEventListener('change', refresh);
   $('#newBtn').addEventListener('click', () => openCharModal(pid, null, refresh));
   refresh();
 });
@@ -1051,19 +1243,19 @@ function openCharModal(pid, cid, onChange){
   const m = document.createElement('div');
   m.className = 'modal-bg open'; m.innerHTML = `
     <div class="modal lg">
-      <header><h3>${cid?'인물 편집 · '+escapeHtml(c.name||''):'새 인물'}</h3><button class="close" data-x type="button">×</button></header>
+      <header><h3>${cid?'👤 '+escapeHtml(c.name||'인물'):'+ 새 인물'}</h3><button class="close" data-x type="button">×</button></header>
       <form id="cf">
         <div class="row">
           <div>
             <div class="field"><label>이미지 (선택)</label>
               <input id="cAvatarFile" type="file" accept="image/*">
               <input id="cAvatar" placeholder="또는 이미지 URL" value="${escapeAttr(c.avatar||'')}" style="margin-top:6px"></div>
-            <div id="ap" style="border-radius:8px;height:200px;background-size:cover;background-position:center;background-color:var(--bg-soft);display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:36px">${c.avatar?'':'👤'}</div>
+            <div id="ap" style="border-radius:var(--radius);height:200px;background-size:cover;background-position:center;background-color:var(--bg-soft);display:flex;align-items:center;justify-content:center;color:var(--text-faint);font-size:42px">${c.avatar?'':'👤'}</div>
           </div>
           <div>
             <div class="field"><label>이름 *</label><input id="cName" value="${escapeAttr(c.name||'')}" required></div>
             <div class="row">
-              <div class="field"><label>역할</label><input id="cRole" value="${escapeAttr(c.role||'')}" placeholder="주인공/조연/적대..."></div>
+              <div class="field"><label>역할</label><input id="cRole" value="${escapeAttr(c.role||'')}" placeholder="주인공/조연/적..."></div>
               <div class="field"><label>나이</label><input id="cAge" value="${escapeAttr(c.age||'')}"></div>
             </div>
             <div class="row">
@@ -1095,11 +1287,8 @@ function openCharModal(pid, cid, onChange){
   $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
   m.addEventListener('click', e => { if(e.target === m) close(); });
   setTimeout(() => $('#cName', m).focus(), 30);
-
   function setAvatar(url){
-    const ap = $('#ap', m);
-    ap.style.backgroundImage = url ? `url('${url}')` : '';
-    ap.textContent = url ? '' : '👤';
+    const ap = $('#ap', m); ap.style.backgroundImage = url ? `url('${url}')` : ''; ap.textContent = url ? '' : '👤';
   }
   $('#cAvatar', m).addEventListener('input', e => setAvatar(e.target.value));
   $('#cAvatarFile', m).addEventListener('change', e => {
@@ -1109,25 +1298,17 @@ function openCharModal(pid, cid, onChange){
     r.readAsDataURL(f);
   });
   if(c.avatar) setAvatar(c.avatar);
-
   $('#cf', m).addEventListener('submit', e => {
     e.preventDefault();
     const data = {
-      name: $('#cName', m).value.trim(),
-      role: $('#cRole', m).value.trim(),
-      age: $('#cAge', m).value.trim(),
-      gender: $('#cGender', m).value.trim(),
-      job: $('#cJob', m).value.trim(),
-      tagline: $('#cTagline', m).value.trim(),
-      appearance: $('#cAppearance', m).value,
-      personality: $('#cPersonality', m).value,
-      ability: $('#cAbility', m).value,
-      background: $('#cBackground', m).value,
-      like: $('#cLike', m).value.trim(),
-      dislike: $('#cDislike', m).value.trim(),
+      name: $('#cName', m).value.trim(), role: $('#cRole', m).value.trim(),
+      age: $('#cAge', m).value.trim(), gender: $('#cGender', m).value.trim(),
+      job: $('#cJob', m).value.trim(), tagline: $('#cTagline', m).value.trim(),
+      appearance: $('#cAppearance', m).value, personality: $('#cPersonality', m).value,
+      ability: $('#cAbility', m).value, background: $('#cBackground', m).value,
+      like: $('#cLike', m).value.trim(), dislike: $('#cDislike', m).value.trim(),
       tags: $('#cTags', m).value.split(',').map(s => s.trim()).filter(Boolean),
-      note: $('#cNote', m).value,
-      avatar: $('#cAvatar', m).value.trim()
+      note: $('#cNote', m).value, avatar: $('#cAvatar', m).value.trim()
     };
     if(!data.name){ toast('이름은 필수입니다.', 'error'); return; }
     if(cid) SF.updateCharacter(pid, cid, data);
@@ -1135,8 +1316,7 @@ function openCharModal(pid, cid, onChange){
     toast('저장됨', 'success'); close(); onChange && onChange();
   });
   $('#cDel', m).addEventListener('click', () => {
-    if(!cid) return;
-    if(!confirm('이 인물을 삭제할까요?')) return;
+    if(!cid) return; if(!confirm('이 인물을 삭제할까요?')) return;
     SF.deleteCharacter(pid, cid); close(); onChange && onChange();
   });
 }
@@ -1146,17 +1326,16 @@ route('relations', function(r){
   const pid = r.arg; const proj = SF.getProject(pid);
   if(!proj){ go('#/dashboard'); return; }
   proj.relations = proj.relations || []; proj.relPositions = proj.relPositions || {};
-
   const body = `
     <p class="muted">등장인물 페이지에서 만든 인물들 사이의 관계(연인·라이벌·동료·멘토 등)를 자유롭게 연결하세요. 노드를 드래그해 위치를 옮길 수 있어요.</p>
     <div class="tree-canvas" id="canvas"><svg class="tree-svg" id="svg"></svg></div>`;
   shell('relations', '💞 인물 관계 그래프', `
     <button class="btn ghost" id="autoArr" type="button">⟳ 자동 배치</button>
-    <button class="btn" id="addRel" type="button">+ 관계 추가</button>`, body, pid);
+    <button class="btn grad" id="addRel" type="button">+ 관계 추가</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>관계</span>`);
 
   const canvas = $('#canvas'), svg = $('#svg');
   function save(){ SF.updateProject(pid, { relations: proj.relations, relPositions: proj.relPositions }); }
-
   function autoArr(){
     const chars = proj.characters || []; const n = chars.length; if(!n) return;
     const w = canvas.clientWidth, h = canvas.clientHeight;
@@ -1167,14 +1346,13 @@ route('relations', function(r){
     });
     save(); draw();
   }
-
   function draw(){
     $$('.node', canvas).forEach(n => n.remove());
     const chars = proj.characters || [];
     if(!chars.length){
       const e = document.createElement('div');
-      e.style.padding = '20px'; e.style.color = 'var(--text-dim)';
-      e.textContent = '먼저 [등장인물]에서 인물을 추가하세요.';
+      e.style.padding='20px'; e.style.color='var(--text-dim)';
+      e.textContent='먼저 [등장인물]에서 인물을 추가하세요.';
       canvas.appendChild(e); return;
     }
     chars.forEach((c, i) => {
@@ -1185,12 +1363,10 @@ route('relations', function(r){
       const el = document.createElement('div');
       el.className = 'node'; el.style.left = pos.x+'px'; el.style.top = pos.y+'px';
       el.innerHTML = `<div>${escapeHtml(c.name)}</div>${c.role?`<small>${escapeHtml(c.role)}</small>`:''}`;
-      canvas.appendChild(el);
-      drag(el, pos);
+      canvas.appendChild(el); drag(el, pos);
     });
     drawEdges();
   }
-
   function drawEdges(){
     const w = canvas.clientWidth, h = canvas.clientHeight;
     svg.setAttribute('viewBox', `0 0 ${w} ${h}`); svg.setAttribute('width', w); svg.setAttribute('height', h);
@@ -1199,30 +1375,26 @@ route('relations', function(r){
       const a = proj.relPositions[r2.from], b = proj.relPositions[r2.to];
       if(!a || !b) return;
       const ax = a.x+60, ay = a.y+18, bx = b.x+60, by = b.y+18;
-      const color = r2.color || '#7c5cff';
+      const color = r2.color || '#7a5cff';
       html += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${color}" stroke-width="2" opacity=".75" data-rid="${r2.id}" style="cursor:pointer;pointer-events:stroke"/>`;
-      if(r2.label) html += `<text x="${(ax+bx)/2}" y="${(ay+by)/2-4}" fill="${color}" font-size="12" text-anchor="middle" data-rid="${r2.id}" style="cursor:pointer;pointer-events:auto">${escapeHtml(r2.label)}</text>`;
+      if(r2.label) html += `<text x="${(ax+bx)/2}" y="${(ay+by)/2-4}" fill="${color}" font-size="12" text-anchor="middle" data-rid="${r2.id}" style="cursor:pointer;pointer-events:auto;font-weight:600">${escapeHtml(r2.label)}</text>`;
     });
     svg.innerHTML = html; svg.style.pointerEvents = 'auto';
     $$('[data-rid]', svg).forEach(el => el.addEventListener('click', () => openRelModal(el.getAttribute('data-rid'))));
   }
-
   function drag(el, pos){
     let sx,sy,ox,oy;
-    const start = (cx, cy) => {
-      sx=cx; sy=cy; ox=pos.x; oy=pos.y;
-      el.classList.add('dragging');
-    };
-    const move = (cx, cy) => {
-      pos.x = Math.max(0, Math.min(canvas.clientWidth-130, ox + (cx - sx)));
-      pos.y = Math.max(0, Math.min(canvas.clientHeight-50,  oy + (cy - sy)));
+    const start = (cx,cy) => { sx=cx; sy=cy; ox=pos.x; oy=pos.y; el.classList.add('dragging'); };
+    const move = (cx,cy) => {
+      pos.x = Math.max(0, Math.min(canvas.clientWidth-130, ox + (cx-sx)));
+      pos.y = Math.max(0, Math.min(canvas.clientHeight-50, oy + (cy-sy)));
       el.style.left = pos.x+'px'; el.style.top = pos.y+'px'; drawEdges();
     };
     const end = () => { el.classList.remove('dragging'); save(); };
     el.addEventListener('mousedown', e => {
       if(e.button !== 0) return; e.preventDefault(); start(e.clientX, e.clientY);
       const mm = ev => move(ev.clientX, ev.clientY);
-      const mu = () => { document.removeEventListener('mousemove', mm); document.removeEventListener('mouseup', mu); end(); };
+      const mu = () => { document.removeEventListener('mousemove',mm); document.removeEventListener('mouseup',mu); end(); };
       document.addEventListener('mousemove', mm); document.addEventListener('mouseup', mu);
     });
     el.addEventListener('touchstart', e => {
@@ -1232,7 +1404,6 @@ route('relations', function(r){
       document.addEventListener('touchmove', tm, { passive:false }); document.addEventListener('touchend', te);
     }, { passive:true });
   }
-
   function openRelModal(rid){
     const chars = proj.characters || [];
     if(!chars.length){ toast('먼저 인물을 만들어 주세요.', 'warn'); return; }
@@ -1248,10 +1419,8 @@ route('relations', function(r){
             <div class="field"><label>인물 B</label><select id="rTo">${opts}</select></div>
           </div>
           <div class="row">
-            <div class="field"><label>관계 라벨</label>
-              <input id="rLabel" value="${escapeAttr(r2.label||'')}" placeholder="예: 연인 / 라이벌 / 멘토 / 형제"></div>
-            <div class="field"><label>선 색상</label>
-              <input id="rColor" type="color" value="${r2.color||'#7c5cff'}"></div>
+            <div class="field"><label>관계 라벨</label><input id="rLabel" value="${escapeAttr(r2.label||'')}" placeholder="예: 연인 / 라이벌 / 멘토 / 형제"></div>
+            <div class="field"><label>선 색상</label><input id="rColor" type="color" value="${r2.color||'#7a5cff'}"></div>
           </div>
           <div class="flex" style="justify-content:space-between">
             <button class="btn danger" id="rDel" type="button" style="${rid?'':'display:none'}">삭제</button>
@@ -1276,11 +1445,9 @@ route('relations', function(r){
     });
     $('#rDel', m).addEventListener('click', () => {
       if(!rid) return; if(!confirm('이 관계를 삭제할까요?')) return;
-      proj.relations = proj.relations.filter(x => x.id !== rid);
-      save(); close(); draw();
+      proj.relations = proj.relations.filter(x => x.id !== rid); save(); close(); draw();
     });
   }
-
   $('#addRel').addEventListener('click', () => openRelModal(null));
   $('#autoArr').addEventListener('click', autoArr);
   window.addEventListener('resize', drawEdges);
@@ -1295,7 +1462,7 @@ route('tree', function(r){
   let linkMode = false, pending = null;
 
   const body = `
-    <p class="muted">노드를 드래그해 위치를 옮기고, [연결 모드] 를 켠 뒤 두 노드를 차례로 클릭하면 선이 그려집니다.<br>
+    <p class="muted">노드를 드래그해 위치를 옮기고, [연결 모드]를 켠 뒤 두 노드를 차례로 클릭하면 선이 그려집니다.<br>
     노드 더블클릭=편집, 우클릭=삭제.</p>
     <div class="tree-canvas" id="canvas"><svg class="tree-svg" id="svg"></svg></div>`;
   shell('tree', '🌳 가계도 / 조직도', `
@@ -1305,11 +1472,11 @@ route('tree', function(r){
     </select>
     <button class="btn" id="addNode" type="button">+ 노드</button>
     <button class="btn ghost" id="linkBtn" type="button">🔗 연결: OFF</button>
-    <button class="btn danger" id="clearAll" type="button">전체 삭제</button>`, body, pid);
+    <button class="btn danger" id="clearAll" type="button">전체 삭제</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>가계도</span>`);
 
   const canvas = $('#canvas'), svg = $('#svg');
   function save(){ SF.updateProject(pid, { tree }); }
-
   function draw(){
     $$('.node', canvas).forEach(n => n.remove());
     tree.nodes.forEach(n => {
@@ -1317,8 +1484,7 @@ route('tree', function(r){
       el.className = 'node'; el.style.left = n.x+'px'; el.style.top = n.y+'px';
       el.dataset.type = n.type || '기타';
       el.innerHTML = `<div>${escapeHtml(n.label)}</div>${n.sub?`<small>${escapeHtml(n.sub)}</small>`:''}`;
-      canvas.appendChild(el);
-      drag(el, n);
+      canvas.appendChild(el); drag(el, n);
       el.addEventListener('click', e => {
         e.stopPropagation(); if(!linkMode) return;
         if(!pending){ pending = n.id; el.classList.add('selected'); return; }
@@ -1344,7 +1510,6 @@ route('tree', function(r){
     });
     drawEdges();
   }
-
   function drawEdges(){
     const w = canvas.clientWidth, h = canvas.clientHeight;
     svg.setAttribute('viewBox', `0 0 ${w} ${h}`); svg.setAttribute('width', w); svg.setAttribute('height', h);
@@ -1354,17 +1519,16 @@ route('tree', function(r){
       if(!a || !b) return;
       const ax = a.x+60, ay = a.y+18, bx = b.x+60, by = b.y+18;
       html += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="currentColor" stroke-width="2" opacity=".75"/>`;
-      if(e.label) html += `<text x="${(ax+bx)/2}" y="${(ay+by)/2-4}" fill="currentColor" font-size="11" text-anchor="middle">${escapeHtml(e.label)}</text>`;
+      if(e.label) html += `<text x="${(ax+bx)/2}" y="${(ay+by)/2-4}" fill="currentColor" font-size="11" text-anchor="middle" font-weight="600">${escapeHtml(e.label)}</text>`;
     });
     svg.innerHTML = html;
   }
-
   function drag(el, n){
     let sx,sy,ox,oy;
     const start = (cx,cy) => { sx=cx; sy=cy; ox=n.x; oy=n.y; el.classList.add('dragging'); };
     const move  = (cx,cy) => {
-      n.x = Math.max(0, Math.min(canvas.clientWidth-130, ox + (cx - sx)));
-      n.y = Math.max(0, Math.min(canvas.clientHeight-50,  oy + (cy - sy)));
+      n.x = Math.max(0, Math.min(canvas.clientWidth-130, ox + (cx-sx)));
+      n.y = Math.max(0, Math.min(canvas.clientHeight-50, oy + (cy-sy)));
       el.style.left = n.x+'px'; el.style.top = n.y+'px'; drawEdges();
     };
     const end = () => { el.classList.remove('dragging'); save(); };
@@ -1383,7 +1547,6 @@ route('tree', function(r){
       document.addEventListener('touchmove', tm, { passive:false }); document.addEventListener('touchend', te);
     }, { passive:true });
   }
-
   $('#addNode').addEventListener('click', () => {
     const type = $('#typeSel').value;
     const label = prompt(`${type} 노드 이름`, ''); if(!label) return;
@@ -1404,48 +1567,108 @@ route('tree', function(r){
   draw();
 });
 
-/* ---------- View: World ---------- */
+/* ---------- View: World (with templates) ---------- */
 route('world', function(r){
   const pid = r.arg; const proj = SF.getProject(pid);
   if(!proj){ go('#/dashboard'); return; }
   const world = proj.world || (proj.world = { sections: [] });
+  // migrate old format
+  world.sections.forEach(s => { if(!s.type) s.type = 'free'; if(!s.fields) s.fields = {}; });
+
   const body = `
-    <p class="muted">지역, 종족, 마법 체계, 길드, 헌터협회, 계급, 유물 등 자유롭게 항목을 만들 수 있어요. (마크다운/HTML)</p>
+    <div class="card gradient">
+      <div class="card-h"><h3>📑 양식 선택해 추가하기</h3>
+        <div class="muted" style="font-size:12px">아무 양식이나 골라 빠르게 시작</div></div>
+      <div class="grid compact" id="tplGrid"></div>
+    </div>
+    <div class="flex" style="margin:14px 0;gap:8px;flex-wrap:wrap">
+      <input id="wsearch" placeholder="🔍 항목 검색..." style="max-width:280px">
+      <select id="wfilter" style="max-width:200px"><option value="">전체 종류</option></select>
+    </div>
     <div id="sections"></div>`;
-  shell('world', '🌍 세계관 설정', `<button class="btn" id="addSec" type="button">+ 항목 추가</button>`, body, pid);
+  shell('world', '🌍 세계관 설정', '', body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>세계관</span>`);
+
+  $('#tplGrid').innerHTML = Object.entries(WORLD_TYPES).map(([k,v]) =>
+    `<div class="tpl-card" data-tpl="${k}"><div class="em">${v.em}</div><div class="nm">${v.label}</div></div>`).join('');
+  $$('.tpl-card').forEach(el => el.addEventListener('click', () => {
+    const k = el.dataset.tpl; const t = prompt(WORLD_TYPES[k].label + ' 제목', ''); if(!t) return;
+    world.sections.push({ id: uid('w_'), type:k, title:t, fields:{}, body:'', image:'' });
+    save(); refresh();
+  }));
 
   function save(){ SF.updateProject(pid, { world }); }
+
   function refresh(){
+    const types = Array.from(new Set(world.sections.map(s=>s.type).filter(Boolean)));
+    $('#wfilter').innerHTML = '<option value="">전체 종류</option>' + types.map(t => `<option value="${t}">${WORLD_TYPES[t]?WORLD_TYPES[t].label:t}</option>`).join('');
+    const q = $('#wsearch').value.trim().toLowerCase();
+    const f = $('#wfilter').value;
     const w = $('#sections');
-    if(!world.sections.length){
-      w.innerHTML = `<div class="empty"><div style="font-size:48px">🌍</div><h3>세계관 항목이 없어요</h3></div>`;
+    const list = world.sections.filter(s => {
+      if(f && s.type !== f) return false;
+      if(!q) return true;
+      const allText = [s.title, s.body, ...Object.values(s.fields||{})].join(' ').toLowerCase();
+      return allText.includes(q);
+    });
+    if(!list.length){
+      w.innerHTML = `<div class="empty"><div class="ic">🌍</div><h3>세계관 항목이 없어요</h3><p>위에서 양식을 골라 추가하세요.</p></div>`;
       return;
     }
-    w.innerHTML = world.sections.map((s, i) => `
-      <div class="card" data-i="${i}">
-        <div class="flex between" style="margin-bottom:8px">
-          <input class="t" value="${escapeAttr(s.title)}" style="flex:1;font-size:16px;font-weight:600;background:transparent;border:none">
-          <div class="flex" style="gap:6px">
-            <button class="btn sm ghost" data-up type="button">▲</button>
-            <button class="btn sm ghost" data-dn type="button">▼</button>
-            <button class="btn sm danger" data-del type="button">삭제</button>
+    w.innerHTML = list.map((s) => {
+      const tpl = WORLD_TYPES[s.type] || WORLD_TYPES.free;
+      const fieldHtml = tpl.fields.map(f => {
+        const v = (s.fields||{})[f.k] || '';
+        return f.ml
+          ? `<div class="field"><label>${f.l}</label><textarea data-fk="${f.k}" rows="2">${escapeHtml(v)}</textarea></div>`
+          : `<div class="field"><label>${f.l}</label><input data-fk="${f.k}" value="${escapeAttr(v)}"></div>`;
+      }).join('');
+      return `
+        <div class="card" data-id="${s.id}">
+          <div class="card-h">
+            <div class="flex" style="gap:10px;flex:1;min-width:0">
+              <span class="pill primary">${tpl.em} ${tpl.label}</span>
+              <input class="t" value="${escapeAttr(s.title)}" style="flex:1;font-size:16px;font-weight:600;background:transparent;border:none;font-family:var(--font-display)">
+            </div>
+            <div class="flex" style="gap:6px">
+              <button class="btn sm ghost" data-up type="button" title="위로">▲</button>
+              <button class="btn sm ghost" data-dn type="button" title="아래">▼</button>
+              <button class="btn sm danger" data-del type="button">삭제</button>
+            </div>
           </div>
-        </div>
-        <textarea class="b" rows="6" placeholder="자유 서술 (마크다운/HTML)">${escapeHtml(s.body||'')}</textarea>
-      </div>`).join('');
+          ${fieldHtml ? `<div class="row">${fieldHtml.match(/<div class="field">[\s\S]*?<\/div>/g) ? `<div class="row">${fieldHtml}</div>` : fieldHtml}</div>`.replace('<div class="row"><div class="row">','<div class="row">').replace('</div></div>','</div>') : ''}
+          <div class="field"><label>이미지 URL (선택)</label><input class="img" value="${escapeAttr(s.image||'')}" placeholder="https://..."></div>
+          ${s.image?`<img src="${escapeAttr(s.image)}" style="max-height:220px;width:auto;border-radius:var(--radius-sm);margin-bottom:10px">`:''}
+          <div class="field"><label>자유 메모 / 추가 설명 (마크다운/HTML)</label><textarea class="b" rows="4">${escapeHtml(s.body||'')}</textarea></div>
+        </div>`;
+    }).join('');
     $$('.card', w).forEach(card => {
-      const i = +card.dataset.i;
-      $('.t', card).addEventListener('input', e => { world.sections[i].title = e.target.value; save(); });
-      $('.b', card).addEventListener('input', e => { world.sections[i].body  = e.target.value; save(); });
-      $('[data-del]', card).addEventListener('click', () => { if(confirm('삭제할까요?')){ world.sections.splice(i,1); save(); refresh(); }});
-      $('[data-up]', card).addEventListener('click', () => { if(i>0){ [world.sections[i-1],world.sections[i]] = [world.sections[i],world.sections[i-1]]; save(); refresh(); }});
-      $('[data-dn]', card).addEventListener('click', () => { if(i<world.sections.length-1){ [world.sections[i+1],world.sections[i]] = [world.sections[i],world.sections[i+1]]; save(); refresh(); }});
+      const id = card.dataset.id; const sec = world.sections.find(x => x.id === id);
+      $('.t', card).addEventListener('input', e => { sec.title = e.target.value; debouncedSave(); });
+      $('.b', card).addEventListener('input', e => { sec.body = e.target.value; debouncedSave(); });
+      $('.img', card).addEventListener('input', e => { sec.image = e.target.value; debouncedSave(); });
+      $$('[data-fk]', card).forEach(el => el.addEventListener('input', () => {
+        sec.fields = sec.fields || {};
+        sec.fields[el.dataset.fk] = el.value; debouncedSave();
+      }));
+      $('[data-del]', card).addEventListener('click', () => {
+        if(!confirm('삭제할까요?')) return;
+        const i = world.sections.findIndex(x => x.id === id);
+        world.sections.splice(i,1); save(); refresh();
+      });
+      $('[data-up]', card).addEventListener('click', () => {
+        const i = world.sections.findIndex(x => x.id === id);
+        if(i>0){ [world.sections[i-1],world.sections[i]] = [world.sections[i],world.sections[i-1]]; save(); refresh(); }
+      });
+      $('[data-dn]', card).addEventListener('click', () => {
+        const i = world.sections.findIndex(x => x.id === id);
+        if(i<world.sections.length-1){ [world.sections[i+1],world.sections[i]] = [world.sections[i],world.sections[i+1]]; save(); refresh(); }
+      });
     });
   }
-  $('#addSec').addEventListener('click', () => {
-    const t = prompt('항목 제목 (예: 헌터 등급, 마탑, 길드, 종족...)', ''); if(!t) return;
-    world.sections.push({ title: t, body: '' }); save(); refresh();
-  });
+  const debouncedSave = debounce(save, 350);
+  $('#wsearch').addEventListener('input', refresh);
+  $('#wfilter').addEventListener('change', refresh);
   refresh();
 });
 
@@ -1455,18 +1678,18 @@ route('timeline', function(r){
   if(!proj){ go('#/dashboard'); return; }
   const tl = proj.timeline || (proj.timeline = []);
   const body = `<div class="card"><div class="timeline" id="tl"></div></div>`;
-  shell('timeline', '⏳ 타임라인', `<button class="btn" id="addEv" type="button">+ 사건 추가</button>`, body, pid);
-
+  shell('timeline', '⏳ 타임라인', `<button class="btn grad" id="addEv" type="button">+ 사건 추가</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>타임라인</span>`);
   function save(){ SF.updateProject(pid, { timeline: tl }); }
   function refresh(){
     const sorted = [...tl].sort((a,b) => (a.order||0) - (b.order||0));
     const w = $('#tl');
-    if(!sorted.length){ w.innerHTML = `<div class="empty"><div style="font-size:48px">⏳</div><h3>등록된 사건이 없어요</h3></div>`; return; }
+    if(!sorted.length){ w.innerHTML = `<div class="empty"><div class="ic">⏳</div><h3>등록된 사건이 없어요</h3></div>`; return; }
     w.innerHTML = sorted.map(e => `
       <div class="tl-item" data-id="${e.id}">
         <div class="when">${escapeHtml(e.when||'')}</div>
         <h4>${escapeHtml(e.name)}</h4>
-        <div>${renderMD(e.body||'')}</div>
+        <div class="muted">${renderMD(e.body||'')}</div>
       </div>`).join('');
     $$('.tl-item', w).forEach(el => el.addEventListener('click', () => openEv(el.dataset.id)));
   }
@@ -1475,7 +1698,7 @@ route('timeline', function(r){
     const m = document.createElement('div');
     m.className = 'modal-bg open'; m.innerHTML = `
       <div class="modal">
-        <header><h3>${id?'사건 편집':'새 사건'}</h3><button class="close" data-x type="button">×</button></header>
+        <header><h3>${id?'사건 편집':'+ 새 사건'}</h3><button class="close" data-x type="button">×</button></header>
         <form id="ef">
           <div class="row">
             <div class="field"><label>시점/날짜 (자유 형식)</label><input id="evWhen" value="${escapeAttr(e.when||'')}" placeholder="예: 1024년 봄, 또는 1화"></div>
@@ -1518,13 +1741,13 @@ route('items', function(r){
   if(!proj){ go('#/dashboard'); return; }
   const items = proj.items || (proj.items = []);
   const body = `
-    <div class="flex" style="margin-bottom:12px;gap:8px;flex-wrap:wrap">
-      <input id="isearch" placeholder="검색..." style="max-width:200px">
+    <div class="flex" style="margin-bottom:14px;gap:8px;flex-wrap:wrap">
+      <input id="isearch" placeholder="🔍 아이템 검색..." style="max-width:240px">
       <select id="itypeFilter" style="max-width:200px"><option value="">전체 종류</option></select>
     </div>
     <div id="ilist" class="grid compact"></div>`;
-  shell('items', '⚔️ 아이템 도감', `<button class="btn" id="newBtn" type="button">+ 새 아이템</button>`, body, pid);
-
+  shell('items', '⚔️ 아이템 도감', `<button class="btn grad" id="newBtn" type="button">+ 새 아이템</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>아이템</span>`);
   function save(){ SF.updateProject(pid, { items }); }
   function refreshFilter(){
     const types = Array.from(new Set(items.map(i => i.type).filter(Boolean)));
@@ -1541,8 +1764,7 @@ route('items', function(r){
     });
     const w = $('#ilist');
     if(!list.length){
-      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div style="font-size:48px">⚔️</div>
-        <h3>아이템이 없어요</h3><p><b>+ 새 아이템</b> 으로 추가하세요.</p></div>`; return;
+      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="ic">⚔️</div><h3>아이템이 없어요</h3></div>`; return;
     }
     w.innerHTML = list.map(i => `
       <div class="thumb-card" data-id="${i.id}">
@@ -1560,14 +1782,14 @@ route('items', function(r){
     const m = document.createElement('div');
     m.className = 'modal-bg open'; m.innerHTML = `
       <div class="modal">
-        <header><h3>${id?'아이템 편집':'새 아이템'}</h3><button class="close" data-x type="button">×</button></header>
+        <header><h3>${id?'아이템 편집':'+ 새 아이템'}</h3><button class="close" data-x type="button">×</button></header>
         <form id="if">
           <div class="row">
             <div class="field"><label>이름 *</label><input id="iName" value="${escapeAttr(i.name||'')}" required></div>
-            <div class="field"><label>종류</label><input id="iType" value="${escapeAttr(i.type||'')}" placeholder="예: 무기 / 스킬 / 유물"></div>
+            <div class="field"><label>종류</label><input id="iType" value="${escapeAttr(i.type||'')}" placeholder="무기 / 스킬 / 유물..."></div>
           </div>
           <div class="row">
-            <div class="field"><label>등급/희귀도</label><input id="iRarity" value="${escapeAttr(i.rarity||'')}" placeholder="예: SSR / 전설"></div>
+            <div class="field"><label>등급/희귀도</label><input id="iRarity" value="${escapeAttr(i.rarity||'')}" placeholder="SSR / 전설"></div>
             <div class="field"><label>이미지 URL</label><input id="iImage" value="${escapeAttr(i.image||'')}"></div>
           </div>
           <div class="field"><label>설명 (마크다운/HTML)</label><textarea id="iDesc" rows="6">${escapeHtml(i.desc||'')}</textarea></div>
@@ -1587,11 +1809,9 @@ route('items', function(r){
     $('#if', m).addEventListener('submit', e => {
       e.preventDefault();
       const name = $('#iName', m).value.trim(); if(!name){ toast('이름 필수', 'error'); return; }
-      const data = {
-        name, type:$('#iType', m).value.trim(), rarity:$('#iRarity', m).value.trim(),
+      const data = { name, type:$('#iType', m).value.trim(), rarity:$('#iRarity', m).value.trim(),
         image:$('#iImage', m).value.trim(), desc:$('#iDesc', m).value,
-        tags:$('#iTags', m).value.split(',').map(s => s.trim()).filter(Boolean)
-      };
+        tags:$('#iTags', m).value.split(',').map(s => s.trim()).filter(Boolean) };
       if(id){ const idx = items.findIndex(x => x.id === id); items[idx] = { ...items[idx], ...data }; }
       else items.push({ id: uid('i_'), ...data });
       save(); close(); refresh();
@@ -1607,6 +1827,90 @@ route('items', function(r){
   refresh();
 });
 
+/* ---------- View: Glossary ---------- */
+route('glossary', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const gl = proj.glossary || (proj.glossary = []);
+  const body = `
+    <p class="muted">고유 명사·전문 용어·약칭 등을 사전 형태로 정리하세요. 알파벳/가나다 순으로 자동 정렬됩니다.</p>
+    <div class="flex" style="margin-bottom:14px;gap:8px;flex-wrap:wrap">
+      <input id="gsearch" placeholder="🔍 용어 검색..." style="max-width:280px">
+    </div>
+    <div id="glist"></div>`;
+  shell('glossary', '📕 용어집 / 사전', `<button class="btn grad" id="newG" type="button">+ 새 용어</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>용어집</span>`);
+  function save(){ SF.updateProject(pid, { glossary: gl }); }
+  function refresh(){
+    const q = $('#gsearch').value.trim().toLowerCase();
+    const list = gl.filter(g => !q || (g.term+' '+g.def+' '+(g.alias||'')).toLowerCase().includes(q))
+      .slice().sort((a,b) => String(a.term||'').localeCompare(String(b.term||''), 'ko'));
+    const w = $('#glist');
+    if(!list.length){
+      w.innerHTML = `<div class="empty"><div class="ic">📕</div><h3>등록된 용어가 없어요</h3></div>`; return;
+    }
+    const grouped = {};
+    list.forEach(g => {
+      const ch = String(g.term||'').charAt(0).toUpperCase() || '#';
+      (grouped[ch] = grouped[ch] || []).push(g);
+    });
+    w.innerHTML = Object.keys(grouped).sort((a,b)=>a.localeCompare(b,'ko')).map(letter => `
+      <div class="card">
+        <div class="card-h"><h3 style="font-family:var(--font-display)">${escapeHtml(letter)}</h3></div>
+        ${grouped[letter].map(g => `
+          <div class="flex" style="gap:14px;padding:10px 0;border-top:1px dashed var(--border);align-items:flex-start;cursor:pointer" data-id="${g.id}">
+            <div style="min-width:140px;font-weight:700;font-family:var(--font-display)">${escapeHtml(g.term)}
+              ${g.alias?`<div style="font-size:11px;color:var(--text-dim);font-weight:400;margin-top:2px">= ${escapeHtml(g.alias)}</div>`:''}
+              ${g.tag?`<span class="tag" style="margin-top:4px">${escapeHtml(g.tag)}</span>`:''}
+            </div>
+            <div style="flex:1;font-size:13.5px">${renderMD(g.def||'')}</div>
+          </div>`).join('')}
+      </div>`).join('');
+    $$('[data-id]', w).forEach(el => el.addEventListener('click', () => openG(el.dataset.id)));
+  }
+  function openG(id){
+    const g = id ? gl.find(x => x.id === id) : {};
+    const m = document.createElement('div');
+    m.className = 'modal-bg open'; m.innerHTML = `
+      <div class="modal">
+        <header><h3>${id?'용어 편집':'+ 새 용어'}</h3><button class="close" data-x type="button">×</button></header>
+        <form id="gf">
+          <div class="row">
+            <div class="field"><label>용어 *</label><input id="gTerm" value="${escapeAttr(g.term||'')}" required></div>
+            <div class="field"><label>이명 / 별칭</label><input id="gAlias" value="${escapeAttr(g.alias||'')}"></div>
+          </div>
+          <div class="field"><label>분류 (선택)</label><input id="gTag" value="${escapeAttr(g.tag||'')}" placeholder="고유명사 / 직책 / 지명..."></div>
+          <div class="field"><label>설명 (마크다운/HTML)</label><textarea id="gDef" rows="5">${escapeHtml(g.def||'')}</textarea></div>
+          <div class="flex" style="justify-content:space-between">
+            <button class="btn danger" id="gDel" type="button" style="${id?'':'display:none'}">삭제</button>
+            <div class="flex" style="gap:8px"><button class="btn ghost" type="button" data-x>취소</button>
+            <button class="btn" type="submit">저장</button></div>
+          </div>
+        </form>
+      </div>`;
+    document.body.appendChild(m);
+    const close = () => m.remove();
+    $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
+    m.addEventListener('click', e => { if(e.target === m) close(); });
+    setTimeout(() => $('#gTerm', m).focus(), 30);
+    $('#gf', m).addEventListener('submit', e => {
+      e.preventDefault();
+      const term = $('#gTerm', m).value.trim(); if(!term){ toast('용어 필수', 'error'); return; }
+      const data = { term, alias:$('#gAlias', m).value.trim(), tag:$('#gTag', m).value.trim(), def:$('#gDef', m).value };
+      if(id){ const idx = gl.findIndex(x => x.id === id); gl[idx] = { ...gl[idx], ...data }; }
+      else gl.push({ id: uid('gl_'), ...data });
+      save(); close(); refresh();
+    });
+    $('#gDel', m).addEventListener('click', () => {
+      if(!confirm('삭제할까요?')) return;
+      const idx = gl.findIndex(x => x.id === id); gl.splice(idx,1); save(); close(); refresh();
+    });
+  }
+  $('#newG').addEventListener('click', () => openG(null));
+  $('#gsearch').addEventListener('input', refresh);
+  refresh();
+});
+
 /* ---------- View: Gallery ---------- */
 route('gallery', function(r){
   const pid = r.arg; const proj = SF.getProject(pid);
@@ -1619,19 +1923,19 @@ route('gallery', function(r){
     <input id="addUrl" placeholder="이미지 URL" style="min-width:220px;width:auto">
     <button class="btn" id="addUrlBtn" type="button">URL 추가</button>
     <input id="addFile" type="file" accept="image/*" multiple style="display:none">
-    <button class="btn ghost" id="pickFile" type="button">파일 업로드</button>`, body, pid);
-
+    <button class="btn ghost" id="pickFile" type="button">📎 파일 업로드</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>영감</span>`);
   function save(){ SF.updateProject(pid, { gallery: gal }); }
   function refresh(){
     const w = $('#grid');
     if(!gal.length){
-      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div style="font-size:48px">🖼️</div>
-        <h3>이미지가 없어요</h3><p>URL 을 붙여넣거나 파일을 업로드하세요.</p></div>`; return;
+      w.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="ic">🖼️</div>
+        <h3>이미지가 없어요</h3><p>URL을 붙여넣거나 파일을 업로드하세요.</p></div>`; return;
     }
     w.innerHTML = gal.map(g => `
       <div class="thumb-card" data-id="${g.id}">
         <div class="avatar" style="background-image:url('${escapeAttr(g.src)}')"></div>
-        <div class="info"><div class="muted" style="font-size:12px">${escapeHtml(g.caption||'클릭하여 캡션')}</div></div>
+        <div class="info"><div class="muted" style="font-size:12px">${escapeHtml(g.caption||'클릭하여 캡션 편집')}</div></div>
       </div>`).join('');
     $$('.thumb-card', w).forEach(el => el.addEventListener('click', () => {
       const g = gal.find(x => x.id === el.dataset.id);
@@ -1659,7 +1963,7 @@ route('gallery', function(r){
   refresh();
 });
 
-/* ---------- View: Editor (설정/메모) ---------- */
+/* ---------- View: Editor ---------- */
 route('editor', function(r){
   const pid = r.arg; const proj = SF.getProject(pid);
   if(!proj){ go('#/dashboard'); return; }
@@ -1670,7 +1974,7 @@ route('editor', function(r){
     SF.updateProject(pid, { docs: proj.docs });
   }
   const body = `
-    <div class="flex" style="margin-bottom:10px;gap:6px;flex-wrap:wrap">
+    <div class="toolbar">
       <button class="btn sm ghost" data-ins="**굵게**" type="button"><b>B</b></button>
       <button class="btn sm ghost" data-ins="*기울임*" type="button"><i>I</i></button>
       <button class="btn sm ghost" data-ins="~~취소선~~" type="button">S</button>
@@ -1685,18 +1989,19 @@ route('editor', function(r){
       <button class="btn sm ghost" data-ins="![설명](https://)" type="button">이미지</button>
       <button class="btn sm ghost" data-ins='&lt;iframe src=&quot;https://&quot; width=&quot;100%&quot; height=&quot;400&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;' type="button">임베드</button>
       <span class="spacer"></span>
-      <select id="modeSel" style="width:auto"><option value="md">마크다운 (HTML 혼합)</option><option value="html">순수 HTML</option></select>
+      <select id="modeSel" style="width:auto;max-width:180px"><option value="md">마크다운</option><option value="html">순수 HTML</option></select>
     </div>
     <div class="editor-grid">
       <textarea id="src" placeholder="여기에 작성하세요..."></textarea>
       <div class="preview" id="preview"></div>
     </div>`;
   shell('editor', '📝 문서 / 에디터', `
-    <select id="docSel" style="min-width:200px;width:auto"></select>
+    <select id="docSel" style="min-width:180px;width:auto"></select>
     <button class="btn ghost" id="newDoc" type="button">+ 새 문서</button>
     <button class="btn ghost" id="renDoc" type="button">이름변경</button>
     <button class="btn ghost" id="dlDoc"  type="button">⤓ 다운로드</button>
-    <button class="btn danger" id="delDoc" type="button">삭제</button>`, body, pid);
+    <button class="btn danger" id="delDoc" type="button">삭제</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>문서</span>`);
 
   function save(){ SF.updateProject(pid, { docs: proj.docs }); }
   function refreshSel(selectId){
@@ -1717,7 +2022,6 @@ route('editor', function(r){
     const d = current(); if(!d) return;
     $('#preview').innerHTML = $('#modeSel').value === 'html' ? $('#src').value : renderMD($('#src').value);
   }
-
   $('#docSel').addEventListener('change', load);
   $('#src').addEventListener('input', () => { const d = current(); if(!d) return; d.content = $('#src').value; save(); renderPv(); });
   $('#modeSel').addEventListener('change', () => { const d = current(); if(!d) return; d.type = $('#modeSel').value; save(); renderPv(); });
@@ -1738,11 +2042,7 @@ route('editor', function(r){
   });
   $('#dlDoc').addEventListener('click', () => {
     const d = current(); if(!d) return;
-    const blob = new Blob([d.content||''], { type: d.type==='html'?'text/html':'text/markdown' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = d.title.replace(/[^\w가-힣\- _.]/g, '_') + (d.type==='html'?'.html':'.md');
-    a.click();
+    downloadBlob(d.content||'', safeName(d.title) + (d.type==='html'?'.html':'.md'), d.type==='html'?'text/html':'text/markdown');
   });
   $$('[data-ins]').forEach(b => b.addEventListener('click', () => {
     const ins = b.dataset.ins.replace(/\\n/g, '\n');
@@ -1754,6 +2054,310 @@ route('editor', function(r){
   refreshSel(proj.docs[0] && proj.docs[0].id);
 });
 
+/* ---------- View: Viewer (관람모드) ---------- */
+route('view', function(r){
+  const pid = r.arg; const proj = SF.getProject(pid);
+  if(!proj){ go('#/dashboard'); return; }
+  const body = renderViewerBody(proj);
+  shell('view', '👁️ 관람모드 — ' + escapeHtml(proj.title),
+    `<button class="btn ghost" data-go="/project/${pid}" type="button">← 편집</button>
+     <button class="btn ghost" id="vPrint" type="button">🖨️ 인쇄</button>
+     <button class="btn grad" id="vDl" type="button">📤 정적 HTML 출력</button>`, body, pid,
+    `<a data-go="/dashboard">대시보드</a> › <a data-go="/project/${pid}">${escapeHtml(proj.title)}</a> › <span>관람모드</span>`);
+  $('#vPrint').addEventListener('click', () => window.print());
+  $('#vDl').addEventListener('click', () => {
+    downloadBlob(buildStandaloneHTML(proj, SF.currentUser()), safeName(proj.title)+'.html', 'text/html');
+    toast('관람용 HTML 다운로드됨', 'success');
+  });
+
+  // TOC scrollspy
+  const links = $$('.view-toc a');
+  links.forEach(l => l.addEventListener('click', e => {
+    e.preventDefault();
+    const tgt = document.getElementById(l.dataset.target);
+    if(tgt) tgt.scrollIntoView({ behavior:'smooth', block:'start' });
+  }));
+  const secs = $$('.view-sec');
+  function spy(){
+    let cur = secs[0] && secs[0].id;
+    for(const s of secs){ if(s.getBoundingClientRect().top <= 80) cur = s.id; }
+    links.forEach(l => l.classList.toggle('cur', l.dataset.target === cur));
+  }
+  window.addEventListener('scroll', spy, { passive:true }); spy();
+});
+
+function renderViewerBody(p){
+  const sections = [];
+  if(p.summary) sections.push({ id:'summary', label:'📝 소개', html:`<p style="font-size:16px;line-height:1.85">${escapeHtml(p.summary)}</p>` });
+  if((p.characters||[]).length) sections.push({ id:'characters', label:'👥 등장인물', html:viewerCharsHTML(p.characters) });
+  if((p.world&&p.world.sections||[]).length) sections.push({ id:'world', label:'🌍 세계관', html:viewerWorldHTML(p.world.sections) });
+  if((p.timeline||[]).length) sections.push({ id:'timeline', label:'⏳ 타임라인', html:viewerTimelineHTML(p.timeline) });
+  if((p.items||[]).length) sections.push({ id:'items', label:'⚔️ 아이템', html:viewerItemsHTML(p.items) });
+  if((p.glossary||[]).length) sections.push({ id:'glossary', label:'📕 용어집', html:viewerGlossaryHTML(p.glossary) });
+  if((p.gallery||[]).length) sections.push({ id:'gallery', label:'🖼️ 갤러리', html:viewerGalleryHTML(p.gallery) });
+  if((p.chapters||[]).length) sections.push({ id:'manuscript', label:'📜 원고', html:viewerChaptersHTML(p.chapters) });
+
+  if(!sections.length) return `<div class="empty"><div class="ic">👁️</div><h3>아직 보여줄 내용이 없어요</h3><p>인물·세계관·원고를 추가한 뒤 다시 와 보세요.</p></div>`;
+  return `
+    <div class="view-page">
+      <div class="view-hero" style="${p.cover?`background-image:url('${escapeAttr(p.cover)}')`:''}">
+        <div class="meta">
+          <h1>${escapeHtml(p.title)}</h1>
+          <div class="gen">${escapeHtml(p.genre||'')}</div>
+        </div>
+      </div>
+      <div class="view-grid">
+        <nav class="view-toc">
+          ${sections.map(s => `<a data-target="${s.id}">${s.label}</a>`).join('')}
+        </nav>
+        <div>
+          ${sections.map(s => `<section class="view-sec" id="${s.id}"><h2>${s.label}</h2>${s.html}</section>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+function viewerCharsHTML(chars){
+  return chars.map(c => `
+    <div class="view-char">
+      <div class="ava" style="${c.avatar?`background-image:url('${escapeAttr(c.avatar)}')`:''}">${c.avatar?'':'👤'}</div>
+      <div>
+        <h3 style="margin:0 0 4px">${escapeHtml(c.name)}</h3>
+        ${c.tagline?`<div class="muted" style="margin-bottom:8px;font-style:italic">${escapeHtml(c.tagline)}</div>`:''}
+        <dl>
+          ${c.role?`<dt>역할</dt><dd>${escapeHtml(c.role)}</dd>`:''}
+          ${c.age?`<dt>나이</dt><dd>${escapeHtml(c.age)}</dd>`:''}
+          ${c.gender?`<dt>성별</dt><dd>${escapeHtml(c.gender)}</dd>`:''}
+          ${c.job?`<dt>직업</dt><dd>${escapeHtml(c.job)}</dd>`:''}
+          ${c.appearance?`<dt>외모</dt><dd style="white-space:pre-wrap">${escapeHtml(c.appearance)}</dd>`:''}
+          ${c.personality?`<dt>성격</dt><dd style="white-space:pre-wrap">${escapeHtml(c.personality)}</dd>`:''}
+          ${c.ability?`<dt>능력</dt><dd style="white-space:pre-wrap">${escapeHtml(c.ability)}</dd>`:''}
+          ${c.background?`<dt>배경</dt><dd style="white-space:pre-wrap">${escapeHtml(c.background)}</dd>`:''}
+          ${c.like?`<dt>좋아함</dt><dd>${escapeHtml(c.like)}</dd>`:''}
+          ${c.dislike?`<dt>싫어함</dt><dd>${escapeHtml(c.dislike)}</dd>`:''}
+        </dl>
+        ${(c.tags||[]).length?`<div style="margin-top:10px">${(c.tags||[]).map(t=>`<span class="tag" style="margin-right:4px">${escapeHtml(t)}</span>`).join('')}</div>`:''}
+        ${c.note?`<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)" class="preview">${renderMD(c.note)}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+function viewerWorldHTML(secs){
+  return secs.map(s => {
+    const tpl = WORLD_TYPES[s.type] || WORLD_TYPES.free;
+    const fields = (tpl.fields||[]).map(f => {
+      const v = (s.fields||{})[f.k];
+      return v ? `<dt>${f.l}</dt><dd style="white-space:pre-wrap">${escapeHtml(v)}</dd>` : '';
+    }).join('');
+    return `<div class="view-world-card">
+      <div class="tag-row"><span class="pill primary">${tpl.em} ${tpl.label}</span></div>
+      <h3 style="margin:0 0 10px">${escapeHtml(s.title)}</h3>
+      ${s.image?`<img src="${escapeAttr(s.image)}" style="max-height:260px;width:auto;border-radius:8px;margin-bottom:10px">`:''}
+      ${fields?`<dl>${fields}</dl>`:''}
+      ${s.body?`<div class="preview" style="padding:0;border:none;background:none">${renderMD(s.body)}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function viewerTimelineHTML(tl){
+  const sorted = [...tl].sort((a,b) => (a.order||0) - (b.order||0));
+  return `<div class="timeline">${sorted.map(e => `
+    <div class="tl-item" style="cursor:default">
+      <div class="when">${escapeHtml(e.when||'')}</div>
+      <h4>${escapeHtml(e.name)}</h4>
+      <div class="muted">${renderMD(e.body||'')}</div>
+    </div>`).join('')}</div>`;
+}
+function viewerItemsHTML(items){
+  return `<div class="grid compact">${items.map(i=>`
+    <div class="thumb-card" style="cursor:default">
+      <div class="avatar" style="${i.image?`background-image:url('${escapeAttr(i.image)}')`:''}">${i.image?'':'⚔️'}</div>
+      <div class="info">
+        <h4>${escapeHtml(i.name)}</h4>
+        <div class="role">${escapeHtml(i.type||'')} ${i.rarity?'· '+escapeHtml(i.rarity):''}</div>
+        ${i.desc?`<div class="muted" style="font-size:12px;margin-top:4px">${escapeHtml(String(i.desc).slice(0,80))}${String(i.desc).length>80?'...':''}</div>`:''}
+      </div>
+    </div>`).join('')}</div>`;
+}
+function viewerGlossaryHTML(gl){
+  const sorted = gl.slice().sort((a,b)=>String(a.term||'').localeCompare(String(b.term||''),'ko'));
+  return sorted.map(g => `
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:14px;padding:10px 0;border-bottom:1px dashed var(--border)">
+      <div style="font-weight:700;font-family:var(--font-display)">${escapeHtml(g.term)}
+        ${g.alias?`<div style="font-size:11px;color:var(--text-dim);font-weight:400">= ${escapeHtml(g.alias)}</div>`:''}
+      </div>
+      <div>${renderMD(g.def||'')}</div>
+    </div>`).join('');
+}
+function viewerGalleryHTML(gal){
+  return `<div class="grid compact">${gal.map(g=>`
+    <div class="thumb-card" style="cursor:default">
+      <div class="avatar" style="background-image:url('${escapeAttr(g.src)}')"></div>
+      ${g.caption?`<div class="info"><div class="muted" style="font-size:12px">${escapeHtml(g.caption)}</div></div>`:''}
+    </div>`).join('')}</div>`;
+}
+function viewerChaptersHTML(chs){
+  const sorted = chs.slice().sort((a,b)=>(a.order||0)-(b.order||0));
+  return sorted.map((c,i)=>`
+    <div class="view-chapter">
+      <h3>${i+1}. ${escapeHtml(c.title||'제목 없음')}</h3>
+      ${c.synopsis?`<div class="syn">${escapeHtml(c.synopsis)}</div>`:''}
+      <div class="body">${escapeHtml(c.body||'')}</div>
+    </div>`).join('');
+}
+
+/* ---------- Standalone HTML export (관람용) ---------- */
+function buildStandaloneHTML(p, user){
+  const css = `
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0b0e16;color:#eaecf3;font-family:'Noto Sans KR',system-ui,sans-serif;line-height:1.65}
+    h1,h2,h3,h4{font-family:'Noto Serif KR',serif;letter-spacing:-.01em;margin:0}
+    a{color:#7a5cff;text-decoration:none}a:hover{text-decoration:underline}
+    .wrap{max-width:920px;margin:0 auto;padding:30px 20px 80px}
+    .hero{position:relative;height:280px;border-radius:18px;background:linear-gradient(135deg,#7a5cff 0%,#ff7ab8 100%) center/cover no-repeat;display:flex;align-items:flex-end;padding:30px;margin-bottom:30px;overflow:hidden}
+    .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55))}
+    .hero .meta{position:relative;z-index:1;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+    .hero h1{font-size:38px;color:#fff;margin:0 0 6px}.hero .gen{font-size:14px;opacity:.9}
+    .grid{display:grid;grid-template-columns:200px 1fr;gap:36px}
+    .toc{position:sticky;top:18px;align-self:start;font-size:13.5px}
+    .toc a{display:block;padding:6px 12px;color:#9aa3b8;border-left:2px solid transparent;border-radius:0 6px 6px 0}
+    .toc a.cur{color:#7a5cff;border-left-color:#7a5cff;background:rgba(122,92,255,.15);font-weight:600}
+    .sec{padding:30px 0;border-bottom:1px dashed #252c3f;scroll-margin-top:20px}
+    .sec h2{font-size:24px;margin-bottom:18px}
+    .char{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:16px;border:1px solid #252c3f;border-radius:14px;margin-bottom:14px;background:#131725}
+    .ava{width:120px;height:120px;border-radius:14px;background:#1a2030 center/cover no-repeat;display:grid;place-items:center;font-size:42px;color:#5e6884}
+    .char dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px}
+    .char dt{color:#9aa3b8;font-weight:500}.char dd{margin:0}
+    .wcard{background:#131725;border:1px solid #252c3f;border-radius:14px;padding:18px;margin-bottom:14px}
+    .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;background:rgba(122,92,255,.16);color:#7a5cff;font-weight:500}
+    .tag{display:inline-block;padding:2px 9px;border-radius:999px;background:#1a2030;border:1px solid #252c3f;font-size:11px;margin-right:4px}
+    .timeline{position:relative;padding-left:30px}
+    .timeline::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,#7a5cff,#ff7ab8)}
+    .tlitem{position:relative;margin-bottom:18px;padding:10px 14px;border-radius:8px}
+    .tlitem::before{content:'';position:absolute;left:-25px;top:14px;width:14px;height:14px;border-radius:50%;background:#7a5cff;border:3px solid #0b0e16}
+    .tlitem .when{font-size:12px;color:#9aa3b8;font-weight:600}
+    .ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+    .icard{background:#131725;border:1px solid #252c3f;border-radius:14px;overflow:hidden}
+    .icard .av{width:100%;aspect-ratio:1/1;background:#1a2030 center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:42px;color:#5e6884}
+    .icard .info{padding:12px 14px}
+    .chap{padding:18px 0;border-bottom:1px dashed #252c3f}
+    .chap h3{font-family:'Noto Serif KR',serif;font-size:20px;margin-bottom:8px}
+    .chap .syn{color:#9aa3b8;font-style:italic;margin-bottom:8px;font-size:13.5px}
+    .chap .body{font-family:'Noto Serif KR',serif;font-size:15.5px;line-height:1.95;white-space:pre-wrap}
+    .gloss{display:grid;grid-template-columns:160px 1fr;gap:14px;padding:10px 0;border-bottom:1px dashed #252c3f}
+    .gloss .t{font-weight:700;font-family:'Noto Serif KR',serif}
+    .ftr{margin-top:60px;text-align:center;color:#5e6884;font-size:12px}
+    @media (max-width:820px){.grid{grid-template-columns:1fr}.toc{position:static}.hero{height:200px;padding:20px}.hero h1{font-size:26px}.char{grid-template-columns:1fr}.ava{width:100%;aspect-ratio:1/1;height:auto}.gloss{grid-template-columns:1fr}}
+    @media print{.toc{display:none}.grid{grid-template-columns:1fr}body{background:#fff;color:#000}.hero{background:#7a5cff !important}.char,.wcard,.icard{break-inside:avoid}}
+  `;
+  // Build sections similar to viewer but with simpler escaping
+  const esc = escapeHtml;
+  function md(s){ return renderMD(s||''); }
+  const secs = [];
+  if(p.summary) secs.push({ id:'summary', label:'📝 소개', html:`<p style="font-size:16px;line-height:1.85">${esc(p.summary)}</p>` });
+  if((p.characters||[]).length){
+    secs.push({ id:'characters', label:'👥 등장인물', html: p.characters.map(c => `
+      <div class="char">
+        <div class="ava" style="${c.avatar?`background-image:url('${escapeAttr(c.avatar)}')`:''}">${c.avatar?'':'👤'}</div>
+        <div>
+          <h3 style="margin:0 0 4px">${esc(c.name)}</h3>
+          ${c.tagline?`<div style="color:#9aa3b8;margin-bottom:8px;font-style:italic">${esc(c.tagline)}</div>`:''}
+          <dl>
+            ${c.role?`<dt>역할</dt><dd>${esc(c.role)}</dd>`:''}
+            ${c.age?`<dt>나이</dt><dd>${esc(c.age)}</dd>`:''}
+            ${c.gender?`<dt>성별</dt><dd>${esc(c.gender)}</dd>`:''}
+            ${c.job?`<dt>직업</dt><dd>${esc(c.job)}</dd>`:''}
+            ${c.appearance?`<dt>외모</dt><dd style="white-space:pre-wrap">${esc(c.appearance)}</dd>`:''}
+            ${c.personality?`<dt>성격</dt><dd style="white-space:pre-wrap">${esc(c.personality)}</dd>`:''}
+            ${c.ability?`<dt>능력</dt><dd style="white-space:pre-wrap">${esc(c.ability)}</dd>`:''}
+            ${c.background?`<dt>배경</dt><dd style="white-space:pre-wrap">${esc(c.background)}</dd>`:''}
+            ${c.like?`<dt>좋아함</dt><dd>${esc(c.like)}</dd>`:''}
+            ${c.dislike?`<dt>싫어함</dt><dd>${esc(c.dislike)}</dd>`:''}
+          </dl>
+          ${(c.tags||[]).length?`<div style="margin-top:10px">${(c.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>`:''}
+          ${c.note?`<div style="margin-top:10px;padding-top:10px;border-top:1px dashed #252c3f">${md(c.note)}</div>`:''}
+        </div>
+      </div>`).join('') });
+  }
+  if((p.world&&p.world.sections||[]).length){
+    secs.push({ id:'world', label:'🌍 세계관', html: p.world.sections.map(s => {
+      const tpl = WORLD_TYPES[s.type] || WORLD_TYPES.free;
+      const fields = (tpl.fields||[]).map(f => {
+        const v = (s.fields||{})[f.k];
+        return v ? `<dt style="color:#9aa3b8">${f.l}</dt><dd style="margin:0;white-space:pre-wrap">${esc(v)}</dd>` : '';
+      }).join('');
+      return `<div class="wcard">
+        <div style="margin-bottom:8px"><span class="pill">${tpl.em} ${tpl.label}</span></div>
+        <h3 style="margin:0 0 10px">${esc(s.title)}</h3>
+        ${s.image?`<img src="${escapeAttr(s.image)}" style="max-height:260px;width:auto;border-radius:8px;margin-bottom:10px">`:''}
+        ${fields?`<dl style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;margin:0 0 10px">${fields}</dl>`:''}
+        ${s.body?`<div>${md(s.body)}</div>`:''}
+      </div>`;
+    }).join('') });
+  }
+  if((p.timeline||[]).length){
+    secs.push({ id:'timeline', label:'⏳ 타임라인', html:`<div class="timeline">${[...p.timeline].sort((a,b)=>(a.order||0)-(b.order||0)).map(e=>`
+      <div class="tlitem">
+        <div class="when">${esc(e.when||'')}</div>
+        <h4 style="margin:2px 0 4px">${esc(e.name)}</h4>
+        <div style="color:#9aa3b8">${md(e.body||'')}</div>
+      </div>`).join('')}</div>` });
+  }
+  if((p.items||[]).length){
+    secs.push({ id:'items', label:'⚔️ 아이템', html:`<div class="ig">${p.items.map(i=>`
+      <div class="icard">
+        <div class="av" style="${i.image?`background-image:url('${escapeAttr(i.image)}')`:''}">${i.image?'':'⚔️'}</div>
+        <div class="info">
+          <h4 style="margin:0 0 4px">${esc(i.name)}</h4>
+          <div style="color:#9aa3b8;font-size:12px">${esc(i.type||'')} ${i.rarity?'· '+esc(i.rarity):''}</div>
+          ${i.desc?`<div style="margin-top:8px;font-size:13px">${md(i.desc)}</div>`:''}
+        </div>
+      </div>`).join('')}</div>` });
+  }
+  if((p.glossary||[]).length){
+    secs.push({ id:'glossary', label:'📕 용어집', html: p.glossary.slice().sort((a,b)=>String(a.term||'').localeCompare(String(b.term||''),'ko')).map(g=>`
+      <div class="gloss">
+        <div class="t">${esc(g.term)}${g.alias?`<div style="font-size:11px;color:#9aa3b8;font-weight:400">= ${esc(g.alias)}</div>`:''}</div>
+        <div>${md(g.def||'')}</div>
+      </div>`).join('') });
+  }
+  if((p.gallery||[]).length){
+    secs.push({ id:'gallery', label:'🖼️ 갤러리', html:`<div class="ig">${p.gallery.map(g=>`
+      <div class="icard"><div class="av" style="background-image:url('${escapeAttr(g.src)}')"></div>
+        ${g.caption?`<div class="info" style="font-size:12px;color:#9aa3b8">${esc(g.caption)}</div>`:''}
+      </div>`).join('')}</div>` });
+  }
+  if((p.chapters||[]).length){
+    secs.push({ id:'manuscript', label:'📜 원고', html: [...p.chapters].sort((a,b)=>(a.order||0)-(b.order||0)).map((c,i)=>`
+      <div class="chap">
+        <h3>${i+1}. ${esc(c.title||'제목 없음')}</h3>
+        ${c.synopsis?`<div class="syn">${esc(c.synopsis)}</div>`:''}
+        <div class="body">${esc(c.body||'')}</div>
+      </div>`).join('') });
+  }
+
+  return `<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(p.title)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>${css}</style>
+</head><body>
+<div class="wrap">
+  <div class="hero" style="${p.cover?`background-image:url('${escapeAttr(p.cover)}')`:''}">
+    <div class="meta"><h1>${esc(p.title)}</h1><div class="gen">${esc(p.genre||'')}${user?` · ${esc(user.displayName)}`:''}</div></div>
+  </div>
+  <div class="grid">
+    <nav class="toc">${secs.map(s=>`<a href="#${s.id}">${s.label}</a>`).join('')}</nav>
+    <div>${secs.map(s=>`<section class="sec" id="${s.id}"><h2>${s.label}</h2>${s.html}</section>`).join('') || '<p style="color:#9aa3b8">아직 내용이 없어요.</p>'}</div>
+  </div>
+  <div class="ftr">Powered by <b>StoryForge</b> · 정적 HTML 출력</div>
+</div>
+<script>
+const links=document.querySelectorAll('.toc a');const secs=document.querySelectorAll('.sec');
+function spy(){let cur=secs[0]&&secs[0].id;for(const s of secs){if(s.getBoundingClientRect().top<=80)cur=s.id;}links.forEach(l=>l.classList.toggle('cur',l.getAttribute('href')==='#'+cur));}
+window.addEventListener('scroll',spy,{passive:true});spy();
+<\/script>
+</body></html>`;
+}
+
 /* ---------- View: Settings ---------- */
 route('settings', function(){
   const u = SF.currentUser(); const s = SF.getSettings();
@@ -1761,20 +2365,21 @@ route('settings', function(){
     { v:'dark', l:'다크 (기본)' }, { v:'light', l:'라이트' }, { v:'sepia', l:'세피아' },
     { v:'midnight', l:'한밤 (블루)' }, { v:'forest', l:'숲 (녹색)' },
     { v:'rose', l:'장미 (다크 핑크)' }, { v:'ocean', l:'바다 (틸)' },
-    { v:'paper', l:'종이 (라이트 베이지)' }, { v:'lavender', l:'라벤더 (라이트 보라)' }
+    { v:'paper', l:'종이 (라이트 베이지)' }, { v:'lavender', l:'라벤더 (라이트 보라)' },
+    { v:'mint', l:'민트 (라이트 그린)' }, { v:'cyberpunk', l:'사이버펑크 (네온)' }
   ];
-  const fonts = ['Noto Sans KR','Noto Serif KR','Gowun Dodum','Gowun Batang','Gaegu','Nanum Pen Script','Nanum Myeongjo','Black Han Sans','Single Day','Hi Melody','East Sea Dokdo'];
+  const fonts = ['Noto Sans KR','Noto Serif KR','IBM Plex Sans KR','Gowun Dodum','Gowun Batang','Gaegu','Nanum Pen Script','Nanum Myeongjo','Black Han Sans','Single Day','Hi Melody','East Sea Dokdo'];
   const body = `
     <div class="row">
       <div>
         <div class="card">
-          <h3>테마</h3>
+          <div class="card-h"><h3>🎨 테마</h3></div>
           <div class="field"><label>테마</label>
             <select id="themeSel">${themes.map(t=>`<option value="${t.v}">${t.l}</option>`).join('')}</select></div>
           <div class="field">
-            <label class="flex" style="gap:6px;align-items:center"><input id="autoAccent" type="checkbox" style="width:auto"> 강조색 자동 (테마에 맞춰)</label>
+            <label class="flex" style="gap:6px;align-items:center;cursor:pointer"><input id="autoAccent" type="checkbox" style="width:auto"> 강조색 자동 (테마에 맞춰)</label>
           </div>
-          <div class="field"><label>강조 색상 (수동)</label><input id="accent" type="color" value="${s.accent||'#7c5cff'}"></div>
+          <div class="field"><label>강조 색상 (수동)</label><input id="accent" type="color" value="${s.accent||'#7a5cff'}"></div>
           <div class="field"><label>UI 폰트</label>
             <select id="fontSel">${fonts.map(f=>`<option>${f}</option>`).join('')}</select></div>
           <div class="field"><label>원고 본문 폰트</label>
@@ -1782,12 +2387,12 @@ route('settings', function(){
           <button class="btn" id="saveTheme" type="button">적용</button>
         </div>
         <div class="card">
-          <h3>계정 정보</h3>
+          <div class="card-h"><h3>👤 계정 정보</h3></div>
           <div class="field"><label>아이디</label><input id="userName" disabled value="${escapeAttr(u.username)}"></div>
           <div class="field"><label>표시 이름</label><input id="dispName" value="${escapeAttr(u.displayName)}"></div>
           <button class="btn" id="saveName" type="button">변경</button>
           <div class="divider"></div>
-          <h3>비밀번호 변경</h3>
+          <h3 style="margin:0 0 10px">🔒 비밀번호 변경</h3>
           <div class="field"><label>현재 비밀번호</label><input id="oldPw" type="password"></div>
           <div class="field"><label>새 비밀번호</label><input id="newPw" type="password"></div>
           <button class="btn" id="changePw" type="button">변경</button>
@@ -1795,26 +2400,26 @@ route('settings', function(){
       </div>
       <div>
         <div class="card">
-          <h3>백업 (내보내기)</h3>
+          <div class="card-h"><h3>💾 백업 (내보내기)</h3></div>
           <p class="muted">현재 계정의 모든 데이터(프로젝트·인물·원고 포함)를 JSON 파일로 저장합니다.</p>
-          <button class="btn" id="exportBtn" type="button">JSON 다운로드</button>
+          <button class="btn block" id="exportBtn" type="button">📥 JSON 다운로드</button>
         </div>
         <div class="card">
-          <h3>복원 (가져오기)</h3>
-          <p class="muted">기존 데이터를 덮어씁니다. 주의하세요.</p>
+          <div class="card-h"><h3>📂 복원 (가져오기)</h3></div>
+          <p class="muted">전체 백업 또는 단일 프로젝트 JSON을 가져올 수 있어요.<br><b>전체 백업</b>은 기존 데이터를 덮어씁니다.</p>
           <input id="importFile" type="file" accept="application/json,.json">
-          <button class="btn danger" id="importBtn" type="button" style="margin-top:10px">가져오기</button>
+          <button class="btn danger block" id="importBtn" type="button" style="margin-top:10px">📤 가져오기</button>
         </div>
         <div class="card">
-          <h3>키보드 단축키</h3>
-          <div class="muted" style="line-height:1.9;font-size:13px">
+          <div class="card-h"><h3>⌨️ 키보드 단축키</h3></div>
+          <div class="muted" style="line-height:1.95;font-size:13px">
             <span class="kbd">${navigator.platform.match(/Mac/)?'⌘':'Ctrl'}+K</span> 빠른 검색<br>
             <span class="kbd">Esc</span> 모달 닫기 / 집중모드 종료
           </div>
         </div>
-        <div class="card">
-          <h3>위험 구역</h3>
-          <button class="btn danger" id="wipeBtn" type="button">이 계정의 모든 데이터 삭제</button>
+        <div class="card" style="border-color:var(--danger)">
+          <div class="card-h"><h3 style="color:var(--danger)">⚠️ 위험 구역</h3></div>
+          <button class="btn danger block" id="wipeBtn" type="button">이 계정의 모든 데이터 삭제</button>
         </div>
       </div>
     </div>`;
@@ -1825,12 +2430,8 @@ route('settings', function(){
   $('#writeFontSel').value = s.writeFont || 'Noto Serif KR';
   $('#autoAccent').checked = s.autoAccent !== false;
 
-  $('#themeSel').addEventListener('change', () => {
-    SF.saveSettings({ theme: $('#themeSel').value }); applyTheme();
-  });
-  $('#autoAccent').addEventListener('change', () => {
-    SF.saveSettings({ autoAccent: $('#autoAccent').checked }); applyTheme();
-  });
+  $('#themeSel').addEventListener('change', () => { SF.saveSettings({ theme: $('#themeSel').value }); applyTheme(); });
+  $('#autoAccent').addEventListener('change', () => { SF.saveSettings({ autoAccent: $('#autoAccent').checked }); applyTheme(); });
   $('#saveTheme').addEventListener('click', () => {
     SF.saveSettings({
       theme: $('#themeSel').value, accent: $('#accent').value,
@@ -1851,26 +2452,24 @@ route('settings', function(){
     } catch(e){ toast(e.message, 'error'); }
   });
   $('#exportBtn').addEventListener('click', () => {
-    const data = SF.exportJSON();
-    const blob = new Blob([data], { type:'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `storyforge_${u.username}_${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
+    downloadBlob(SF.exportJSON(), `storyforge_${u.username}_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
   });
   $('#importBtn').addEventListener('click', () => {
     const f = $('#importFile').files && $('#importFile').files[0];
     if(!f){ toast('파일을 선택하세요.', 'error'); return; }
-    if(!confirm('현재 데이터를 덮어씁니다. 계속할까요?')) return;
     const r = new FileReader();
     r.onload = () => {
-      try { SF.importJSON(r.result); toast('복원 완료', 'success'); setTimeout(render, 400); }
-      catch(e){ toast(e.message, 'error'); }
+      try {
+        const newPid = SF.importJSON(r.result);
+        if(newPid){ toast('프로젝트 가져옴', 'success'); setTimeout(()=>go('#/project/'+newPid), 400); }
+        else { toast('전체 복원 완료', 'success'); setTimeout(render, 400); }
+      } catch(e){ toast(e.message, 'error'); }
     };
     r.readAsText(f);
   });
   $('#wipeBtn').addEventListener('click', () => {
     if(!confirm('정말로 모든 프로젝트와 인물 데이터를 삭제할까요?')) return;
+    if(!confirm('진심으로 다시 한 번 확인합니다. 되돌릴 수 없어요.')) return;
     SF.wipeMyData(); toast('초기화됨', 'success'); setTimeout(render, 400);
   });
 });
@@ -1882,7 +2481,7 @@ function openSearch(){
   m.className = 'modal-bg open'; m.id = 'searchModal'; m.innerHTML = `
     <div class="modal search-modal">
       <header><h3>🔍 빠른 검색</h3><button class="close" data-x type="button">×</button></header>
-      <input id="sq" class="search-input" placeholder="프로젝트·인물·챕터·문서·아이템·세계관 항목 검색..." autocomplete="off">
+      <input id="sq" class="search-input" placeholder="프로젝트·인물·챕터·문서·아이템·세계관·용어 검색..." autocomplete="off">
       <div class="search-results" id="srs"></div>
       <p class="muted" style="font-size:11px;margin:10px 0 0">↑/↓ 이동 · Enter 선택 · Esc 닫기</p>
     </div>`;
@@ -1891,10 +2490,8 @@ function openSearch(){
   $$('[data-x]', m).forEach(b => b.addEventListener('click', close));
   m.addEventListener('click', e => { if(e.target === m) close(); });
   let sel = 0, items = [];
-
   function search(q){
-    q = q.trim().toLowerCase();
-    items = [];
+    q = q.trim().toLowerCase(); items = [];
     SF.getProjects().forEach(p => {
       const m = (s) => String(s||'').toLowerCase().includes(q);
       if(!q || m(p.title) || m(p.genre) || m(p.summary))
@@ -1919,9 +2516,12 @@ function openSearch(){
         if(!q || m(sec.title)||m(sec.body))
           items.push({ ic:'🌍', ti:sec.title, meta:p.title+' · 세계관', go:'#/world/'+p.id });
       });
+      (p.glossary||[]).forEach(g => {
+        if(!q || m(g.term)||m(g.def)||m(g.alias))
+          items.push({ ic:'📕', ti:g.term, meta:p.title+' · 용어', go:'#/glossary/'+p.id });
+      });
     });
-    items = items.slice(0, 30);
-    sel = 0; renderRes();
+    items = items.slice(0, 30); sel = 0; renderRes();
   }
   function renderRes(){
     const w = $('#srs');
@@ -1934,11 +2534,8 @@ function openSearch(){
           <div class="meta">${escapeHtml(it.meta)}</div>
         </div>
       </div>`).join('');
-    $$('.res', w).forEach(el => {
-      el.addEventListener('click', () => { go(items[+el.dataset.i].go); close(); });
-    });
+    $$('.res', w).forEach(el => { el.addEventListener('click', () => { go(items[+el.dataset.i].go); close(); }); });
   }
-
   setTimeout(() => $('#sq').focus(), 30);
   $('#sq').addEventListener('input', e => search(e.target.value));
   m.addEventListener('keydown', e => {
